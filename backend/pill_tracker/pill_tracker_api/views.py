@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from .serializers import UserMedicationSerializer
+from .serializers import UserMedicationSerializer, UserSerializer
 from .models import UserMedication
 
 class UserMedicationAPIView(APIView):
@@ -44,3 +44,13 @@ class UserMedicationAPIView(APIView):
         except UserMedication.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         
+class RegisterAPI(APIView):
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response(
+            {
+                "user": serializer.data
+            }
+        )
