@@ -4,4 +4,9 @@ from . import views
 urlpatterns = [
     path('med', views.UserMedicationAPIView.as_view()),
     path('med/<int:pk>', views.UserMedicationAPIView.as_view()),
+    path('med_tracker', views.MedicationIntakeAPIView.as_view()),
+    # GET all tracking instances or for a specific date: api/med_tracker?date=2023-03-14
+    path('med_tracker/<int:pk>/', views.MedicationIntakeAPIView.as_view()),
+    # GET specific tracking instance for checkbox
+
 ]
