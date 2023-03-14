@@ -5,6 +5,8 @@ class UserMedication(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     medication_name = models.CharField(max_length=50)
     dosage = models.CharField(max_length=20)
+    # add total pill count for refill tracking? ie. 30, 60, 90
+    # add num of pills/med taken each intake
     rx_number = models.CharField(max_length=50)
     start_date = models.DateField()
     end_date = models.DateField(null=True, blank=True) # maybe change to refill date
@@ -19,6 +21,7 @@ class MedicationIntake(models.Model):
     date = models.DateField()
     time = models.TimeField()
     taken = models.BooleanField(default=False)
+    # add way to keep track of current pillcount left
 
     def __str__(self):
         return f"{self.medication} on {self.date} at {self.time}"
