@@ -44,3 +44,5 @@ class UserMedicationAPIView(APIView):
         except UserMedication.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         
+#write view to get all intake instances based on date
+#write view to put to specific instance after med has been checked off as taken
