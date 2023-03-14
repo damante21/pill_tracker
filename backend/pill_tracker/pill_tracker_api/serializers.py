@@ -8,7 +8,7 @@ class UserMedicationSerializer(serializers.ModelSerializer):
         model = UserMedication
         fields = '__all__'
 
-    #this works when adding meds through DRF API
+    #this works when adding meds through DRF API - auto creates "checkboxes" for medication tracking based on start/stop date and number of times to take per day
     def create_intakes_for_medication(self, user_medication):
         start_date = user_medication.start_date
         end_date = user_medication.end_date or start_date
@@ -42,7 +42,7 @@ class UserMedicationSerializer(serializers.ModelSerializer):
         instance.times_per_day = validated_data.get('times_per_day', instance.times_per_day)
         instance.save()
 
-        # Next, update the MedicationIntake instances if necessary
+        # Next, update the MedicationIntake instances if necessary - changing dates and frequency
         if 'times_per_day' in validated_data or 'time_of_first_med' in validated_data:
             # change to delete and create only from today forward
             MedicationIntake.objects.filter(medication=instance).delete()
