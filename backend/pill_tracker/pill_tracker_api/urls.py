@@ -11,4 +11,5 @@ urlpatterns = [
     path('med_tracker', views.MedicationIntakeAPIView.as_view()),
     # GET specific tracking instance for checkbox
     path('med_tracker/<int:pk>/', views.MedicationIntakeAPIView.as_view()),
+    path('register/', views.RegisterAPI.as_view(), name='register'),
 ]

@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from .serializers import UserMedicationSerializer, MedicationIntakeSerializer
+from .serializers import UserMedicationSerializer, MedicationIntakeSerializer, UserSerializer
 from .models import UserMedication, MedicationIntake
 
 class UserMedicationAPIView(APIView):
@@ -72,3 +72,13 @@ class MedicationIntakeAPIView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class RegisterAPI(APIView):
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response(
+            {
+                "user": serializer.data
+            }
+        )
