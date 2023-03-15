@@ -12,8 +12,8 @@ class UserMedicationSerializer(serializers.ModelSerializer):
     #this works when adding meds through DRF API - auto creates "checkboxes" for medication tracking based on start/stop date and number of times to take per day
     def create_intakes_for_medication(self, user_medication):
         start_date = user_medication.start_date
-        end_date = user_medication.end_date or start_date
-        days = (end_date - start_date).days + 1
+        refill_date = user_medication.refill_date or start_date
+        days = (refill_date - start_date).days + 1
         intakes_per_day = user_medication.times_per_day
         delta = timedelta(days=1 / intakes_per_day)
 
@@ -36,10 +36,11 @@ class UserMedicationSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         # First, update the UserMedication instance
         instance.medication_name = validated_data.get('medication_name', instance.medication_name)
+        validated_data.get('medication_notes', instance.medication_notes)
         instance.dosage = validated_data.get('dosage', instance.dosage)
         instance.rx_number = validated_data.get('rx_number', instance.rx_number)
         instance.start_date = validated_data.get('start_date', instance.start_date)
-        instance.end_date = validated_data.get('end_date', instance.end_date)
+        instance.refill_date = validated_data.get('refill_date', instance.refill_date)
         instance.times_per_day = validated_data.get('times_per_day', instance.times_per_day)
         instance.save()
 

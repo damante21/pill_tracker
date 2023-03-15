@@ -72,6 +72,7 @@ class MedicationIntakeAPIView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 class RegisterAPI(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
