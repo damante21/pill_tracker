@@ -10,11 +10,6 @@ const Home = () => {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const menuList = [
-    { key: "home", label: "Home" },
-    { key: "healthRecords", label: "Health Records" },
-  ];
-
   const listData = [
     {
       title: "test1",
@@ -57,7 +52,7 @@ const Home = () => {
             display: "flex",
           }}
         >
-          <h2>Ongoing Course</h2>
+          <h2>Medicine checklist</h2>
           <List
             className="med-list"
             itemLayout="horizontal"

@@ -1,0 +1,10 @@
+.record-list{
+    width: 60vw;
+    margin: 0 auto;
+}
+
+.record-item{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}

@@ -34,6 +34,7 @@ const ILayout = (props) => {
       >
         <Menu
           theme="light"
+          style={{ flex: 1 }}
           mode="horizontal"
           selectedKeys={[location.pathname.split("/")[1]]}
           items={menuList}
@@ -41,10 +42,11 @@ const ILayout = (props) => {
         />
         <div>
           <Avatar
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", marginRight: 10 }}
             size={"large"}
             icon={<UserOutlined />}
           />
+          <span>Jack</span>
         </div>
       </Header>
       <Content

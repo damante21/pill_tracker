@@ -56,7 +56,7 @@ const NewMedicine = () => {
             <TextArea rows={4} />
           </Form.Item>
           <Form.Item name="dosage" label="Dosage" rules={[{ required: true }]}>
-            <Input />
+            <InputNumber min={1} />
           </Form.Item>
           <Form.Item
             name="rx_number"
@@ -73,18 +73,18 @@ const NewMedicine = () => {
             <DatePicker />
           </Form.Item>
           <Form.Item
-            name="end_date"
-            label="End date"
+            name="refill_date"
+            label="Refill date"
             rules={[{ required: true }]}
           >
             <DatePicker />
           </Form.Item>
           <Form.Item
-            name="times_per_day"
-            label="Times per day"
+            name="time_per_day"
+            label="Time per day"
             rules={[{ required: true }]}
           >
-           <InputNumber min={1} />
+            <InputNumber min={1} />
           </Form.Item>
           <Form.Item
             name="times_of_first_med"

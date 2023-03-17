@@ -1,6 +1,7 @@
-import { theme, Button,Form } from "antd";
+import { theme, Button, Form, Space, Avatar, Divider } from "antd";
 import ILayout from "../../components/ILayout/ILayout";
 import "./HealthRecords.css";
+import { UserOutlined } from "@ant-design/icons";
 
 const HealthRecords = () => {
   const {
@@ -14,7 +15,27 @@ const HealthRecords = () => {
         style={{
           background: colorBgContainer,
         }}
-      ></div>
+      >
+        <Space direction="vertical" align="center">
+          <Avatar size={64} icon={<UserOutlined />} />
+          <span>Jack</span>
+        </Space>
+        <Divider />
+        <div className="record-list">
+          <div className="record-item">
+            <h3>Heart rate:</h3>
+            <span>1</span>
+          </div>
+          <div className="record-item">
+            <h3>Blood sugar:</h3>
+            <span>1</span>
+          </div>
+          <div className="record-item">
+            <h3>Allergies:</h3>
+            <span>1</span>
+          </div>
+        </div>
+      </div>
     </ILayout>
   );
 };
