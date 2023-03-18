@@ -16,7 +16,7 @@ const HealthRecords = () => {
           background: colorBgContainer,
         }}
       >
-        <Space direction="vertical" align="center">
+        <Space direction="vertical" align="center" style={{ width: "100%" }}>
           <Avatar size={64} icon={<UserOutlined />} />
           <span>Jack</span>
         </Space>
