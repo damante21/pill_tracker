@@ -1,14 +1,19 @@
 import { theme, Button, Avatar, Space, List } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 import "./Home.css";
 import ILayout from "../../components/ILayout/ILayout";
 
 const Home = () => {
+
   const navigate = useNavigate();
+  const authToken = localStorage.getItem('token');  
+
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  
 
   const menuList = [
     { key: "home", label: "Home" },
@@ -41,6 +46,15 @@ const Home = () => {
       title: "test2",
     },
   ];
+
+  useEffect( () => {
+    if(authToken == null){
+      navigate('/login/')
+    }
+  }, []);
+
+   
+  
 
   return (
     <ILayout>
