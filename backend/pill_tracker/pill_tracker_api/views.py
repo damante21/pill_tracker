@@ -1,8 +1,11 @@
 from rest_framework.response import Response
+from django.shortcuts import HttpResponse, render
 from rest_framework.views import APIView
 from rest_framework import status
 from .serializers import UserMedicationSerializer, MedicationIntakeSerializer, UserSerializer
 from .models import UserMedication, MedicationIntake
+import requests, json
+from django.views.generic import TemplateView
 
 class UserMedicationAPIView(APIView):
     def get(self, request, pk=None):
@@ -83,3 +86,47 @@ class RegisterAPI(APIView):
                 "user": serializer.data
             }
         )
+    
+
+class WalgreensAPI(APIView):
+    # template_name = 'checkout.html'
+
+    # def get_walgreens_webpage(self, request, url, token):
+    #     url = url
+    #     payload = {
+    #         'affId': 'rxapi',
+    #         'token': token,
+    #         'rxNo': '0459772-59382',
+    #         'appId': 'refillByScan',
+    #         'act': 'chkExpRx',
+    #     }
+        
+    #     response = requests.post(url, data=payload)
+    #     # print(response)
+    #     if response.status_code == 200:
+    #         checkout = {'data': response}
+    #         return render(request, 'checkout.html', checkout)
+    #     else:
+    #         return HttpResponse('Error: {}'.format(response.status_code))
+        
+    def get(self, request):
+        url = 'https://services-qa.walgreens.com/api/util/mweb5url'
+        payload = {
+            'apiKey': "",
+            'affId': "rxapi",
+            'transaction': 'refillByScan',
+            'act': 'mweb5Url',
+            'view': 'mweb5UrlJSON',
+        }
+        headers = {'Content-Type': 'application/json'}
+        
+        response = requests.post(url, headers=headers, data=json.dumps(payload))
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(data['landingUrl'], data['token'])
+            return Response(data)
+            # return Response(data)
+        else:
+            print({'status': 'error', 'result': response.text})
+            return Response({'url': '', 'token': ''})
