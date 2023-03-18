@@ -17,7 +17,7 @@ export default function Register(){
     }
 
     const sendData = (data) => {
-        axios.post(`http://http://127.0.0.1:8000/api/register`, data)
+        axios.post(`http://127.0.0.1:8000/api/register/`, data)
         .then(res => {
             console.log(res.data);
             navigate('/login/')
