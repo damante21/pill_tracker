@@ -27,8 +27,8 @@ class DrugInteraction():
 
 def api_calls(request):
         
-        drugs_arr = []
-        drug_obj = {}
+        drug_info_arr = []
+        drug_interaction_arr = []
         
         drug_name = 'lisinopril'
         drug_1 = '207106'
@@ -40,38 +40,29 @@ def api_calls(request):
         response = interaction_response.json()
  
         for x in response['fullInteractionTypeGroup'][1]['fullInteractionType']:
-            # print(x['interactionPair'][0])
-            # print(x['minConcept'][0])
-            # print(x['minConcept'][1])
-            
-            pass
+            # print(x)
+            drug_1 = x['minConcept'][0]['rxcui']
+            drug_2 = x['minConcept'][1]['rxcui']
+            description = x['interactionPair'][0]['description']
+            severity = x['interactionPair'][0]['severity']
+            drug_interaction_arr.append(DrugInteraction(drug_1, drug_2, description, severity))
+            # print(f"interactionPair: {x['interactionPair'][0]['description']}")
+            # print(f"minConcept: {x['minConcept'][0]}")
+            # print(f"minConcept: {x['minConcept'][1]}")
+ 
      
+        print(response)
         # print(response['fullInteractionTypeGroup'])
+        # print(drug_interaction_arr[10])
 
         if drug_response.status_code == 200 and interaction_response.status_code == 200:
         
             drug_root = ET.fromstring(drug_response.content)
             for rxcui in drug_root.iter('rxcui'):
-                drug_obj[rxcui.text] = rxcui.text
                 for name in drug_root.iter('name'):
-                    drug_obj[rxcui.text] = name.text
-                    drugs_arr.append(DrugInfo(rxcui.text, name.text))
-            print(drug_obj)
-            # interaction_root = ET.fromstring(interaction_response.content)
+                    drug_info_arr.append(DrugInfo(rxcui.text, name.text))
 
-
-            # for child in interaction_root.iter('name'):
-            #     print(child.text)
-            #     drug_interaction_arr.append(interactionPair.tag)
-            #     # drug_obj[interactionPair.text] = interactionPair.text
-            #     for description in interaction_root.iter('description'):
-            #         pass
-            #         # drug_obj[interactionPair.text] = drug_interaction_obj[description.text]
-                    
-            # for x in drug_interaction_arr:
-            # for z in drug_obj:
-            #     print(z)
-            return HttpResponse(response['fullInteractionTypeGroup'][1])
+            return HttpResponse(response['fullInteractionTypeGroup'])
 
         else:
             print(f'drug_response: {drug_response.status_code}, interaction_response: {interaction_response.status_code}')
