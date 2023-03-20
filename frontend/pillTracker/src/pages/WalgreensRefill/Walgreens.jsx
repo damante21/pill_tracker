@@ -39,6 +39,9 @@ export default function WalgreensAPI() {
             })
           });
           const htmlResponse = await response.text();
+          // const modifiedHtmlContent = htmlResponse.replace(/src="(?!http)/g, `src="${data.landingUrl}/`);
+          // const modifiedBaseTag = `<base href="${data.landingUrl}">`;
+          // const modifiedHtml = `<html><head>${modifiedBaseTag}</head><body>${modifiedHtmlContent}</body></html>`;
           setHtml(htmlResponse);
         } catch (error) {
           console.error(error);
@@ -48,7 +51,11 @@ export default function WalgreensAPI() {
       openLandingUrl();
     }, [data]);
 
+    // const modifiedHtmlContent = htmlResponse.replace(/href="(?!http)/g, `href="${data.landingUrl}/`);
+    // const modifiedBaseTag = `<base href="${landingUrl}">`;
+    // const modifiedHtml = `<html><head>${modifiedBaseTag}</head><body>${modifiedHtmlContent}</body></html>`;
+
     return (
-      html 
+      html && <div dangerouslySetInnerHTML={{__html: html}} />
     );
 }

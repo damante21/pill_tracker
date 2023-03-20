@@ -6,6 +6,8 @@ from .serializers import UserMedicationSerializer, MedicationIntakeSerializer, U
 from .models import UserMedication, MedicationIntake
 import requests, json
 from django.views.generic import TemplateView
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.decorators import authentication_classes
 
 class UserMedicationAPIView(APIView):
     def get(self, request, pk=None):
@@ -50,6 +52,7 @@ class UserMedicationAPIView(APIView):
 #write view to get all intake instances based on date
 #write view to put to specific instance after med has been checked off as taken
 
+@authentication_classes([TokenAuthentication])
 class MedicationIntakeAPIView(APIView):
     def get(self, request, pk=None):
         try:
