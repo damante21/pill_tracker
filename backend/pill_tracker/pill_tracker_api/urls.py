@@ -15,5 +15,6 @@ urlpatterns = [
     path('med_tracker/<int:pk>/', MedicationIntakeAPIView.as_view()),
     path('register/', RegisterAPI.as_view(), name='register'),
     path('api-token-auth', views.obtain_auth_token),
+    path('user_details', UserDetailAPI.as_view()),
     path('walgreens/', WalgreensAPI.as_view()),
 ]
