@@ -58,16 +58,6 @@ function MedicationIntakeList() {
     }
   };
 
-  //get medication
-  async function fetchMedicationInfo(medicationId) {
-    const response = await axios.get(`http://127.0.0.1:8000/api/med/${medicationId}`, {
-      headers: {
-        Authorization: token,
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.medication_name;
-  }
   console.log(intakes)
   //map intakes grouped by medicine and put check boxes next to it
   return (
