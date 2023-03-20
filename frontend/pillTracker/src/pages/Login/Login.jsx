@@ -1,9 +1,12 @@
 import React, {useState} from 'react'
+import  { useNavigate  } from 'react-router-dom'
+
 
 export default function Login(){
 
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
+    const navigate = useNavigate();
 
     async function loginSubmit(e) {
         e.preventDefault()
@@ -32,26 +35,39 @@ export default function Login(){
         } 
       }
 
+      function registerButtonClick(e){
+        e.preventDefault()
+        navigate('/register/')
+      }
+
     return(
+      <div>
         <form id="loginform" onSubmit={loginSubmit}>
-                <label>Username</label>
-                <input
-                  type="username"
-                  id="UsernameInput"
-                  name="UsernameInput"
-                  placeholder="Enter username"
-                  onChange={(event) => setUsername(event.target.value)}
-                />
-                <label>Password</label>
-                <input
-                  type="password"
-                  placeholder="Password"
-                  onChange={(event) => setPassword(event.target.value)}
-                />
-              <button type="submit">
-                Login
-              </button>
-              </form>
+          <label>Username</label>
+            <input
+              type="username"
+              id="UsernameInput"
+              name="UsernameInput"
+              placeholder="Enter username"
+              onChange={(event) => setUsername(event.target.value)}
+            /><br/>
+          <label>Password</label>
+            <input
+              type="password"
+              placeholder="Password"
+              onChange={(event) => setPassword(event.target.value)}
+            /><br/>
+          <button type="submit">
+              Login
+          </button>
+        </form><br/>
+        <div>
+          <p>Need an account?</p>
+          <button onClick={registerButtonClick}>Register</button>
+        </div>
+      </div>
+
+
 
     )
 }
