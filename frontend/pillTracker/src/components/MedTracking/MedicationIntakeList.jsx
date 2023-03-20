@@ -20,7 +20,23 @@ function MedicationIntakeList() {
           'Content-Type': 'application/json',
         },
       });
-      setIntakes(response.data)
+  
+      const updatedIntakes = [];
+  
+      for (const intake of response.data) {
+        const medicationResponse = await axios.get(`http://127.0.0.1:8000/api/med/${intake.medication}`, {
+          headers: {
+            Authorization: token,
+            'Content-Type': 'application/json',
+          },
+        });
+  
+        const medicationName = medicationResponse.data.medication_name;
+  
+        updatedIntakes.push({ ...intake, medicationName });
+      }
+  
+      setIntakes(updatedIntakes);
     } catch (error) {
       console.error(error)
     }
@@ -62,18 +78,18 @@ function MedicationIntakeList() {
         onChange={(event) => setDate(event.target.value)}
       />
       <ul>
-        {intakes.map((intake) => (
-          <li key={intake.id}>
-            <label>
-              <input
-                type="checkbox"
-                checked={intake.taken}
-                onChange={(event) => handleCheckboxChange(event, intake.id)}
-              />
-              {intake.time}{intake.medication}
-            </label>
-          </li>
-        ))}
+      {intakes.map((intake) => (
+    <li key={intake.id}>
+      <label>
+        <input
+          type="checkbox"
+          checked={intake.taken}
+          onChange={(event) => handleCheckboxChange(event, intake.id)}
+        />
+        {intake.time} - {intake.medicationName}
+      </label>
+    </li>
+  ))}
       </ul>
     </div>
   )
