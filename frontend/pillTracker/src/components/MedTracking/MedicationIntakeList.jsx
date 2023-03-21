@@ -41,7 +41,7 @@ function MedicationIntakeList() {
       console.error(error)
     }
   };
-  console.log(intakes)
+  // console.log(intakes)
   //handle checkbox for whether or not med was taken - put request to intake DRF
   const handleCheckboxChange = async (event, intakeId) => {
     const isChecked = event.target.checked;
@@ -57,8 +57,7 @@ function MedicationIntakeList() {
       console.error(error)
     }
   };
-
-  // console.log(intakes)
+  
   //map intakes and put check boxes next to it
   // is there way to sort by time taking in to consideration all intakes?
   return (
