@@ -24,9 +24,15 @@ export default function Register(){
         })
     }
 
+    function loginButtonClick(e){
+        e.preventDefault()
+        navigate('/Login/')
+      }
+
 
 
     return(
+        <div>
         <form onSubmit={e => {handleSubmit(e)}}>
             <label>
                 Username:
@@ -42,5 +48,10 @@ export default function Register(){
             </label>
             <input type='submit' value={'Submit'}></input>
         </form>
+        <div>
+            <p>Already have an account?</p>
+            <button onClick={loginButtonClick}>Login</button>
+        </div>
+        </div>
     )
 }

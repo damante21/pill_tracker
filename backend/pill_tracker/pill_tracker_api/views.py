@@ -4,13 +4,14 @@ from rest_framework import status
 from .serializers import UserMedicationSerializer, MedicationIntakeSerializer, UserSerializer
 from .models import UserMedication, MedicationIntake
 from django.contrib.auth.models import User
-import requests, json
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import authentication_classes
+from datetime import date
 
 @authentication_classes([TokenAuthentication])
 class UserMedicationAPIView(APIView):
+    # will get specific med or list of meds with end dates today or in the future (so we don't see past medications)
     def get(self, request, pk=None):
         try:
             user_id = request.user.id
@@ -18,13 +19,14 @@ class UserMedicationAPIView(APIView):
                 medication = UserMedication.objects.get(pk=pk)
                 serializer = UserMedicationSerializer(medication)
             else:
-                medications = UserMedication.objects.filter(user=user_id)
+                medications = UserMedication.objects.filter(user=user_id, refill_date__gte=date.today())
                 serializer = UserMedicationSerializer(medications, many=True)
             return Response(serializer.data)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         
     def post(self, request):
+        print(request.user)
         serializer = UserMedicationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
@@ -50,8 +52,6 @@ class UserMedicationAPIView(APIView):
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         
-#write view to get all intake instances based on date
-#write view to put to specific instance after med has been checked off as taken
 
 @authentication_classes([TokenAuthentication])
 class MedicationIntakeAPIView(APIView):
@@ -100,46 +100,3 @@ class UserDetailAPI(APIView):
     user = User.objects.get(id=request.user.id)
     serializer = UserSerializer(user)
     return Response(serializer.data)
-
-class WalgreensAPI(APIView):
-    # template_name = 'checkout.html'
-
-    # def get_walgreens_webpage(self, request, url, token):
-    #     url = url
-    #     payload = {
-    #         'affId': 'rxapi',
-    #         'token': token,
-    #         'rxNo': '0459772-59382',
-    #         'appId': 'refillByScan',
-    #         'act': 'chkExpRx',
-    #     }
-        
-    #     response = requests.post(url, data=payload)
-    #     # print(response)
-    #     if response.status_code == 200:
-    #         checkout = {'data': response}
-    #         return render(request, 'checkout.html', checkout)
-    #     else:
-    #         return HttpResponse('Error: {}'.format(response.status_code))
-        
-    def get(self, request):
-        url = 'https://services-qa.walgreens.com/api/util/mweb5url'
-        payload = {
-            'apiKey': "",
-            'affId': "rxapi",
-            'transaction': 'refillByScan',
-            'act': 'mweb5Url',
-            'view': 'mweb5UrlJSON',
-        }
-        headers = {'Content-Type': 'application/json'}
-        
-        response = requests.post(url, headers=headers, data=json.dumps(payload))
-        
-        if response.status_code == 200:
-            data = response.json()
-            print(data['landingUrl'], data['token'])
-            return Response(data)
-            # return Response(data)
-        else:
-            print({'status': 'error', 'result': response.text})
-            return Response({'url': '', 'token': ''})

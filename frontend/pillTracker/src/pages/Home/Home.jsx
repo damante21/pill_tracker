@@ -22,33 +22,6 @@ const Home = () => {
     { key: "home", label: "Home" },
     { key: "healthRecords", label: "Health Records" },
   ];
-
-  // const listData = [
-  //   {
-  //     title: "test1",
-  //   },
-  //   {
-  //     title: "test2",
-  //   },
-  //   {
-  //     title: "test1",
-  //   },
-  //   {
-  //     title: "test2",
-  //   },
-  //   {
-  //     title: "test1",
-  //   },
-  //   {
-  //     title: "test2",
-  //   },
-  //   {
-  //     title: "test1",
-  //   },
-  //   {
-  //     title: "test2",
-  //   },
-  // ];
   
   useEffect( () => {
     async function fetchMeds(){
@@ -74,7 +47,7 @@ const Home = () => {
     }
   }, []);
 
-  console.log(meds)
+  // console.log(meds)
 
   return (
     <ILayout>

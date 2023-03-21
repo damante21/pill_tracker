@@ -3,7 +3,7 @@ from django.conf import settings
 from django.core.validators import  MinValueValidator
 
 class UserMedication(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     medication_name = models.CharField(max_length=50)
     medication_notes = models.CharField(max_length=255, null=True, blank=True)
     dosage = models.CharField(max_length=20)
