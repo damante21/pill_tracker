@@ -56,6 +56,6 @@ export default function WalgreensAPI() {
     // const modifiedHtml = `<html><head>${modifiedBaseTag}</head><body>${modifiedHtmlContent}</body></html>`;
 
     return (
-      html && <div dangerouslySetInnerHTML={{__html: html}} />
+      html 
     );
 }
