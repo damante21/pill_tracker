@@ -7,9 +7,11 @@ from django.contrib.auth.models import User
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import authentication_classes
+from datetime import date
 
 @authentication_classes([TokenAuthentication])
 class UserMedicationAPIView(APIView):
+    # will get specific med or list of meds with end dates today or in the future (so we don't see pas medications)
     def get(self, request, pk=None):
         try:
             user_id = request.user.id
@@ -17,7 +19,7 @@ class UserMedicationAPIView(APIView):
                 medication = UserMedication.objects.get(pk=pk)
                 serializer = UserMedicationSerializer(medication)
             else:
-                medications = UserMedication.objects.filter(user=user_id)
+                medications = UserMedication.objects.filter(user=user_id, refill_date__gte=date.today())
                 serializer = UserMedicationSerializer(medications, many=True)
             return Response(serializer.data)
         except:

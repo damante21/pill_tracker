@@ -4,9 +4,9 @@ from rest_framework.authtoken import views
 
 
 urlpatterns = [
-    # add med
+    # add med, get list of current meds
     path('med', UserMedicationAPIView.as_view()),
-    # edit/delete med (also edits intake tracker when frequency/dates are updated)
+    # get/edit/delete med (also edits intake tracker when frequency/dates are updated)
     path('med/<int:pk>', UserMedicationAPIView.as_view()),
     # GET all tracking instances or for a specific date: api/med_tracker?date=2023-03-14
     # or GET all tracking instances 
