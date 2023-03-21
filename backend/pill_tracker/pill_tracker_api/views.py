@@ -3,8 +3,15 @@ from rest_framework.views import APIView
 from rest_framework import status
 from .serializers import UserMedicationSerializer, MedicationIntakeSerializer, UserSerializer
 from .models import UserMedication, MedicationIntake
+from django.contrib.auth.models import User
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import AllowAny
+from rest_framework.decorators import authentication_classes
+from datetime import date
 
+@authentication_classes([TokenAuthentication])
 class UserMedicationAPIView(APIView):
+    # will get specific med or list of meds with end dates today or in the future (so we don't see past medications)
     def get(self, request, pk=None):
         try:
             user_id = request.user.id
@@ -12,13 +19,14 @@ class UserMedicationAPIView(APIView):
                 medication = UserMedication.objects.get(pk=pk)
                 serializer = UserMedicationSerializer(medication)
             else:
-                medications = UserMedication.objects.filter(user=user_id)
+                medications = UserMedication.objects.filter(user=user_id, refill_date__gte=date.today())
                 serializer = UserMedicationSerializer(medications, many=True)
             return Response(serializer.data)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         
     def post(self, request):
+        print(request.user)
         serializer = UserMedicationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
@@ -44,9 +52,8 @@ class UserMedicationAPIView(APIView):
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         
-#write view to get all intake instances based on date
-#write view to put to specific instance after med has been checked off as taken
 
+@authentication_classes([TokenAuthentication])
 class MedicationIntakeAPIView(APIView):
     def get(self, request, pk=None):
         try:
@@ -72,7 +79,9 @@ class MedicationIntakeAPIView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 class RegisterAPI(APIView):
+
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -82,3 +91,12 @@ class RegisterAPI(APIView):
                 "user": serializer.data
             }
         )
+    
+class UserDetailAPI(APIView):
+  authentication_classes = (TokenAuthentication,)
+  permission_classes = (AllowAny,)
+  
+  def get(self,request,*args,**kwargs):
+    user = User.objects.get(id=request.user.id)
+    serializer = UserSerializer(user)
+    return Response(serializer.data)

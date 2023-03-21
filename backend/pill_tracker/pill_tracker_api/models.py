@@ -1,8 +1,9 @@
 from django.db import models
 from django.conf import settings
+from django.core.validators import  MinValueValidator
 
 class UserMedication(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     medication_name = models.CharField(max_length=50)
     medication_notes = models.CharField(max_length=255, null=True, blank=True)
     dosage = models.CharField(max_length=20)
@@ -11,6 +12,7 @@ class UserMedication(models.Model):
     refill_date = models.DateField(null=True, blank=True)
     times_per_day = models.PositiveSmallIntegerField(default=1)
     time_of_first_med = models.TimeField()
+    number_of_pills  = models.IntegerField( validators=[MinValueValidator(0)])
 
     def __str__(self):
         return f"{self.user}'s {self.medication_name}"
