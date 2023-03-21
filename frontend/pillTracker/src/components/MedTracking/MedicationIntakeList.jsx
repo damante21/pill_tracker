@@ -43,7 +43,7 @@ function MedicationIntakeList() {
   };
   // console.log(intakes)
   //handle checkbox for whether or not med was taken - put request to intake DRF
-  const handleCheckboxChange = async (event, intakeId) => {
+  const handleCheckboxChange = async (event, intakeId, medication) => {
     const isChecked = event.target.checked;
     const updatedIntake = { taken: isChecked };
     try {
@@ -53,10 +53,36 @@ function MedicationIntakeList() {
           intake.id === intakeId ? { ...intake, taken: isChecked } : intake
         )
       )
+      updatePillCount(medication, event.target.checked)
     } catch (error) {
       console.error(error)
     }
   };
+  
+  //Updates the pill count of the medication from the intake. 
+  const updatePillCount = async (medication, isChecked) =>{
+    try{
+      await axios.get(`http://127.0.0.1:8000/api/med/${medication}`)
+      .then((response) => {
+        const data = {
+          'id': response.data['id'],
+          'user': response.data['user'],
+          'number_of_pills': response.data['number_of_pills']
+        }
+        if(isChecked){
+          data['number_of_pills'] = data['number_of_pills'] + 1;
+        }else{
+          data['number_of_pills'] = data['number_of_pills'] - 1;
+        }
+        console.log(data)
+        axios.put(`http://127.0.0.1:8000/api/med/${medication}`, data)
+        .then((response) => {
+        })
+      })
+    }catch (error) {
+      console.error(error)
+    }
+  }
 
   console.log(intakes)
   //map intakes grouped by medicine and put check boxes next to it
@@ -74,9 +100,9 @@ function MedicationIntakeList() {
         <input
           type="checkbox"
           checked={intake.taken}
-          onChange={(event) => handleCheckboxChange(event, intake.id)}
+          onChange={(event) => handleCheckboxChange(event, intake.id, intake.medication)}
         />
-        {intake.time} - {intake.medicationName}
+        {intake.time} - {intake.medicationName} - {intake.id}
       </label>
     </li>
   ))}

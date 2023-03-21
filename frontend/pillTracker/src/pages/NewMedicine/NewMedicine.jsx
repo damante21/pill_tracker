@@ -93,6 +93,13 @@ const NewMedicine = () => {
           >
             <InputNumber min={1} />
           </Form.Item>
+          <Form.Item
+            name="number_of_pills"
+            label="Number of pills in bottle"
+            rules={[{ required: true }]}
+          >
+            <InputNumber min={1} />
+          </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">

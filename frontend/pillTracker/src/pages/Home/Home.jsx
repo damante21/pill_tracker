@@ -107,6 +107,10 @@ const Home = () => {
                   title={<a href="">{item.medication_name}</a>}
                   description={item.medication_notes}
                 />
+                <div>
+                  <p>Number of pills left</p>
+                  <p>{item.number_of_pills}</p>
+                </div>
               </List.Item>
             )}
           />
