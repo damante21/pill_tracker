@@ -67,7 +67,7 @@ const NewMedicine = () => {
       console.error(err)
     }
   }
-  // fix DatePicker and TimePicker not formatted correctly for DRF 
+ 
   return (
     <ILayout>
       <Breadcrumb style={{ margin: "16px 0" }}>

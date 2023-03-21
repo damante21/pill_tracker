@@ -47,7 +47,7 @@ const Home = () => {
     }
   }, []);
 
-  console.log(meds)
+  // console.log(meds)
 
   return (
     <ILayout>

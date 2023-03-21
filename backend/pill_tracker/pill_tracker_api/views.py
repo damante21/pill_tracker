@@ -11,7 +11,7 @@ from datetime import date
 
 @authentication_classes([TokenAuthentication])
 class UserMedicationAPIView(APIView):
-    # will get specific med or list of meds with end dates today or in the future (so we don't see pas medications)
+    # will get specific med or list of meds with end dates today or in the future (so we don't see past medications)
     def get(self, request, pk=None):
         try:
             user_id = request.user.id
