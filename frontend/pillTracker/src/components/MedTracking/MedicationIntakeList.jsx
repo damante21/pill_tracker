@@ -3,6 +3,18 @@ import axios from 'axios';
 import { InputGroup, ListGroup } from 'react-bootstrap'
 
 function MedicationIntakeList(props) {
+  
+  // get current date to track if med was missed
+  const [currentDate, setCurrentDate] = useState(new Date());
+  console.log(currentDate)
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentDate(new Date());
+    }, 5 * 60 * 1000); // Update every 5 minutes
+    return () => clearInterval(intervalId);
+  }, []);
+
 
   //get all the day's intakes using date as parameter
   const [intakes, setIntakes] = useState([]);
@@ -88,7 +100,24 @@ function MedicationIntakeList(props) {
     }
   }
 
-  // console.log(intakes)
+  // handle color scheme change based on missing pill
+  // determine is intake time has been passed
+  function isMissed(intake) {
+    const dueTime = new Date(intake.date + 'T' + intake.time);
+    console.log(currentDate > dueTime)
+    return currentDate > dueTime;
+  }
+  
+  // assign text color based on if intake was missed and taken is false
+  function getCheckboxColor(intake) {
+    if (isMissed(intake) && !intake.taken) {
+      return 'text-danger';
+    } else {
+      return 'text-success';
+    }
+  }
+
+
   //map intakes grouped by medicine and put check boxes next to it
   return (
     <div>
@@ -106,7 +135,7 @@ function MedicationIntakeList(props) {
           checked={intake.taken}
           onChange={(event) => handleCheckboxChange(event, intake.id, intake.medication)}
         />
-        <InputGroup.Text>{intake.time} - {intake.medicationName}</InputGroup.Text>
+        <InputGroup.Text className={getCheckboxColor(intake)}>{intake.time} - {intake.medicationName}</InputGroup.Text>
         </InputGroup>
     </ListGroup.Item>
   ))}
