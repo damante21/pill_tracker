@@ -4,8 +4,8 @@ import HealthRecords from "./pages/HealthRecords/HealthRecords";
 import NewMedicine from "./pages/NewMedicine/NewMedicine";
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login"
-import WalgreensAPI from "./pages/WalgreensRefill/Walgreens";
 import MedicationIntakeList from "./components/MedTracking/MedicationIntakeList";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function App() {
@@ -18,7 +18,6 @@ function App() {
         <Route path="/healthRecords" element={<HealthRecords />} />
         <Route path="/home/newMedicine" element={<NewMedicine />} />
         <Route path="/" element={<Navigate to="/home" replace />} />
-        <Route path="/walgreens" element={<WalgreensAPI />} />
         <Route path="/tracking" element={<MedicationIntakeList />} />
       </Routes>
     </BrowserRouter>

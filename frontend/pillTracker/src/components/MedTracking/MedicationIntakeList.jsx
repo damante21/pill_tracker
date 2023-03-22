@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { InputGroup, ListGroup } from 'react-bootstrap'
 
 function MedicationIntakeList(props) {
 
@@ -91,25 +92,25 @@ function MedicationIntakeList(props) {
   //map intakes grouped by medicine and put check boxes next to it
   return (
     <div>
+      <h2>Medication Tracking</h2>
       <input
         type="date"
         value={date}
         onChange={(event) => setDate(event.target.value)}
       />
-      <ul>
+      <ListGroup>
       {intakes.map((intake) => (
-    <li key={intake.id}>
-      <label>
-        <input
-          type="checkbox"
+    <ListGroup.Item key={intake.id}>
+        <InputGroup>
+        <InputGroup.Checkbox
           checked={intake.taken}
           onChange={(event) => handleCheckboxChange(event, intake.id, intake.medication)}
         />
-        {intake.time} - {intake.medicationName}
-      </label>
-    </li>
+        <InputGroup.Text>{intake.time} - {intake.medicationName}</InputGroup.Text>
+        </InputGroup>
+    </ListGroup.Item>
   ))}
-      </ul>
+      </ListGroup>
     </div>
   )
 }

@@ -58,6 +58,8 @@ const Home = () => {
   return (
     <ILayout>
       {meds &&
+      <>
+      <MedicationIntakeList medicationIntakeUpdated={medicationIntakeUpdated} setMedicationIntakeUpdated={setMedicationIntakeUpdated} />
       <div
         className="site-layout-content"
         style={{
@@ -94,7 +96,6 @@ const Home = () => {
               </List.Item>
             )}
           />
-          <MedicationIntakeList medicationIntakeUpdated={medicationIntakeUpdated} setMedicationIntakeUpdated={setMedicationIntakeUpdated} />
           <Button
             type="primary"
             onClick={() => {
@@ -105,6 +106,7 @@ const Home = () => {
           </Button>
         </Space>
       </div>
+      </>
     }
     </ILayout>
   );
