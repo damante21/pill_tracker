@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from 'axios'
 import "./Home.css";
 import ILayout from "../../components/ILayout/ILayout";
+import MedicationIntakeList from "../../components/MedTracking/MedicationIntakeList";
 
 const Home = () => {
 
@@ -13,16 +14,20 @@ const Home = () => {
   const [token, setToken] = useState('Token ' + authToken)
   const [meds, setMeds] = useState([])
 
+  // state to refresh med info (pill count) after tracking component is updated
+  const [medicationIntakeUpdated, setMedicationIntakeUpdated] = useState(false);
+
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   
-
+  
   const menuList = [
     { key: "home", label: "Home" },
     { key: "healthRecords", label: "Health Records" },
   ];
   
+  //get all meds, set medicationIntakeUpdated state to false to "listen" for changes in checkboxes
   useEffect( () => {
     async function fetchMeds(){
       try {
@@ -34,12 +39,13 @@ const Home = () => {
         });
         // console.log(response)
         setMeds(response.data);
+        setMedicationIntakeUpdated(false);
       } catch (error) {
         console.log(error);
       }
     }
     fetchMeds();
-  }, []);
+  }, [token, medicationIntakeUpdated]);
 
   useEffect( () => {
     if(authToken == null){
@@ -51,6 +57,7 @@ const Home = () => {
 
   return (
     <ILayout>
+      {meds &&
       <div
         className="site-layout-content"
         style={{
@@ -87,6 +94,7 @@ const Home = () => {
               </List.Item>
             )}
           />
+          <MedicationIntakeList medicationIntakeUpdated={medicationIntakeUpdated} setMedicationIntakeUpdated={setMedicationIntakeUpdated} />
           <Button
             type="primary"
             onClick={() => {
@@ -97,6 +105,7 @@ const Home = () => {
           </Button>
         </Space>
       </div>
+    }
     </ILayout>
   );
 };

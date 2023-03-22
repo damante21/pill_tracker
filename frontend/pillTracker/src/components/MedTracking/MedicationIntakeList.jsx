@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function MedicationIntakeList() {
+function MedicationIntakeList(props) {
 
   //get all the day's intakes using date as parameter
   const [intakes, setIntakes] = useState([]);
@@ -42,7 +42,9 @@ function MedicationIntakeList() {
     }
   };
   // console.log(intakes)
+  
   //handle checkbox for whether or not med was taken - put request to intake DRF
+  //also sets medicationIntakeUpdated state to true and triggers refresh of home page med list
   const handleCheckboxChange = async (event, intakeId, medication) => {
     const isChecked = event.target.checked;
     const updatedIntake = { taken: isChecked };
@@ -54,6 +56,7 @@ function MedicationIntakeList() {
         )
       )
       updatePillCount(medication, event.target.checked)
+      props.setMedicationIntakeUpdated(true);
     } catch (error) {
       console.error(error)
     }
@@ -74,7 +77,7 @@ function MedicationIntakeList() {
         }else{
           data['number_of_pills'] = data['number_of_pills'] - 1;
         }
-        console.log(data)
+        // console.log(data)
         axios.put(`http://127.0.0.1:8000/api/med/${medication}`, data)
         .then((response) => {
         })
@@ -84,7 +87,7 @@ function MedicationIntakeList() {
     }
   }
 
-  console.log(intakes)
+  // console.log(intakes)
   //map intakes grouped by medicine and put check boxes next to it
   return (
     <div>
@@ -102,7 +105,7 @@ function MedicationIntakeList() {
           checked={intake.taken}
           onChange={(event) => handleCheckboxChange(event, intake.id, intake.medication)}
         />
-        {intake.time} - {intake.medicationName} - {intake.id}
+        {intake.time} - {intake.medicationName}
       </label>
     </li>
   ))}
