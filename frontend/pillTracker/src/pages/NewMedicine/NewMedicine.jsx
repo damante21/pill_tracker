@@ -42,6 +42,7 @@ const NewMedicine = () => {
         refill_date: formattedRefillDate,
         times_per_day: values.times_per_day,
         time_of_first_med: formattedTime,
+        number_of_pills: values.number_of_pills
       }),
     });
     // console.log(JSON.stringify({
