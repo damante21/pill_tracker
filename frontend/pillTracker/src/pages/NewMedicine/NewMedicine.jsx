@@ -37,7 +37,6 @@ const NewMedicine = () => {
         medication_name: values.medication_name,
         medication_notes: values.medication_notes,
         dosage: values.dosage,
-        rx_number: values.rx_number,
         start_date: formattedDate,
         refill_date: formattedRefillDate,
         times_per_day: values.times_per_day,
@@ -104,13 +103,6 @@ const NewMedicine = () => {
             <TextArea rows={4} />
           </Form.Item>
           <Form.Item name="dosage" label="Dosage" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="rx_number"
-            label="RX number"
-            rules={[{ required: true }]}
-          >
             <Input />
           </Form.Item>
           <Form.Item

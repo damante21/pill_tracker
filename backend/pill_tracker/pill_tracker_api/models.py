@@ -7,7 +7,6 @@ class UserMedication(models.Model):
     medication_name = models.CharField(max_length=50)
     medication_notes = models.CharField(max_length=255, null=True, blank=True)
     dosage = models.CharField(max_length=20)
-    rx_number = models.CharField(max_length=50) # maybe we don't need now that we're not doing the refill
     start_date = models.DateField()
     refill_date = models.DateField() # took out null/blank=true because intake instances are created in chunks based on this refill/end date
     times_per_day = models.PositiveSmallIntegerField(default=1)

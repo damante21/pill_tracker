@@ -6,7 +6,7 @@ function MedicationIntakeList(props) {
   
   // get current date to track if med was missed
   const [currentDate, setCurrentDate] = useState(new Date());
-  console.log(currentDate)
+  // console.log(currentDate)
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -82,7 +82,7 @@ function MedicationIntakeList(props) {
       .then((response) => {
         const data = {
           'id': response.data['id'],
-          'user': response.data['user'],
+          // 'user': response.data['user'],
           'number_of_pills': response.data['number_of_pills']
         }
         if(isChecked){
@@ -100,11 +100,11 @@ function MedicationIntakeList(props) {
     }
   }
 
-  // handle color scheme change based on missing pill
+  // handle color scheme change based on missing pill - maybe make it more noticeable
   // determine is intake time has been passed
   function isMissed(intake) {
     const dueTime = new Date(intake.date + 'T' + intake.time);
-    console.log(currentDate > dueTime)
+    // console.log(currentDate > dueTime)
     return currentDate > dueTime;
   }
   
@@ -121,7 +121,7 @@ function MedicationIntakeList(props) {
   //map intakes grouped by medicine and put check boxes next to it
   return (
     <div>
-      <h2>Medication Tracking</h2>
+      <h2>Daily Medication List</h2>
       <input
         type="date"
         value={date}

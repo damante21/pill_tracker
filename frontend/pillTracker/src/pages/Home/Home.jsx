@@ -5,8 +5,14 @@ import axios from 'axios'
 import "./Home.css";
 import ILayout from "../../components/ILayout/ILayout";
 import MedicationIntakeList from "../../components/MedTracking/MedicationIntakeList";
+import { Offcanvas } from "react-bootstrap";
 
 const Home = () => {
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const navigate = useNavigate();
   const authToken = localStorage.getItem('token');  
@@ -59,7 +65,15 @@ const Home = () => {
     <ILayout>
       {meds &&
       <>
-      <MedicationIntakeList medicationIntakeUpdated={medicationIntakeUpdated} setMedicationIntakeUpdated={setMedicationIntakeUpdated} />
+      <Offcanvas show={show} onHide={handleClose}>
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Tracking List</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+        <MedicationIntakeList medicationIntakeUpdated={medicationIntakeUpdated} setMedicationIntakeUpdated={setMedicationIntakeUpdated} />
+        </Offcanvas.Body>
+      </Offcanvas>
+      
       <div
         className="site-layout-content"
         style={{
@@ -74,6 +88,17 @@ const Home = () => {
           }}
         >
           <h2>Ongoing Course</h2>
+          <span><Button type="primary" onClick={handleShow}>
+        Daily Medication Tracking List
+      </Button>
+      <Button
+            type="primary"
+            onClick={() => {
+              navigate("/home/newMedicine");
+            }}
+          >
+            Add medicine
+          </Button></span>
           <List
             className="med-list"
             itemLayout="horizontal"
@@ -90,20 +115,11 @@ const Home = () => {
                   description={item.medication_notes}
                 />
                 <div>
-                  <p>Number of pills left</p>
-                  <p>{item.number_of_pills}</p>
+                  <p>Number of pills left: {item.number_of_pills}</p>
                 </div>
               </List.Item>
             )}
           />
-          <Button
-            type="primary"
-            onClick={() => {
-              navigate("/home/newMedicine");
-            }}
-          >
-            Add medicine
-          </Button>
         </Space>
       </div>
       </>
