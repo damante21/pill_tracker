@@ -6,6 +6,7 @@ import "./Home.css";
 import ILayout from "../../components/ILayout/ILayout";
 import MedicationIntakeList from "../../components/MedTracking/MedicationIntakeList";
 import { Offcanvas } from "react-bootstrap";
+import PillCount from "../../components/PillCount/PillCount";
 
 const Home = () => {
 
@@ -114,9 +115,7 @@ const Home = () => {
                   title={<a href="">{item.medication_name}</a>}
                   description={item.medication_notes}
                 />
-                <div>
-                  <p>Number of pills left: {item.number_of_pills}</p>
-                </div>
+                <PillCount pillCount={item.number_of_pills} />
               </List.Item>
             )}
           />
