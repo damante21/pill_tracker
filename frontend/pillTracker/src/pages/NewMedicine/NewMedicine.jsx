@@ -98,7 +98,7 @@ const NewMedicine = () => {
           <Form.Item
             name="medication_notes"
             label="Medication notes"
-            rules={[{ required: true }]}
+            rules={[{ required: false }]}
           >
             <TextArea rows={4} />
           </Form.Item>

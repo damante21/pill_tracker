@@ -63,7 +63,7 @@ class MedicationIntakeAPIView(APIView):
                 serializer = MedicationIntakeSerializer(medication_intake)
             elif request.query_params:
                 date = request.query_params.get('date')
-                medication_intakes = MedicationIntake.objects.filter(medication__user=user_id, date=date)
+                medication_intakes = MedicationIntake.objects.filter(medication__user=user_id, date=date).order_by('time')
                 serializer = MedicationIntakeSerializer(medication_intakes, many=True)
             else:
                 medication_intakes = MedicationIntake.objects.filter(medication__user=user_id)
