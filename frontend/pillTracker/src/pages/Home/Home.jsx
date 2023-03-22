@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from 'axios'
 import "./Home.css";
 import ILayout from "../../components/ILayout/ILayout";
+import PillCount from "../../components/PillCount/PillCount";
 
 const Home = () => {
 
@@ -80,10 +81,7 @@ const Home = () => {
                   title={<a href="">{item.medication_name}</a>}
                   description={item.medication_notes}
                 />
-                <div>
-                  <p>Number of pills left</p>
-                  <p>{item.number_of_pills}</p>
-                </div>
+                <PillCount pillCount={item.number_of_pills} />
               </List.Item>
             )}
           />
