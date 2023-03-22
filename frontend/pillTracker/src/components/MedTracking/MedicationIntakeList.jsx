@@ -1,7 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { InputGroup, ListGroup } from 'react-bootstrap'
 
-function MedicationIntakeList() {
+function MedicationIntakeList(props) {
+  
+  // get current date to track if med was missed
+  const [currentDate, setCurrentDate] = useState(new Date());
+  // console.log(currentDate)
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentDate(new Date());
+    }, 5 * 60 * 1000); // Update every 5 minutes
+    return () => clearInterval(intervalId);
+  }, []);
+
 
   //get all the day's intakes using date as parameter
   const [intakes, setIntakes] = useState([]);
@@ -42,7 +55,9 @@ function MedicationIntakeList() {
     }
   };
   // console.log(intakes)
+  
   //handle checkbox for whether or not med was taken - put request to intake DRF
+  //also sets medicationIntakeUpdated state to true and triggers refresh of home page med list
   const handleCheckboxChange = async (event, intakeId, medication) => {
     const isChecked = event.target.checked;
     const updatedIntake = { taken: isChecked };
@@ -54,6 +69,7 @@ function MedicationIntakeList() {
         )
       )
       updatePillCount(medication, event.target.checked)
+      props.setMedicationIntakeUpdated(true);
     } catch (error) {
       console.error(error)
     }
@@ -66,7 +82,7 @@ function MedicationIntakeList() {
       .then((response) => {
         const data = {
           'id': response.data['id'],
-          'user': response.data['user'],
+          // 'user': response.data['user'],
           'number_of_pills': response.data['number_of_pills']
         }
         if(isChecked){
@@ -74,7 +90,7 @@ function MedicationIntakeList() {
         }else{
           data['number_of_pills'] = data['number_of_pills'] - 1;
         }
-        console.log(data)
+        // console.log(data)
         axios.put(`http://127.0.0.1:8000/api/med/${medication}`, data)
         .then((response) => {
         })
@@ -84,29 +100,46 @@ function MedicationIntakeList() {
     }
   }
 
-  console.log(intakes)
+  // handle color scheme change based on missing pill - maybe make it more noticeable
+  // determine is intake time has been passed
+  function isMissed(intake) {
+    const dueTime = new Date(intake.date + 'T' + intake.time);
+    // console.log(currentDate > dueTime)
+    return currentDate > dueTime;
+  }
+  
+  // assign text color based on if intake was missed and taken is false
+  function getCheckboxColor(intake) {
+    if (isMissed(intake) && !intake.taken) {
+      return 'text-danger';
+    } else {
+      return 'text-success';
+    }
+  }
+
+
   //map intakes grouped by medicine and put check boxes next to it
   return (
     <div>
+      <h2>Daily Medication List</h2>
       <input
         type="date"
         value={date}
         onChange={(event) => setDate(event.target.value)}
       />
-      <ul>
+      <ListGroup>
       {intakes.map((intake) => (
-    <li key={intake.id}>
-      <label>
-        <input
-          type="checkbox"
+    <ListGroup.Item key={intake.id}>
+        <InputGroup>
+        <InputGroup.Checkbox
           checked={intake.taken}
           onChange={(event) => handleCheckboxChange(event, intake.id, intake.medication)}
         />
-        {intake.time} - {intake.medicationName} - {intake.id}
-      </label>
-    </li>
+        <InputGroup.Text className={getCheckboxColor(intake)}>{intake.time} - {intake.medicationName}</InputGroup.Text>
+        </InputGroup>
+    </ListGroup.Item>
   ))}
-      </ul>
+      </ListGroup>
     </div>
   )
 }

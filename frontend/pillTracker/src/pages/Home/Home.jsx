@@ -4,9 +4,16 @@ import { useEffect, useState } from "react";
 import axios from 'axios'
 import "./Home.css";
 import ILayout from "../../components/ILayout/ILayout";
+import MedicationIntakeList from "../../components/MedTracking/MedicationIntakeList";
+import { Offcanvas } from "react-bootstrap";
 import PillCount from "../../components/PillCount/PillCount";
 
 const Home = () => {
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const navigate = useNavigate();
   const authToken = localStorage.getItem('token');  
@@ -14,16 +21,20 @@ const Home = () => {
   const [token, setToken] = useState('Token ' + authToken)
   const [meds, setMeds] = useState([])
 
+  // state to refresh med info (pill count) after tracking component is updated
+  const [medicationIntakeUpdated, setMedicationIntakeUpdated] = useState(false);
+
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   
-
+  
   const menuList = [
     { key: "home", label: "Home" },
     { key: "healthRecords", label: "Health Records" },
   ];
   
+  //get all meds, set medicationIntakeUpdated state to false to "listen" for changes in checkboxes
   useEffect( () => {
     async function fetchMeds(){
       try {
@@ -35,12 +46,13 @@ const Home = () => {
         });
         // console.log(response)
         setMeds(response.data);
+        setMedicationIntakeUpdated(false);
       } catch (error) {
         console.log(error);
       }
     }
     fetchMeds();
-  }, []);
+  }, [token, medicationIntakeUpdated]);
 
   useEffect( () => {
     if(authToken == null){
@@ -52,6 +64,17 @@ const Home = () => {
 
   return (
     <ILayout>
+      {meds &&
+      <>
+      <Offcanvas show={show} onHide={handleClose}>
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Tracking List</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+        <MedicationIntakeList medicationIntakeUpdated={medicationIntakeUpdated} setMedicationIntakeUpdated={setMedicationIntakeUpdated} />
+        </Offcanvas.Body>
+      </Offcanvas>
+      
       <div
         className="site-layout-content"
         style={{
@@ -66,6 +89,17 @@ const Home = () => {
           }}
         >
           <h2>Ongoing Course</h2>
+          <span><Button type="primary" onClick={handleShow}>
+        Daily Medication Tracking List
+      </Button>
+      <Button
+            type="primary"
+            onClick={() => {
+              navigate("/home/newMedicine");
+            }}
+          >
+            Add medicine
+          </Button></span>
           <List
             className="med-list"
             itemLayout="horizontal"
@@ -85,16 +119,10 @@ const Home = () => {
               </List.Item>
             )}
           />
-          <Button
-            type="primary"
-            onClick={() => {
-              navigate("/home/newMedicine");
-            }}
-          >
-            Add medicine
-          </Button>
         </Space>
       </div>
+      </>
+    }
     </ILayout>
   );
 };

@@ -10,8 +10,9 @@ export default function Login(){
     const navigate = useNavigate();
     const { Header, Content } = Layout;
 
+    console.log(username)
+    console.log(password)
     async function onFinish(e) {
-        e.preventDefault()
         try {
           const response = await fetch(`http://127.0.0.1:8000/api/api-token-auth`, {
             method: 'POST',
@@ -46,6 +47,14 @@ export default function Login(){
       navigate('/register/')
     }
 
+    function handleUsernameChange(e) {
+      setUsername(e.target.value);
+    }
+  
+    function handlePasswordChange(e) {
+      setPassword(e.target.value);
+    }
+
     return(
       <Layout>
         <Content>
@@ -65,14 +74,14 @@ export default function Login(){
             name='username'
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
-            <Input/>
+            <Input onChange={handleUsernameChange}/>
           </Form.Item>
           <Form.Item
             label='Password'
             name='password'
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
-            <Input.Password/>
+            <Input.Password onChange={handlePasswordChange}/>
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">
