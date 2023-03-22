@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import  { useNavigate  } from 'react-router-dom'
-import { Layout, Form, Button, Input, Menu, theme, Avatar, Dropdown } from "antd";
+import { Layout, Form, Button, Input, } from "antd";
 
 
 export default function Login(){
@@ -10,8 +10,6 @@ export default function Login(){
     const navigate = useNavigate();
     const { Header, Content } = Layout;
 
-    console.log(username)
-    console.log(password)
     async function onFinish(e) {
         try {
           const response = await fetch(`http://127.0.0.1:8000/api/api-token-auth`, {
