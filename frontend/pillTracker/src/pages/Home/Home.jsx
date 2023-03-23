@@ -91,8 +91,7 @@ const Home = () => {
           <h2>Ongoing Course</h2>
           <span><Button type="primary" onClick={handleShow}>
         Daily Medication Tracking List
-      </Button>
-      <Button
+      </Button> <Button
             type="primary"
             onClick={() => {
               navigate("/home/newMedicine");
