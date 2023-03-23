@@ -55,10 +55,10 @@ function EditMedDetailsForm() {
         medication_name: medInfo.medication_name,
         medication_notes: medInfo.medication_notes,
         dosage: medInfo.dosage,
-        start_date: moment(new Date(medInfo.start_date).toISOString()),
-        refill_date: moment(new Date(medInfo.refill_date).toISOString()),
+        start_date: moment(`${medInfo.start_date} 00:00:00`),
+        refill_date: moment(`${medInfo.refill_date} 00:00:00`),
         times_per_day: medInfo.times_per_day,
-        time_of_first_med: moment(`1970-01-01T${medInfo.time_of_first_med}Z`),
+        time_of_first_med: moment(`1970-01-01T${medInfo.time_of_first_med}`),
         number_of_pills: medInfo.number_of_pills,
       });
     }
