@@ -5,6 +5,7 @@ import NewMedicine from "./pages/NewMedicine/NewMedicine";
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login"
 import 'bootstrap/dist/css/bootstrap.min.css';
+import EditMedDetailsForm from "./components/EditMed/EditMed";
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/healthRecords" element={<HealthRecords />} />
         <Route path="/home/newMedicine" element={<NewMedicine />} />
         <Route path="/" element={<Navigate to="/home" replace />} />
+        <Route path="/home/editMedicine/:med_id" element={<EditMedDetailsForm />} />
       </Routes>
     </BrowserRouter>
   );
