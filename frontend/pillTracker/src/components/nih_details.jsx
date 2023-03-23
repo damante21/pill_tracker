@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from "react";
 import callBackend from '../helpers/api_call';
+import "../App.css";
 
 
 const NihDetails = () => {

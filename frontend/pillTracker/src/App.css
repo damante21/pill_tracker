@@ -39,3 +39,8 @@
 .read-the-docs {
   color: #888;
 }
+
+ul {
+  list-style-position: inside;
+  padding-left: 0;
+}
