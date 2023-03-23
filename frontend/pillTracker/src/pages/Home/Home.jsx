@@ -111,7 +111,7 @@ const Home = () => {
                       src={`https://joesch.moe/api/v1/random?key=${item.id}`}
                     />
                   }
-                  title={<a href="">{item.medication_name}</a>}
+                  title={<a href={`/home/editMedicine/${item.id}`}>{item.medication_name}</a>}
                   description={item.medication_notes}
                 />
                 <PillCount pillCount={item.number_of_pills} />

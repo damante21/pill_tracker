@@ -19,6 +19,7 @@ function App() {
         <Route path="/home/newMedicine" element={<NewMedicine />} />
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/home/editMedicine/:med_id" element={<EditMedDetailsForm />} />
+        {/* <Route path="/home/medicineDetail/:med_id" element={<EditMedDetailsForm />} /> */}
       </Routes>
     </BrowserRouter>
   );
