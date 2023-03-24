@@ -4,10 +4,9 @@ import { InputGroup, ListGroup } from 'react-bootstrap'
 
 function MedicationIntakeList(props) {
   
-  // get current date to track if med was missed
+  // get full current date to track if med was missed and check it every 5 min
   const [currentDate, setCurrentDate] = useState(new Date());
-  // console.log(currentDate)
-
+  
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentDate(new Date());
@@ -15,19 +14,26 @@ function MedicationIntakeList(props) {
     return () => clearInterval(intervalId);
   }, []);
 
-
   //get all the day's intakes using date as parameter
   const [intakes, setIntakes] = useState([]);
-  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+
   const [token, setToken] = useState('Token ' + localStorage.getItem('token'))
+
+  // set today's date in calendar, formatted for API use
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  const formattedDate = `${year}-${month}-${day}`;
+  // console.log(formattedDate)
   
   useEffect(() => {
     fetchIntakes()
-  }, [date]);
+  }, [formattedDate]);
 
   const fetchIntakes = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/med_tracker?date=${date}`, {
+      const response = await axios.get(`http://127.0.0.1:8000/api/med_tracker?date=${formattedDate}`, {
         headers: {
           Authorization: token,
           'Content-Type': 'application/json',
@@ -54,7 +60,6 @@ function MedicationIntakeList(props) {
       console.error(error)
     }
   };
-  // console.log(intakes)
   
   //handle checkbox for whether or not med was taken - put request to intake DRF
   //also sets medicationIntakeUpdated state to true and triggers refresh of home page med list
@@ -124,7 +129,7 @@ function MedicationIntakeList(props) {
       <h2>Daily Medication List</h2>
       <input
         type="date"
-        value={date}
+        value={formattedDate}
         onChange={(event) => setDate(event.target.value)}
       />
       <ListGroup>

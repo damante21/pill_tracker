@@ -47,7 +47,7 @@ function EditMedDetailsForm() {
     }
     fetchMed();
   }, []);
-  console.log(medInfo)
+  // console.log(medInfo)
  
   useEffect(() => {
     if (medInfo) {
