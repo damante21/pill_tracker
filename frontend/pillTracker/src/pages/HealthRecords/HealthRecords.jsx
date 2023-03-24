@@ -24,7 +24,7 @@ const HealthRecords = () => {
           });
           if (response.ok) {
             const data = await response.json();
-            console.log(data)
+            // console.log(data)
             setUser(data);
           } else {
             alert('Failed to fetch user details');

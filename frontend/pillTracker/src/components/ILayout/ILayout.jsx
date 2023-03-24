@@ -1,4 +1,4 @@
-import { Layout, Menu, theme, Avatar, Dropdown } from "antd";
+import { Layout, Menu, theme, Avatar, Dropdown, Button } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { Link, useLocation } from "react-router-dom";
@@ -23,7 +23,10 @@ const ILayout = (props) => {
     navigate(`/${key}`);
   };
 
-  
+  const handleLogoutClick = () => {
+    localStorage.removeItem('token');
+    navigate('/login/')
+  };
 
   return (
     <Layout className="layout">
@@ -32,22 +35,29 @@ const ILayout = (props) => {
           background: colorBgContainer,
           display: "flex",
           justifyContent: "space-between",
+          width: "100%", // set the width to 100%
+          padding: "0 50px", // add some padding to the left and right
         }}
       >
         <Menu
-          theme="light"
-          mode="horizontal"
-          selectedKeys={[location.pathname.split("/")[1]]}
-          items={menuList}
-          onClick={handleClickMenuItem}
-        />
-        <div>
-          <Avatar
-            style={{ cursor: "pointer" }}
-            size={"large"}
-            icon={<UserOutlined />}
-          />
-        </div>
+      theme="light"
+      mode="horizontal"
+      selectedKeys={[location.pathname.split("/")[1]]}
+      items={menuList}
+      onClick={handleClickMenuItem}
+      style={{ flexGrow: 1 }} // set the flex grow property to allow the menu to expand
+    >
+      {menuList.map((item) => (
+        <Menu.Item key={item.key}>{item.title}</Menu.Item>
+      ))}
+    </Menu>
+    <div>
+      <Button onClick={handleLogoutClick}>Logout</Button> <Avatar
+        style={{ cursor: "pointer" }}
+        size={"large"}
+        icon={<UserOutlined />}
+      />
+    </div>
       </Header>
       <Content
         style={{
