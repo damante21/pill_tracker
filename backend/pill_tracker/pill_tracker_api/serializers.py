@@ -36,7 +36,7 @@ class UserMedicationSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         # First, update the UserMedication instance
         instance.medication_name = validated_data.get('medication_name', instance.medication_name)
-        validated_data.get('medication_notes', instance.medication_notes)
+        instance.medication_notes = validated_data.get('medication_notes', instance.medication_notes)
         instance.dosage = validated_data.get('dosage', instance.dosage)
         instance.start_date = validated_data.get('start_date', instance.start_date)
         instance.refill_date = validated_data.get('refill_date', instance.refill_date)

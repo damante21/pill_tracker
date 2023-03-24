@@ -9,7 +9,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-rrz!j8$7q!x9vwqsniqv+h=y$kh1(kof12f6^u6sjhbsul^+%4'
 SECRET_KEY = 'fdoughois'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -33,7 +32,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'nih_api',
     'rest_framework.authtoken',
-    'rest_framework',
     "corsheaders",
     'pill_tracker_api'
 ]
@@ -106,7 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'EST'
 
 USE_I18N = True
 

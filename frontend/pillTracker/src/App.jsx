@@ -4,8 +4,8 @@ import HealthRecords from "./pages/HealthRecords/HealthRecords";
 import NewMedicine from "./pages/NewMedicine/NewMedicine";
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login"
-import MedicationIntakeList from "./components/MedTracking/MedicationIntakeList";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import EditMedDetailsForm from "./components/EditMed/EditMed";
 
 
 function App() {
@@ -18,7 +18,8 @@ function App() {
         <Route path="/healthRecords" element={<HealthRecords />} />
         <Route path="/home/newMedicine" element={<NewMedicine />} />
         <Route path="/" element={<Navigate to="/home" replace />} />
-        <Route path="/tracking" element={<MedicationIntakeList />} />
+        <Route path="/home/editMedicine/:med_id" element={<EditMedDetailsForm />} />
+        {/* <Route path="/home/medicineDetail/:med_id" element={<EditMedDetailsForm />} /> */}
       </Routes>
     </BrowserRouter>
   );
