@@ -6,6 +6,7 @@ function MedicationIntakeList(props) {
   
   // get full current date to track if med was missed and check it every 5 min
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [formattedDate, setFormattedDate] = useState();
   
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -20,15 +21,18 @@ function MedicationIntakeList(props) {
   const [token, setToken] = useState('Token ' + localStorage.getItem('token'))
 
   // set today's date in calendar, formatted for API use
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const day = String(today.getDate()).padStart(2, '0');
-  const formattedDate = `${year}-${month}-${day}`;
-  // console.log(formattedDate)
+  useEffect(() => {
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setFormattedDate(formattedDate);
+  }, [currentDate]);
   
   useEffect(() => {
-    fetchIntakes()
+    if (formattedDate) {
+      fetchIntakes();
+    }
   }, [formattedDate]);
 
   const fetchIntakes = async () => {
