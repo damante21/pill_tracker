@@ -37,11 +37,11 @@ const NewMedicine = () => {
         medication_name: values.medication_name,
         medication_notes: values.medication_notes,
         dosage: values.dosage,
-        rx_number: values.rx_number,
         start_date: formattedDate,
         refill_date: formattedRefillDate,
         times_per_day: values.times_per_day,
         time_of_first_med: formattedTime,
+        number_of_pills: values.number_of_pills
       }),
     });
     // console.log(JSON.stringify({
@@ -58,7 +58,7 @@ const NewMedicine = () => {
     // console.log(result)
     if (response.ok) {
       alert('Medicine added successfully!');
-      window.location.reload()
+      window.location.href = "/home"
     } else {
         alert('An error occurred while adding medicine. Please check your form inputs.');
       }
@@ -98,19 +98,12 @@ const NewMedicine = () => {
           <Form.Item
             name="medication_notes"
             label="Medication notes"
-            rules={[{ required: true }]}
+            rules={[{ required: false }]}
           >
             <TextArea rows={4} />
           </Form.Item>
           <Form.Item name="dosage" label="Dosage" rules={[{ required: true }]}>
             <InputNumber min={1} />
-          </Form.Item>
-          <Form.Item
-            name="rx_number"
-            label="RX number"
-            rules={[{ required: true }]}
-          >
-            <Input />
           </Form.Item>
           <Form.Item
             name="start_date"
