@@ -16,6 +16,7 @@ import moment from "moment";
 import axios from 'axios'
 
 function EditMedDetailsForm() {
+  const base_url = process.env.REACT_APP_BASE_URL
 
   const { TextArea } = Input;
 
@@ -37,7 +38,7 @@ function EditMedDetailsForm() {
   useEffect( () => {
     async function fetchMed(){
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/med/${med_id}`, {
+        const response = await axios.get(`http://${base_url}/api/med/${med_id}`, {
           headers: {
             Authorization: userToken,
             'Content-Type': 'application/json',
@@ -71,11 +72,11 @@ function EditMedDetailsForm() {
   
   const onFinish = async (values) => {
     const start_date = values.start_date
-    const formattedStartDate = moment(start_date.slice(0, 10))
-    // const formattedRefillDate = moment(values.refill_date.$d).format("YYYY-MM-DD")
-    // const formattedTime = moment(values.time_of_first_med.$d).format("HH:mm:ss")
+    const formattedStartDate = moment(values.start_date.$d).format("YYYY-MM-DD")
+    const formattedRefillDate = moment(values.refill_date.$d).format("YYYY-MM-DD")
+    const formattedTime = moment(values.time_of_first_med.$d).format("HH:mm:ss")
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/med/${med_id}`, {
+      const response = await fetch(`http://${base_url}/api/med/${med_id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -86,9 +87,9 @@ function EditMedDetailsForm() {
         medication_notes: values.medication_notes,
         dosage: values.dosage,
         start_date: formattedStartDate,
-        refill_date: values.refill_date,
+        refill_date: formattedRefillDate,
         times_per_day: values.times_per_day,
-        time_of_first_med: values.time_of_first_med,
+        time_of_first_med: formattedTime,
         number_of_pills: values.number_of_pills
       }),
     });
@@ -108,7 +109,7 @@ function EditMedDetailsForm() {
 
   const handleDeleteClick = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/med/${med_id}`, {
+      const response = await fetch(`http://${base_url}/api/med/${med_id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

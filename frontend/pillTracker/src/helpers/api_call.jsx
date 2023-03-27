@@ -1,7 +1,8 @@
 
 const callBackend = async () => {
+  const base_url = process.env.REACT_APP_BASE_URL
 
-  const BASE_URL = "http://127.0.0.1:8000/nih_api";
+  const BASE_URL = `http://${base_url}/nih_api`;
 
   const response = fetch(`${BASE_URL}`);
 

@@ -14,6 +14,7 @@ import moment from "moment";
 const { TextArea } = Input;
 
 const NewMedicine = () => {
+  const base_url = process.env.REACT_APP_BASE_URL
   const [form] = Form.useForm();
   const userToken = 'Token ' + localStorage.getItem('token')
 
@@ -27,7 +28,7 @@ const NewMedicine = () => {
     const formattedRefillDate = moment(values.refill_date.$d).format("YYYY-MM-DD")
     const formattedTime = moment(values.time_of_first_med.$d).format("HH:mm:ss")
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/med`, {
+      const response = await fetch(`http://${base_url}/api/med`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

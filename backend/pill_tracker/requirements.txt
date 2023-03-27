@@ -8,6 +8,7 @@ django-rest-framework==0.1.0
 djangorestframework==3.14.0
 Flask==2.2.2
 Flask-Cors==3.0.10
+gunicorn==20.1.0
 idna==3.4
 importlib-metadata==5.1.0
 itsdangerous==2.1.2
@@ -16,7 +17,6 @@ lxml==4.9.2
 markdown-it-py==2.2.0
 MarkupSafe==2.1.1
 mdurl==0.1.2
-psycopg2==2.9.5
 Pygments==2.14.0
 python-dateutil==2.8.2
 pytz==2022.7.1

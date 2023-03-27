@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  api:
+    # you'll obviously use your own account
+    image: tiffanyjoelle/group-backend-prod:$NEW_VERSION 
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=$SECRET_KEY
+      - DEBUG=$DEBUG
+  nginx:
+  # you'll obviously use your own account
+    image: tiffanyjoelle/group-webserver-prod:$NEW_VERSION
+    restart: always
+    ports:
+      - "80:80"

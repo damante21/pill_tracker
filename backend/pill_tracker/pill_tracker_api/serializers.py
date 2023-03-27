@@ -46,8 +46,7 @@ class UserMedicationSerializer(serializers.ModelSerializer):
 
         # Next, update the MedicationIntake instances if necessary - changing dates and frequency
         if 'times_per_day' in validated_data or 'time_of_first_med' in validated_data:
-            # only delete intakes from today forward
-            MedicationIntake.objects.filter(medication=instance, date__gte=date.today()).delete()
+            MedicationIntake.objects.filter(medication=instance).delete()
             self.create_intakes_for_medication(instance)
         return instance
     

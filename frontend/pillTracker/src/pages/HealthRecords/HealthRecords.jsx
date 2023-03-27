@@ -5,6 +5,7 @@ import { UserOutlined } from "@ant-design/icons";
 import { useState,useEffect } from "react";
 
 const HealthRecords = () => {
+  const base_url = process.env.REACT_APP_BASE_URL
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -16,7 +17,7 @@ const HealthRecords = () => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          const response = await fetch(`http://127.0.0.1:8000/api/user_details`, {
+          const response = await fetch(`http://${base_url}/api/user_details`, {
             headers: {
               'Authorization': `Token ${token}`,
               'Content-Type': 'application/json'
@@ -46,7 +47,7 @@ const HealthRecords = () => {
     async function fetchHealtRecords() {
       const token = localStorage.getItem('token');
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/health_records`, {
+        const response = await fetch(`http://${base_url}/api/health_records`, {
           headers: {
             'Authorization': `Token ${token}`,
             'Content-Type': 'application/json'

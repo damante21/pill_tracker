@@ -4,6 +4,7 @@ import { Layout, Form, Button, Input, } from "antd";
 
 
 export default function Login(){
+  const base_url = process.env.REACT_APP_BASE_URL
 
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
@@ -12,7 +13,7 @@ export default function Login(){
 
     async function onFinish(e) {
         try {
-          const response = await fetch(`http://127.0.0.1:8000/api/api-token-auth`, {
+          const response = await fetch(`http://${base_url}/api/api-token-auth`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'

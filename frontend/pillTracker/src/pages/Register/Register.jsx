@@ -6,6 +6,7 @@ import { Layout, Form, Button, Input, } from "antd";
 
 export default function Register(){
 
+    const base_url = process.env.REACT_APP_BASE_URL
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -26,7 +27,7 @@ export default function Register(){
       };
 
     const sendData = (data) => {
-        axios.post(`http://127.0.0.1:8000/api/register/`, data)
+        axios.post(`http://${base_url}/api/register/`, data)
         .then(res => {
             console.log(res.data);
             navigate('/login/')
