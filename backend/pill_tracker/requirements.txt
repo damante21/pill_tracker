@@ -26,5 +26,6 @@ six==1.16.0
 sqlparse==0.4.3
 urllib3==1.26.15
 Werkzeug==2.2.2
+xmltodict==0.13.0
 yapf==0.32.0
 zipp==3.11.0

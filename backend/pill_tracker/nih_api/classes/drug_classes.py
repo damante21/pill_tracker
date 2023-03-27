@@ -11,9 +11,11 @@ class DrugInfo():
 
 class DrugInteraction():
     
-    def __init__(self, drug_1, drug_2, description, severity):
+    def __init__(self, drug_1, drug_1_name, drug_2, drug_2_name, description, severity):
         self.drug_1 = drug_1
+        self.drug_1_name =  drug_1_name
         self.drug_2 = drug_2
+        self.drug_2_name =  drug_2_name
         self.description = description
         self.severity = severity
         

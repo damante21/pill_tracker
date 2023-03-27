@@ -117,7 +117,6 @@ function MedicationIntakeList(props) {
     }
   }
 
-
   //map intakes grouped by medicine and put check boxes next to it
   return (
     <div>
