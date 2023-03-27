@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+
 import { useParams, useNavigate } from "react-router-dom";
+
 import {
   theme,
   Form,
@@ -16,7 +18,9 @@ import axios from 'axios'
 function EditMedDetailsForm() {
 
   const { TextArea } = Input;
+
   const navigate = useNavigate();
+
   const [form] = Form.useForm();
   const userToken = 'Token ' + localStorage.getItem('token')
 
@@ -99,6 +103,7 @@ function EditMedDetailsForm() {
       console.error(err)
     }
   }
+
 
   const handleDeleteClick = async () => {
     try {
@@ -198,6 +203,7 @@ function EditMedDetailsForm() {
               Submit
             </Button>
           </Form.Item>
+
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" onClick={handleDeleteClick}>Delete</Button>
           </Form.Item>
