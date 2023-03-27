@@ -41,9 +41,34 @@ const HealthRecords = () => {
   }, []);
   // console.log(user)
 
+  const [healthRecords, setHealthRecords] = useState();
+  useEffect ( () => {
+    async function fetchHealtRecords() {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await fetch(`http://127.0.0.1:8000/api/health_records`, {
+          headers: {
+            'Authorization': `Token ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          
+          setHealthRecords(data);
+        } else {
+          alert('Failed to fetch health records');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchHealtRecords()
+  }, []);
+
   return (
     <ILayout>
-      {user &&
+      {user && healthRecords &&
       <div
         className="site-layout-content"
         style={{
@@ -55,10 +80,11 @@ const HealthRecords = () => {
           <span>{user.username}</span>
         </Space>
         <Divider />
+        <h2>Latest Health Data</h2>
         <div className="record-list">
           <div className="record-item">
             <h3>Heart rate:</h3>
-            <span>1</span>
+            <span>{healthRecords[1].heart_rate}</span>
           </div>
           <div className="record-item">
             <h3>Blood sugar:</h3>
