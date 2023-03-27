@@ -5,8 +5,9 @@ import NewMedicine from "./pages/NewMedicine/NewMedicine";
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login"
 import 'bootstrap/dist/css/bootstrap.min.css';
-import NihDetails from "./components/nih_details";
+import NihDetails from "./components/NihDetails/nih_details";
 import EditMedDetailsForm from "./components/EditMed/EditMed";
+import MedicationIntakeList from "./components/MedTracking/MedicationIntakeList";
 
 
 function App() {
