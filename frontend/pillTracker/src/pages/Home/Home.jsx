@@ -108,13 +108,20 @@ const Home = () => {
                 <List.Item.Meta
                   avatar={
                     <Avatar
-                      src={`https://joesch.moe/api/v1/random?key=${item.id}`}
+                      src={''}
                     />
                   }
-                  title={<a href={`/home/editMedicine/${item.id}`}>{item.medication_name}</a>}
+                  title={<a href={`/home/medicineDetail/${item.id}`}>{item.medication_name}</a>}
                   description={item.medication_notes}
                 />
-                <PillCount pillCount={item.number_of_pills} />
+                <div style={{display:"flex",alignItems:'center'}}>
+                  <PillCount pillCount={item.number_of_pills} />
+                  <div style={{marginLeft:20}}>
+                      <a style={{marginRight:15}} href={`/home/editMedicine/${item.id}`}>Edit</a>
+                      <a href="">Delete</a>
+                  </div>
+                </div>
+               
               </List.Item>
             )}
           />
