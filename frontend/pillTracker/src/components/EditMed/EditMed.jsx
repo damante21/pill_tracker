@@ -51,10 +51,11 @@ function EditMedDetailsForm() {
     }
     fetchMed();
   }, []);
-  // console.log(medInfo)
+
  
   useEffect(() => {
     if (medInfo) {
+      console.log(medInfo)
       form.setFieldsValue({
         medication_name: medInfo.medication_name,
         medication_notes: medInfo.medication_notes,
@@ -67,11 +68,12 @@ function EditMedDetailsForm() {
       });
     }
   }, [medInfo]);
-
+  
   const onFinish = async (values) => {
-    const formattedDate = moment(values.start_date.$d).format("YYYY-MM-DD")
-    const formattedRefillDate = moment(values.refill_date.$d).format("YYYY-MM-DD")
-    const formattedTime = moment(values.time_of_first_med.$d).format("HH:mm:ss")
+    const start_date = values.start_date
+    const formattedStartDate = moment(start_date.slice(0, 10))
+    // const formattedRefillDate = moment(values.refill_date.$d).format("YYYY-MM-DD")
+    // const formattedTime = moment(values.time_of_first_med.$d).format("HH:mm:ss")
     try {
       const response = await fetch(`http://127.0.0.1:8000/api/med/${med_id}`, {
       method: 'PUT',
@@ -83,10 +85,10 @@ function EditMedDetailsForm() {
         medication_name: values.medication_name,
         medication_notes: values.medication_notes,
         dosage: values.dosage,
-        start_date: formattedDate,
-        refill_date: formattedRefillDate,
+        start_date: formattedStartDate,
+        refill_date: values.refill_date,
         times_per_day: values.times_per_day,
-        time_of_first_med: formattedTime,
+        time_of_first_med: values.time_of_first_med,
         number_of_pills: values.number_of_pills
       }),
     });
@@ -94,7 +96,6 @@ function EditMedDetailsForm() {
     // console.log(result)
     if (response.ok) {
       alert('Medicine updated successfully!');
-      window.location.reload()
     } else {
         alert('An error occurred while updating medicine. Please check your form inputs.');
       }

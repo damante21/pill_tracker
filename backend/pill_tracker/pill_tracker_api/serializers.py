@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import UserMedication, MedicationIntake, HealthInformation
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, date
 
 class UserMedicationSerializer(serializers.ModelSerializer):
    
@@ -46,8 +46,8 @@ class UserMedicationSerializer(serializers.ModelSerializer):
 
         # Next, update the MedicationIntake instances if necessary - changing dates and frequency
         if 'times_per_day' in validated_data or 'time_of_first_med' in validated_data:
-            # change to delete and create only from today forward
-            MedicationIntake.objects.filter(medication=instance).delete()
+            # only delete intakes from today forward
+            MedicationIntake.objects.filter(medication=instance, date__gte=date.today()).delete()
             self.create_intakes_for_medication(instance)
         return instance
     

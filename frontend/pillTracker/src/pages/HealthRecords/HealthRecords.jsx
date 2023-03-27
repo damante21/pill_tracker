@@ -82,17 +82,25 @@ const HealthRecords = () => {
         <Divider />
         <h2>Latest Health Data</h2>
         <div className="record-list">
+        <div className="record-item">
+        <div className="record-item">
+            <h3>Height:</h3>
+            <span>{healthRecords[0].height}</span>
+          </div>
+          <div className="record-item">
+            <h3>Weight:</h3>
+            <span>{healthRecords[0].weight}</span>
+          </div>
+            <h3>Blood Pressure:</h3>
+            <span>{healthRecords[0].blood_pressure}</span>
+          </div>
           <div className="record-item">
             <h3>Heart rate:</h3>
-            <span>{healthRecords[1].heart_rate}</span>
+            <span>{healthRecords[0].heart_rate}</span>
           </div>
           <div className="record-item">
             <h3>Blood sugar:</h3>
-            <span>1</span>
-          </div>
-          <div className="record-item">
-            <h3>Allergies:</h3>
-            <span>1</span>
+            <span>{healthRecords[0].blood_sugar}</span>
           </div>
         </div>
       </div>

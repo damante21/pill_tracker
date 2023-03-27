@@ -134,7 +134,7 @@ function MedicationIntakeList(props) {
       <input
         type="date"
         value={formattedDate}
-        onChange={(event) => setDate(event.target.value)}
+        onChange={(event) => setFormattedDate(event.target.value)}
       />
       <ListGroup>
       {intakes.map((intake) => (
