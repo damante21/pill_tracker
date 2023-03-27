@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import UserMedication, MedicationIntake
+from .models import UserMedication, MedicationIntake, HealthInformation
 from datetime import timedelta, datetime
 
 class UserMedicationSerializer(serializers.ModelSerializer):
@@ -67,3 +67,10 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(validated_data['username'],validated_data['email'],validated_data['password'])
         return user
+
+
+class HealthRecordSerializer(serializers.ModelSerializer):
+   
+    class Meta:
+        model = HealthInformation
+        fields = '__all__'
