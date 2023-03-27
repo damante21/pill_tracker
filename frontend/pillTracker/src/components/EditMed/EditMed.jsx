@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+
+import { useParams, useNavigate } from "react-router-dom";
+
 import {
   theme,
   Form,
@@ -16,6 +18,8 @@ import axios from 'axios'
 function EditMedDetailsForm() {
 
   const { TextArea } = Input;
+
+  const navigate = useNavigate();
 
   const [form] = Form.useForm();
   const userToken = 'Token ' + localStorage.getItem('token')
@@ -101,6 +105,28 @@ function EditMedDetailsForm() {
   }
 
 
+  const handleDeleteClick = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/med/${med_id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': userToken
+      }
+    });
+    if (response.ok) {
+      alert('Medicine deleted successfully!');
+      navigate('/')
+    } else {
+        alert('An error occurred while deleting medicine. Please check try again.');
+      }
+    }
+    catch(err) {
+      alert('An error occurred while deleting medicine.')
+      console.error(err)
+    }
+  }
+
   return (
     <div>
       {medInfo &&
@@ -177,6 +203,11 @@ function EditMedDetailsForm() {
               Submit
             </Button>
           </Form.Item>
+
+          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <Button type="primary" onClick={handleDeleteClick}>Delete</Button>
+          </Form.Item>
+          
         </Form>
       </div>
     </ILayout>
