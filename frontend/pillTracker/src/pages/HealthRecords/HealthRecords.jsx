@@ -5,6 +5,7 @@ import { UserOutlined } from "@ant-design/icons";
 import { useState,useEffect } from "react";
 
 const HealthRecords = () => {
+  const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -16,7 +17,7 @@ const HealthRecords = () => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          const response = await fetch(`http://127.0.0.1:8000/api/user_details`, {
+          const response = await fetch(`http://${base_url}/api/user_details`, {
             headers: {
               'Authorization': `Token ${token}`,
               'Content-Type': 'application/json'
@@ -46,7 +47,7 @@ const HealthRecords = () => {
     async function fetchHealtRecords() {
       const token = localStorage.getItem('token');
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/health_records`, {
+        const response = await fetch(`http://${base_url}/api/health_records`, {
           headers: {
             'Authorization': `Token ${token}`,
             'Content-Type': 'application/json'
@@ -82,17 +83,25 @@ const HealthRecords = () => {
         <Divider />
         <h2>Latest Health Data</h2>
         <div className="record-list">
+        <div className="record-item">
+        <div className="record-item">
+            <h3>Height:</h3>
+            <span>{healthRecords[0].height}</span>
+          </div>
+          <div className="record-item">
+            <h3>Weight:</h3>
+            <span>{healthRecords[0].weight}</span>
+          </div>
+            <h3>Blood Pressure:</h3>
+            <span>{healthRecords[0].blood_pressure}</span>
+          </div>
           <div className="record-item">
             <h3>Heart rate:</h3>
-            <span>{healthRecords[1].heart_rate}</span>
+            <span>{healthRecords[0].heart_rate}</span>
           </div>
           <div className="record-item">
             <h3>Blood sugar:</h3>
-            <span>1</span>
-          </div>
-          <div className="record-item">
-            <h3>Allergies:</h3>
-            <span>1</span>
+            <span>{healthRecords[0].blood_sugar}</span>
           </div>
         </div>
       </div>
