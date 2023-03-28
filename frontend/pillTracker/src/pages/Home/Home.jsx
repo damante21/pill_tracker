@@ -11,14 +11,15 @@ import PillCount from "../../components/PillCount/PillCount";
 const Home = () => {
 
   const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
+  
+  // for offcanvas feature
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  // navigations and tokens
   const navigate = useNavigate();
-  const authToken = localStorage.getItem('token');  
-  
+  const authToken = localStorage.getItem('token');   
   const [token, setToken] = useState('Token ' + authToken)
 
   // array of all medication objects to get the names for the api call
@@ -30,7 +31,6 @@ const Home = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  
   
   const menuList = [
     { key: "home", label: "Home" },
@@ -57,6 +57,7 @@ const Home = () => {
     fetchMeds();
   }, [token, medicationIntakeUpdated]);
 
+  // kick back to login screen if no user token
   useEffect( () => {
     if(authToken == null){
       navigate('/login/')

@@ -6,9 +6,12 @@ export default function PillCount(props){
 
     let pillCount = props.pillCount
 
+    // listen for pill count and set color either way so we don't have to reset setIsLow
     useEffect( () => {
         if(pillCount < 10 ){
             setIsLow(true)
+        } else {
+            setIsLow(false)
         }
     }, [pillCount]);
 
