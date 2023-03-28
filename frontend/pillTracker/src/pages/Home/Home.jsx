@@ -20,6 +20,8 @@ const Home = () => {
   const authToken = localStorage.getItem('token');  
   
   const [token, setToken] = useState('Token ' + authToken)
+
+  // array of all medication objects to get the names for the api call
   const [meds, setMeds] = useState([])
 
   // state to refresh med info (pill count) after tracking component is updated

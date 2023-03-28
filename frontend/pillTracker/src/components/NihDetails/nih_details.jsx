@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from "react";
 import callBackend from '../../helpers/api_call';
-import "../App.css";
+import "../../App.css";
 
 
 const NihDetails = () => {
@@ -26,14 +26,25 @@ const NihDetails = () => {
        {data && (
          <ul>
            {data.drug_interactions.map((item) => (
-             <>
+           <>
              <h3>Drugs and Interactions</h3>
-               <li>Drug: {item.drug_1}</li>
-               <li>Drug: {item.drug_2}</li>
+               <li>Drug: {item.drug_1_name} : {item.drug_1}</li>
+               <li>Drug: {item.drug_2_name} : {item.drug_2}</li>
                <li>Description of drug interaction: {item.description}</li>
                <li>Severity: {item.severity}</li>
-             </>
-           ))}
+               </>)
+            )}
+            {/* <>
+            {data.drug_info.map((item) => (
+           <>
+               <h3>Drugs and RXCUI</h3>
+               <li>Drug Name: {item.name}</li>
+               <li>Drug RXCUI: {item.rxcui}</li>
+              
+             </>)
+           )} 
+           </> */}
+       
          </ul>
        )}
      </div>
@@ -43,8 +54,3 @@ const NihDetails = () => {
 
 
 export default NihDetails;
-
-// .then((response) => response.json()) //2
-//   .then((user) => {
-//     console.log(user.address); //3
-//   });
