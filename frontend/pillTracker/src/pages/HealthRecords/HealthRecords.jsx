@@ -5,7 +5,7 @@ import { UserOutlined } from "@ant-design/icons";
 import { useState,useEffect } from "react";
 
 const HealthRecords = () => {
-  const base_url = process.env.REACT_APP_BASE_URL
+  const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
   const {
     token: { colorBgContainer },
   } = theme.useToken();

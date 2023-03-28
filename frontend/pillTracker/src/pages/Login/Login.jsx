@@ -4,7 +4,6 @@ import { Layout, Form, Button, Input, } from "antd";
 
 
 export default function Login(){
-  const base_url = process.env.REACT_APP_BASE_URL
 
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
@@ -13,6 +12,7 @@ export default function Login(){
 
     async function onFinish(e) {
         try {
+          const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
           const response = await fetch(`http://${base_url}/api/api-token-auth`, {
             method: 'POST',
             headers: {

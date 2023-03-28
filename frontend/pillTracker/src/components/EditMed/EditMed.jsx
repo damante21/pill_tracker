@@ -16,7 +16,7 @@ import moment from "moment";
 import axios from 'axios'
 
 function EditMedDetailsForm() {
-  const base_url = process.env.REACT_APP_BASE_URL
+  const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
 
   const { TextArea } = Input;
 

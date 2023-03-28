@@ -10,7 +10,7 @@ import PillCount from "../../components/PillCount/PillCount";
 
 const Home = () => {
 
-  const base_url = process.env.REACT_APP_BASE_URL
+  const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { InputGroup, ListGroup } from 'react-bootstrap'
 
 function MedicationIntakeList(props) {
-  const base_url = process.env.REACT_APP_BASE_URL
+  const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
   
   // get full current date to track if med was missed and check it every 5 min
   const [currentDate, setCurrentDate] = useState(new Date());

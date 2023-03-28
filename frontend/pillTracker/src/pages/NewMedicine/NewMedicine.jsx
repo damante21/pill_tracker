@@ -14,7 +14,7 @@ import moment from "moment";
 const { TextArea } = Input;
 
 const NewMedicine = () => {
-  const base_url = process.env.REACT_APP_BASE_URL
+  const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
   const [form] = Form.useForm();
   const userToken = 'Token ' + localStorage.getItem('token')
 

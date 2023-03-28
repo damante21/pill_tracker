@@ -10,7 +10,7 @@ export default function PillCount(props){
         if(pillCount < 10 ){
             setIsLow(true)
         }
-    }, []);
+    }, [pillCount]);
 
 
     return(

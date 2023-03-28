@@ -9,13 +9,13 @@
 
 FROM node:lts-alpine as builder
 
-WORKDIR /front-end
+WORKDIR /frontend
 
 # These two lines will allow us to pass in an environment
 # variable when the image is *built* (not run).  For local
 # development, localhost; for production, your EC2's IP address
-ARG REACT_APP_BASE_URL=localhost
-ENV REACT_APP_BASE_URL=$REACT_APP_BASE_URL
+ARG VITE_REACT_APP_BASE_URL=localhost
+ENV VITE_REACT_APP_BASE_URL=$VITE_REACT_APP_BASE_URL
 
 COPY ./frontend/pillTracker/package.json .
 RUN npm install
@@ -34,4 +34,4 @@ RUN npm run build
 FROM nginx:alpine
 
 COPY ./webserver/default.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder /front-end/dist /usr/share/nginx/html
+COPY --from=builder /frontend/dist /usr/share/nginx/html
