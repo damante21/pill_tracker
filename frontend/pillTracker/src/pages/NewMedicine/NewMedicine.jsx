@@ -45,16 +45,16 @@ const NewMedicine = () => {
         number_of_pills: values.number_of_pills
       }),
     });
-    console.log(JSON.stringify({
-      medication_name: values.medication_name,
-      medication_notes: values.medication_notes,
-      dosage: values.dosage,
-      rx_number: values.rx_number,
-      start_date: formattedDate,
-      refill_date: formattedRefillDate,
-      times_per_day: values.times_per_day,
-      time_of_first_med: formattedTime
-    }))
+    // console.log(JSON.stringify({
+    //   medication_name: values.medication_name,
+    //   medication_notes: values.medication_notes,
+    //   dosage: values.dosage,
+    //   rx_number: values.rx_number,
+    //   start_date: formattedDate,
+    //   refill_date: formattedRefillDate,
+    //   times_per_day: values.times_per_day,
+    //   time_of_first_med: formattedTime
+    // }))
     const result = await response.json();
     // console.log(result)
     if (response.ok) {
