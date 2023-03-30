@@ -67,17 +67,17 @@ const HealthRecords = () => {
                 <div className="record-item">
                   <Image width={50} src={bloodSugarImage} />
                   <h3>Blood Sugar:</h3>
-                  <span>100mg/dl</span>
+                  <span>100mg/dL</span>
                 </div>
                 <div className="record-item">
                   <Image width={50} src={bodyTemperatureImage} />
                   <h3>Body Temperature</h3>
-                  <span>36.5°c</span>
+                  <span>99.6°F</span>
                 </div>
                 <div className="record-item">
                   <Image width={50} src={allergiesImage} />
                   <h3>Allergies</h3>
-                  <span>1</span>
+                  <span>Peanuts</span>
                 </div>
               </div>
             </Col>
