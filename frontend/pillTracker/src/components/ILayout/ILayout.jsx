@@ -52,11 +52,7 @@ const ILayout = (props) => {
       ))}
     </Menu>
     <div>
-      <Button onClick={handleLogoutClick}>Logout</Button> <Avatar
-        style={{ cursor: "pointer" }}
-        size={"large"}
-        icon={<UserOutlined />}
-      />
+      <Button onClick={handleLogoutClick}>Logout</Button> 
     </div>
       </Header>
       <Content
