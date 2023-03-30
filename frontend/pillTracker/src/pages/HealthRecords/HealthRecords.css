@@ -1,11 +1,19 @@
 .record-list{
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .record-item{
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 20px;
+    width: 250px;
+    height: 200px;
+    background-color: #fff;
+    margin-right: 15px;
 }
 
 
