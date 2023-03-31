@@ -13,6 +13,7 @@ const EditMedicationForm = () => {
     medication_name: '',
     medication_notes: '',
     dosage: '',
+    intake_quantity: '',
     start_date: '',
     refill_date: '',
     times_per_day: 1,
@@ -62,6 +63,7 @@ const EditMedicationForm = () => {
         medication_name: formData.medication_name,
         medication_notes: formData.medication_notes,
         dosage: formData.dosage,
+        intake_quantity: formData.intake_quantity,
         start_date: formData.start_date,
         refill_date: formData.refill_date,
         times_per_day: formData.times_per_day,
@@ -111,6 +113,17 @@ const EditMedicationForm = () => {
         type="text"
         name="dosage"
         value={formData.dosage}
+        onChange={handleChange}
+        required
+      />
+    </Form.Group>
+
+    <Form.Group className="mb-3" controlId="intake_quantity">
+      <Form.Label>Amount of Medication</Form.Label>
+      <Form.Control
+        type="text"
+        name="intake_quantity"
+        value={formData.intake_quantity}
         onChange={handleChange}
         required
       />

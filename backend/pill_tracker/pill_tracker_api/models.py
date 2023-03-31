@@ -7,11 +7,13 @@ class UserMedication(models.Model):
     medication_name = models.CharField(max_length=50)
     medication_notes = models.CharField(max_length=255, null=True, blank=True)
     dosage = models.CharField(max_length=20)
+    intake_quantity = models.CharField(max_length=50)
     start_date = models.DateField()
     refill_date = models.DateField() # took out null/blank=true because intake instances are created in chunks based on this refill/end date
     times_per_day = models.PositiveSmallIntegerField(default=1)
     time_of_first_med = models.TimeField()
     number_of_pills  = models.IntegerField( validators=[MinValueValidator(0)])
+    rxcui = models.CharField(max_length=20)
 
     def __str__(self):
         return f"{self.user}'s {self.medication_name}"
