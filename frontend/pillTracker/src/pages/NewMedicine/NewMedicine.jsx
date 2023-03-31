@@ -38,23 +38,28 @@ const NewMedicine = () => {
         medication_name: values.medication_name,
         medication_notes: values.medication_notes,
         dosage: values.dosage,
+        intake_quantity: values.intake_quantity,
         start_date: formattedDate,
         refill_date: formattedRefillDate,
         times_per_day: values.times_per_day,
         time_of_first_med: formattedTime,
-        number_of_pills: values.number_of_pills
+        number_of_pills: values.number_of_pills,
+        rxcui: values.rxcui
       }),
     });
-    // console.log(JSON.stringify({
-    //   medication_name: values.medication_name,
-    //   medication_notes: values.medication_notes,
-    //   dosage: values.dosage,
-    //   rx_number: values.rx_number,
-    //   start_date: formattedDate,
-    //   refill_date: formattedRefillDate,
-    //   times_per_day: values.times_per_day,
-    //   time_of_first_med: formattedTime
-    // }))
+    console.log(JSON.stringify({
+      medication_name: values.medication_name,
+      medication_notes: values.medication_notes,
+      dosage: values.dosage,
+      intake_quantity: values.intake_quantity,
+      rx_number: values.rx_number,
+      start_date: formattedDate,
+      refill_date: formattedRefillDate,
+      times_per_day: values.times_per_day,
+      time_of_first_med: formattedTime,
+      number_of_pills: values.number_of_pills,
+      rxcui: values.rxcui
+    }))
     const result = await response.json();
     // console.log(result)
     if (response.ok) {
@@ -83,7 +88,7 @@ const NewMedicine = () => {
     autocompleteScript.src = 'https://clinicaltables.nlm.nih.gov/autocomplete-lhc-versions/17.0.2/autocomplete-lhc.min.js';
     autocompleteScript.onload = () => {
       const drugStrengthsAutocompleter = new Def.Autocompleter.Prefetch('drug_strengths', []);
-      const rxtermsAutocompleter = new Def.Autocompleter.Search('rxterms', 'https://clinicaltables.nlm.nih.gov/api/rxterms/v3/search?ef=STRENGTHS_AND_FORMS');
+      const rxtermsAutocompleter = new Def.Autocompleter.Search('rxterms', 'https://clinicaltables.nlm.nih.gov/api/rxterms/v3/search?ef=STRENGTHS_AND_FORMS,RXCUIS');
   
       Def.Autocompleter.Event.observeListSelections("rxterms", function () {
         var drugField = $("#rxterms")[0];
@@ -145,18 +150,27 @@ const NewMedicine = () => {
             >
             <Input type="text" id="drug_strengths" placeholder="Strength list" onBlur={(event) => {
               const { value } = event.target;
-              const strengths = $("#rxterms")[0].autocomp.getSelectedItemData()[0].data.STRENGTHS_AND_FORMS;
-              const selectedStrength = strengths.find(strength => strength === value);
-              const dosageValue = selectedStrength || strengths[0];
-              form.setFieldsValue({ dosage: dosageValue });
+              const strengthsData = $("#rxterms")[0].autocomp.getSelectedItemData()[0].data.STRENGTHS_AND_FORMS;
+              const rxcuisData = $("#rxterms")[0].autocomp.getSelectedItemData()[0].data.RXCUIS;
+              const selectedStrengthIndex = strengthsData.findIndex(strength => strength === value);
+              const dosageValue = selectedStrengthIndex !== -1 ? strengthsData[selectedStrengthIndex] : strengthsData[0];
+              const rxcuiValue = selectedStrengthIndex !== -1 ? rxcuisData[selectedStrengthIndex] : '';
+              form.setFieldsValue({ dosage: dosageValue, rxcui: rxcuiValue });
             }}/>
+          </Form.Item>
+          <Form.Item
+            name="intake_quantity"
+            label="Amount of medication"
+            rules={[{ required: true }]}
+          >
+           <Input placeholder="Amount of medication taken each time (ie. 2 tablets, 10mL, etc)" />
           </Form.Item>
           <Form.Item
             name="medication_notes"
             label="Medication notes"
             rules={[{ required: false }]}
           >
-            <TextArea placeholder="Amount of medication taken each time (ie. 2 tablets), reason for medication, etc" rows={4} />
+            <TextArea placeholder="Reason for medication, take with food, etc" rows={4} />
           </Form.Item>
           <Form.Item
             name="start_date"
@@ -198,6 +212,9 @@ const NewMedicine = () => {
             <Button type="primary" htmlType="submit">
               Submit
             </Button>
+          </Form.Item>
+          <Form.Item name="rxcui" style={{ display: "none" }}>
+            <Input type="hidden" />
           </Form.Item>
         </Form>
       </div>
