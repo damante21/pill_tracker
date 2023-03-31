@@ -151,4 +151,5 @@ const NewMedicine = () => {
     </ILayout>
   );
 };
+
 export default NewMedicine;

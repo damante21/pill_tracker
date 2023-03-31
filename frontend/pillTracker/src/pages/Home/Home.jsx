@@ -7,9 +7,14 @@ import ILayout from "../../components/ILayout/ILayout";
 import MedicationIntakeList from "../../components/MedTracking/MedicationIntakeList";
 import { Offcanvas } from "react-bootstrap";
 import PillCount from "../../components/PillCount/PillCount";
+import NihDetails from "../../components/NihDetails/nih_details";
+import callBackend from "../../helpers/api_call";
+import DrugInteractionList from "../../components/NihDetails/DrugInteractionList";
 
 const Home = () => {
 
+  const [drugData, setDrugData] = useState(null)
+   
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -26,10 +31,20 @@ const Home = () => {
   // state to refresh med info (pill count) after tracking component is updated
   const [medicationIntakeUpdated, setMedicationIntakeUpdated] = useState(false);
 
+  if (drugData == null) {
+    callBackend().then((response) => {
+       response.json().then((data) => {
+         setDrugData(data)
+       });;
+   })}
+
+  const clickHandler = () => {
+    navigate("drugInteractions", {state: drugData});
+  };
+
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  
   
   const menuList = [
     { key: "home", label: "Home" },
@@ -46,7 +61,7 @@ const Home = () => {
             'Content-Type': 'application/json',
           },
         });
-        // console.log(response)
+        
         setMeds(response.data);
         setMedicationIntakeUpdated(false);
       } catch (error) {
@@ -62,68 +77,79 @@ const Home = () => {
     }
   }, []);
 
-  // console.log(meds)
 
   return (
     <ILayout>
-      {meds &&
-      <>
-      <Offcanvas show={show} onHide={handleClose}>
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Tracking List</Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body>
-        <MedicationIntakeList medicationIntakeUpdated={medicationIntakeUpdated} setMedicationIntakeUpdated={setMedicationIntakeUpdated} />
-        </Offcanvas.Body>
-      </Offcanvas>
-      
-      <div
-        className="site-layout-content"
-        style={{
-          background: colorBgContainer,
-        }}
-      >
-        <Space
-          direction="vertical"
-          size="small"
-          style={{
-            display: "flex",
-          }}
-        >
-          <h2>Ongoing Course</h2>
-          <span><Button type="primary" onClick={handleShow}>
-        Daily Medication Tracking List
-      </Button> <Button
-            type="primary"
-            onClick={() => {
-              navigate("/home/newMedicine");
+      {meds && (
+        <>
+          <Offcanvas show={show} onHide={handleClose}>
+            <Offcanvas.Header closeButton>
+              <Offcanvas.Title>Tracking List</Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+              <MedicationIntakeList
+                medicationIntakeUpdated={medicationIntakeUpdated}
+                setMedicationIntakeUpdated={setMedicationIntakeUpdated}
+              />
+            </Offcanvas.Body>
+          </Offcanvas>
+
+          <div
+            className="site-layout-content"
+            style={{
+              background: colorBgContainer,
             }}
           >
-            Add medicine
-          </Button></span>
-          <List
-            className="med-list"
-            itemLayout="horizontal"
-            dataSource={meds}
-            renderItem={(item, index) => (
-              <List.Item>
-                <List.Item.Meta
-                  avatar={
-                    <Avatar
-                      src={`https://joesch.moe/api/v1/random?key=${item.id}`}
+            <Space
+              direction="vertical"
+              size="small"
+              style={{
+                display: "flex",
+              }}
+            >
+              <h2>Ongoing Course</h2>
+              <span>
+                <Button type="primary" onClick={handleShow}>
+                  Daily Medication Tracking List
+                </Button>{" "}
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    navigate("/home/newMedicine");
+                  }}
+                >
+                  Add medicine
+                </Button>{" "}
+                <NihDetails onClick={clickHandler} data={drugData} />
+              </span>
+              <List
+                className="med-list"
+                itemLayout="horizontal"
+                dataSource={meds}
+                renderItem={(item, index) => (
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={
+                        <Avatar
+                          src={`https://joesch.moe/api/v1/random?key=${item.id}`}
+                        />
+                      }
+                      title={
+                        <a href={`/home/editMedicine/${item.id}`}>
+                          {item.medication_name}
+                        </a>
+                      }
+                      description={item.medication_notes}
                     />
-                  }
-                  title={<a href={`/home/editMedicine/${item.id}`}>{item.medication_name}</a>}
-                  description={item.medication_notes}
-                />
-                <PillCount pillCount={item.number_of_pills} />
-              </List.Item>
-            )}
-          />
-        </Space>
-      </div>
-      </>
-    }
+                    <PillCount pillCount={item.number_of_pills} />
+                  </List.Item>
+                )}
+              />
+            </Space>
+          </div>
+        </>
+      )}
+      {/* <DrugInteractionList data={drugData} /> */}
     </ILayout>
   );
 };

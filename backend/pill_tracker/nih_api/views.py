@@ -1,6 +1,4 @@
 from django.shortcuts import render, HttpResponse
-import requests 
-import json
 import xml.etree.ElementTree as ET
 from .classes.drug_classes import *
 from .helpers.api_calls import api_calls
