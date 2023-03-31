@@ -16,6 +16,7 @@ import moment from "moment";
 import axios from 'axios'
 
 function EditMedDetailsForm() {
+  const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
 
   const { TextArea } = Input;
 
@@ -37,7 +38,7 @@ function EditMedDetailsForm() {
   useEffect( () => {
     async function fetchMed(){
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/med/${med_id}`, {
+        const response = await axios.get(`http://${base_url}/api/med/${med_id}`, {
           headers: {
             Authorization: userToken,
             'Content-Type': 'application/json',
@@ -51,10 +52,11 @@ function EditMedDetailsForm() {
     }
     fetchMed();
   }, []);
-  // console.log(medInfo)
+
  
   useEffect(() => {
     if (medInfo) {
+      console.log(medInfo)
       form.setFieldsValue({
         medication_name: medInfo.medication_name,
         medication_notes: medInfo.medication_notes,
@@ -67,13 +69,14 @@ function EditMedDetailsForm() {
       });
     }
   }, [medInfo]);
-
+  
   const onFinish = async (values) => {
-    const formattedDate = moment(values.start_date.$d).format("YYYY-MM-DD")
+    const start_date = values.start_date
+    const formattedStartDate = moment(values.start_date.$d).format("YYYY-MM-DD")
     const formattedRefillDate = moment(values.refill_date.$d).format("YYYY-MM-DD")
     const formattedTime = moment(values.time_of_first_med.$d).format("HH:mm:ss")
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/med/${med_id}`, {
+      const response = await fetch(`http://${base_url}/api/med/${med_id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -83,7 +86,7 @@ function EditMedDetailsForm() {
         medication_name: values.medication_name,
         medication_notes: values.medication_notes,
         dosage: values.dosage,
-        start_date: formattedDate,
+        start_date: formattedStartDate,
         refill_date: formattedRefillDate,
         times_per_day: values.times_per_day,
         time_of_first_med: formattedTime,
@@ -94,7 +97,6 @@ function EditMedDetailsForm() {
     // console.log(result)
     if (response.ok) {
       alert('Medicine updated successfully!');
-      window.location.reload()
     } else {
         alert('An error occurred while updating medicine. Please check your form inputs.');
       }
@@ -107,7 +109,7 @@ function EditMedDetailsForm() {
 
   const handleDeleteClick = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/med/${med_id}`, {
+      const response = await fetch(`http://${base_url}/api/med/${med_id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

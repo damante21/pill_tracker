@@ -32,4 +32,7 @@ class HealthInformation(models.Model):
     blood_pressure = models.CharField(max_length=255, null=True, blank=True)
     height = models.CharField(max_length=20)
     weight = models.CharField(max_length=50)
-    blood_sugar = models.DateField()
+    blood_sugar = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.user}'s health info"
