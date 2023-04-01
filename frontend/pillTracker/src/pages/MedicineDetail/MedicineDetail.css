@@ -1,0 +1,12 @@
+
+.detail-row{
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.detail-title{
+  margin-right: 10px;
+  font-weight: 700;
+  font-size: 16px;
+}

@@ -10,6 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+
 # SECRET_KEY = os.getenv("SECRET_KEY")
 SECRET_KEY = 'ALKSDFKJFAD'
 
@@ -20,6 +21,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 ACCESS_CONTROL_ALLOW_ORIGIN = ["*"]
+
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -48,7 +50,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
 ]
 
 ROOT_URLCONF = 'pill_tracker.urls'

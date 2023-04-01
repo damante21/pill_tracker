@@ -154,7 +154,12 @@ const NewMedicine = () => {
               const rxcuisData = $("#rxterms")[0].autocomp.getSelectedItemData()[0].data.RXCUIS;
               const selectedStrengthIndex = strengthsData.findIndex(strength => strength === value);
               const dosageValue = selectedStrengthIndex !== -1 ? strengthsData[selectedStrengthIndex] : strengthsData[0];
-              const rxcuiValue = selectedStrengthIndex !== -1 ? rxcuisData[selectedStrengthIndex] : '';
+              let rxcuiValue = selectedStrengthIndex !== -1 ? rxcuisData[selectedStrengthIndex] : null;
+              // Check if rxcuiValue is null
+              if (rxcuiValue === null && rxcuisData.length > 0) {
+                // Set rxcuiValue to the first item in rxcuisData
+                rxcuiValue = rxcuisData[0];
+              }
               form.setFieldsValue({ dosage: dosageValue, rxcui: rxcuiValue });
             }}/>
           </Form.Item>
