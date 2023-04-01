@@ -7,6 +7,7 @@ import ILayout from "../../components/ILayout/ILayout";
 import MedicationIntakeList from "../../components/MedTracking/MedicationIntakeList";
 import { Offcanvas } from "react-bootstrap";
 import PillCount from "../../components/PillCount/PillCount";
+import medIcon from "../../assets/medIcon.jpg"
 
 const Home = () => {
 
@@ -112,7 +113,7 @@ const Home = () => {
                 <List.Item.Meta
                   avatar={
                     <Avatar
-                      src={`https://joesch.moe/api/v1/random?key=${item.id}`}
+                      src={medIcon}
                     />
                   }
                   title={<a href={`/home/medicineDetail/${item.id}`}>{item.medication_name}</a>}

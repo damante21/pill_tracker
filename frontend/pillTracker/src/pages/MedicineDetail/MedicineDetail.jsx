@@ -92,11 +92,11 @@ function MedicineDetail() {
                                 <span>{medInfo.medication_name}</span>
                             </div>
                             <div className="detail-row">
-                                <span className="detail-title">Dosage:</span>
+                                <span className="detail-title">Dosage Strength:</span>
                                 <span>{medInfo.dosage}</span>
                             </div>
                             <div className="detail-row">
-                                <span className="detail-title">Amount of Medication to Take:</span>
+                                <span className="detail-title">Dosage Amount (per dose in pills, mL, etc.):</span>
                                 <span>{medInfo.intake_quantity}</span>
                             </div>
                             <div className="detail-row">
@@ -120,18 +120,18 @@ function MedicineDetail() {
                                 <span>{medInfo.time_of_first_med}</span>
                             </div>
                             <div className="detail-row">
-                                <span className="detail-title">Number Of Pills:</span>
-                                <span>{medInfo.number_of_pills}</span>
+                                <span className="detail-title">Total Quantity in Container (in pills, mL, etc.):</span>
+                                <span>{medInfo.total_quantity}</span>
                             </div>
                         </Col>
                         <Col span={12}>
                             <Image width={300} src={medicineImage} />
                         </Col>
                     </Row>
-                    <div>
+                    {/* <div>
                     <hr/>
                     Upcoming intakes associated w medicine??
-                    </div>
+                    </div> */}
                 </div>
             </ILayout>
         </div>

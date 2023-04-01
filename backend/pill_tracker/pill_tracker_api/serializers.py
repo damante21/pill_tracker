@@ -41,7 +41,7 @@ class UserMedicationSerializer(serializers.ModelSerializer):
         instance.start_date = validated_data.get('start_date', instance.start_date)
         instance.refill_date = validated_data.get('refill_date', instance.refill_date)
         instance.times_per_day = validated_data.get('times_per_day', instance.times_per_day)
-        instance.number_of_pills = validated_data.get('number_of_pills', instance.number_of_pills)
+        instance.total_quantity = validated_data.get('total_quantity', instance.total_quantity)
         instance.intake_quantity = validated_data.get('intake_quantity', instance.intake_quantity)
         instance.rxcui = validated_data.get('rxcui', instance.rxcui)
         instance.save()
