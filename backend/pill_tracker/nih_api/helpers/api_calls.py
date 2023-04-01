@@ -9,13 +9,15 @@ from pill_tracker_api import models
 
 def get_med_names():
     
-    med_names_arr = []
+  # med_names_arr = []
+    med_names_obj = {}
     
     med_names = models.UserMedication.objects.all().values()
     for name in med_names:
-        med_names_arr.append(name['medication_name'])
-    
-    return med_names_arr
+        # med_names_arr.append(name['medication_name'])
+        med_names_obj[name['rxcui']] = name['medication_name']
+
+    return med_names_obj
     
 
 def api_calls(request):
@@ -24,8 +26,12 @@ def api_calls(request):
     rxcui_arr = []
     names_arr = []
     med_names_arr = get_med_names()
-    drug_response_arr = []
-    drug_info_arr = []
+    
+    for rxcui in med_names_arr:
+        rxcui_arr.append(rxcui)
+
+    # drug_response_arr = []
+    # drug_info_arr = []
     drug_interaction_arr = []
     
     description_arr = []
@@ -35,25 +41,25 @@ def api_calls(request):
     interaction_pairs = []
     counter = 0
  
-    for name in med_names_arr:
+    # for name in med_names_arr:
         
-        drug_name = name
+    #     drug_name = name
     
-        drug_response = requests.get(f'https://rxnav.nlm.nih.gov/REST/drugs.xml?name={drug_name}')
+    #     drug_response = requests.get(f'https://rxnav.nlm.nih.gov/REST/drugs.xml?name={drug_name}')
         
-        if drug_response.status_code == 200:
+    #     if drug_response.status_code == 200:
             
-            drug_root = ET.fromstring(drug_response.content)
-            for rxcui in drug_root.iter('rxcui'):
-                for name in drug_root.iter('name'):
-                    if name.text != None and name.text not in names_arr and rxcui.text not in rxcui_arr :
-                        drug_name = name.text.split(' ', 1)
-                        if drug_name[0] not in names_arr:
-                            names_arr.append(drug_name[0])
-                            rxcui_arr.append(rxcui.text)
-                            drug_info_arr.append(DrugInfo(rxcui.text, name.text))
-        else:
-            print(f'drug_response: {drug_response.status_code}')  
+    #         drug_root = ET.fromstring(drug_response.content)
+    #         for rxcui in drug_root.iter('rxcui'):
+    #             for name in drug_root.iter('name'):
+    #                 if name.text != None and name.text not in names_arr and rxcui.text not in rxcui_arr :
+    #                     drug_name = name.text.split(' ', 1)
+    #                     if drug_name[0] not in names_arr:
+    #                         names_arr.append(drug_name[0])
+    #                         rxcui_arr.append(rxcui.text)
+    #                         drug_info_arr.append(DrugInfo(rxcui.text, name.text))
+    #     else:
+    #         print(f'drug_response: {drug_response.status_code}')  
                       
     for rxcui in rxcui_arr:
         
@@ -80,14 +86,16 @@ def api_calls(request):
             drug_1 = pair['interactionConcept'][0]['minConceptItem']['rxcui']
             drug_1_name = pair['interactionConcept'][0]['minConceptItem']['name']
             drug_2 = pair['interactionConcept'][1]['minConceptItem']['rxcui']
-            drug_2_name = pair['interactionConcept'][0]['minConceptItem']['name']
+            drug_2_name = pair['interactionConcept'][1]['minConceptItem']['name']
             description = pair['description']
             severity = pair['severity']
             if description not in description_arr:
-                drug_interaction_arr.append(DrugInteraction(drug_1, drug_2, drug_1_name, drug_2_name, description, severity))
+                drug_interaction_arr.append(DrugInteraction(drug_1, drug_1_name, drug_2, drug_2_name, description, severity))
                 description_arr.append(description)
         
-        result = json.dumps({'drug_info' : drug_info_arr,
+        # result = json.dumps({'drug_info' : drug_info_arr,
+        #                      'drug_interactions' : drug_interaction_arr}, default=vars)
+        result = json.dumps({
                              'drug_interactions' : drug_interaction_arr}, default=vars)
 
         return HttpResponse(result)
