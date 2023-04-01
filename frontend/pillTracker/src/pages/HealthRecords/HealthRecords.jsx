@@ -1,4 +1,4 @@
-import { theme, Button, Form, Space, Avatar, Divider, Col, Row, Image } from "antd";
+import { theme, Typography, Button, Form, Space, Avatar, Divider, Col, Row, Image } from "antd";
 import ILayout from "../../components/ILayout/ILayout";
 import "./HealthRecords.css";
 import { UserOutlined } from "@ant-design/icons";
@@ -6,8 +6,9 @@ import { useState, useEffect } from "react";
 import heartRateImage from "../../assets/heartRate.jpg";
 import bodyTemperatureImage from "../../assets/bodyTemperature.jpg";
 import bloodSugarImage from "../../assets/bloodSugar.jpg";
-import allergiesImage from "../../assets/allergies.jpg";
+import bloodPressureImage from "../../assets/bloodPressure.jpg";
 
+const { Title } = Typography;
 const HealthRecords = () => {
   const {
     token: { colorBgContainer },
@@ -50,34 +51,30 @@ const HealthRecords = () => {
       {user && (
         <div className="site-layout-content">
           <Row>
-            <Col span={12}>
-              <div className="user-info">
-                <Avatar size={64} icon={<UserOutlined />} />
-                <div className="user-info-item">{user.username}</div>
-                <div className="user-info-item">{user.email}</div>
-              </div>
-            </Col>
-            <Col span={12}>
+            <Col offset={8} span={12}>
+              <Title level={2}>Health Reference</Title>
+              <Title style={{marginBottom:20}} level={5}>Here are the references of  average health metrics, the age, gender, and time of the date may affect each of the data. Please follow the doctor’s advice. </Title>
+
               <div className="record-list">
                 <div className="record-item">
                   <Image width={50} src={heartRateImage} />
                   <h3>Heart Rate</h3>
-                  <span>80bpm</span>
+                  <span>60-10bpm</span>
                 </div>
                 <div className="record-item">
                   <Image width={50} src={bloodSugarImage} />
                   <h3>Blood Sugar:</h3>
-                  <span>100mg/dL</span>
+                  <span>80-130mg/dL</span>
                 </div>
                 <div className="record-item">
                   <Image width={50} src={bodyTemperatureImage} />
                   <h3>Body Temperature</h3>
-                  <span>99.6°F</span>
+                  <span>97-99F</span>
                 </div>
                 <div className="record-item">
-                  <Image width={50} src={allergiesImage} />
-                  <h3>Allergies</h3>
-                  <span>Peanuts</span>
+                  <Image width={50} src={bloodPressureImage} />
+                  <h3>Blood Pressure</h3>
+                  <span>less than 120/80 mmHg</span>
                 </div>
               </div>
             </Col>
