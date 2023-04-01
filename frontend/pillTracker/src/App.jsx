@@ -8,6 +8,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import NihDetails from "./components/NihDetails/nih_details";
 import MedicationIntakeList from "./components/MedTracking/MedicationIntakeList";
 import MedicineDetail from "./pages/MedicineDetail/MedicineDetail";
+import EditMedicationForm from "./components/EditMed/EditMed";
+import DrugInteractionList from "./components/NihDetails/DrugInteractionList";
 
 
 function App() {
@@ -23,6 +25,9 @@ function App() {
         <Route path="/tracking" element={<MedicationIntakeList />} />
         <Route path="/nih_api" element={<NihDetails />} />
         <Route path="/home/medicineDetail/:med_id" element={<MedicineDetail />} />
+        <Route path="home/drugInteractions" element={<DrugInteractionList />} />
+        <Route path="/home/editMedicine/:med_id" element={<EditMedicationForm />} />
+        {/* <Route path="/home/medicineDetail/:med_id" element={<EditMedDetailsForm />} /> */}
       </Routes>
     </BrowserRouter>
   );
