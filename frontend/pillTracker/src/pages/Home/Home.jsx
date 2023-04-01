@@ -120,7 +120,7 @@ const Home = () => {
                   }}
                 >
                   Add medicine
-                </Button>{" "}
+                </Button> {' '}
                 <NihDetails onClick={clickHandler} data={drugData} />
               </span>
               <List
@@ -130,32 +130,13 @@ const Home = () => {
                 renderItem={(item, index) => (
                   <List.Item>
                     <List.Item.Meta
-                      avatar={
-                        <Avatar
-                          src={`https://joesch.moe/api/v1/random?key=${item.id}`}
-                        />
-                      }
                       title={
-                        <a href={`/home/editMedicine/${item.id}`}>
+                        <a href={`/home/medicineDetail/${item.id}`}>
                           {item.medication_name}
                         </a>
                       }
                       description={item.medication_notes}
                     />
-
-                  }
-                  title={<a href={`/home/medicineDetail/${item.id}`}>{item.medication_name}</a>}
-                  description={item.medication_notes}
-                />
-                <PillCount pillCount={item.number_of_pills} />
-              </List.Item>
-            )}
-          />
-        </Space>
-      </div>
-      </>
-    }
-
                     <PillCount pillCount={item.number_of_pills} />
                   </List.Item>
                 )}
@@ -164,8 +145,6 @@ const Home = () => {
           </div>
         </>
       )}
-      {/* <DrugInteractionList data={drugData} /> */}
-
     </ILayout>
   );
 };
