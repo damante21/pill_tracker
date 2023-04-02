@@ -33,6 +33,11 @@ export default function Register(){
             // console.log(res.data);
             navigate('/login/')
         })
+        // handle error
+        .catch(err => {
+            console.error(err);
+            alert("Registration failed; username may be taken. Please try again later.");
+          });
     }
 
     function loginButtonClick(e){

@@ -26,6 +26,37 @@ const Home = () => {
 
   const [token, setToken] = useState("Token " + authToken);
 
+  // ensure only authenticated users that exist in our db can see page
+  const [user, setUser] = useState();
+  useEffect(() => {
+    async function fetchUserDetails() {
+      if (token) {
+        try {
+          const response = await fetch(`http://127.0.0.1:8000/api/user_details`, {
+            headers: {
+              Authorization: token,
+              "Content-Type": "application/json",
+            },
+          });
+          if (response.ok) {
+            const data = await response.json();
+            // console.log(data)
+            setUser(data);
+          } else {
+            // alert("Failed to fetch user details");
+            navigate("/login/")
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        // redirect user to login page if not authenticated
+        window.location.href = "/login";
+      }
+    }
+    fetchUserDetails();
+  }, []);
+
   // array of all medication objects to get the names for the api call
   const [meds, setMeds] = useState([]);
 
@@ -73,12 +104,6 @@ const Home = () => {
     }
     fetchMeds();
   }, [token, medicationIntakeUpdated]);
-
-  useEffect(() => {
-    if (authToken == null) {
-      navigate("/login/");
-    }
-  }, []);
 
   return (
     <ILayout>

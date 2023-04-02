@@ -1,7 +1,7 @@
 import { theme, Typography, Button, Form, Space, Avatar, Divider, Col, Row, Image } from "antd";
 import ILayout from "../../components/ILayout/ILayout";
 import "./HealthRecords.css";
-import { UserOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import heartRateImage from "../../assets/heartRate.jpg";
 import bodyTemperatureImage from "../../assets/bodyTemperature.jpg";
@@ -14,7 +14,10 @@ const HealthRecords = () => {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  // get user details to populate with username etc
+  const navigate = useNavigate();
+
+  // get user details to populate with username etc - later feature
+  // verify user exists within our db
   const [user, setUser] = useState();
   useEffect(() => {
     async function fetchUserDetails() {
@@ -32,7 +35,8 @@ const HealthRecords = () => {
             // console.log(data)
             setUser(data);
           } else {
-            alert("Failed to fetch user details");
+            // alert("Failed to fetch user details");
+            navigate("/login/")
           }
         } catch (error) {
           console.error(error);

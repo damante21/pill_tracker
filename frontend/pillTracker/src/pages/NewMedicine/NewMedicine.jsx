@@ -11,6 +11,7 @@ import {
 import ILayout from "../../components/ILayout/ILayout";
 import moment from "moment";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
 
@@ -22,6 +23,38 @@ const NewMedicine = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  // ensure only authenticated users that exist in our db can see page
+  const navigate = useNavigate();
+  const [user, setUser] = useState();
+  useEffect(() => {
+    async function fetchUserDetails() {
+      if (userToken) {
+        try {
+          const response = await fetch(`http://127.0.0.1:8000/api/user_details`, {
+            headers: {
+              Authorization: userToken,
+              "Content-Type": "application/json",
+            },
+          });
+          if (response.ok) {
+            const data = await response.json();
+            // console.log(data)
+            setUser(data);
+          } else {
+            // alert("Failed to fetch user details");
+            navigate("/login/")
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        // redirect user to login page if not authenticated
+        window.location.href = "/login";
+      }
+    }
+    fetchUserDetails();
+  }, []);
   
   const onFinish = async (values) => {
     const formattedDate = moment(values.start_date.$d).format("YYYY-MM-DD")

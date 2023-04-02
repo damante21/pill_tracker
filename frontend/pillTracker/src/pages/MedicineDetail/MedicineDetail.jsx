@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { theme, Form, Button, Input, InputNumber, DatePicker, TimePicker, Typography, Col, Row, Image } from "antd";
 import { Offcanvas } from 'react-bootstrap'
 import ILayout from "../../components/ILayout/ILayout";
@@ -32,6 +32,38 @@ function MedicineDetail() {
     let { med_id } = useParams();
     const [medInfo, setMedInfo] = useState({});
     const [isMedicineUpdated, setIsMedicineUpdated] = useState(false);
+
+    // ensure only authenticated users that exist in our db can see page
+    const navigate = useNavigate();
+    const [user, setUser] = useState();
+    useEffect(() => {
+        async function fetchUserDetails() {
+        if (token) {
+            try {
+            const response = await fetch(`http://127.0.0.1:8000/api/user_details`, {
+                headers: {
+                Authorization: token,
+                "Content-Type": "application/json",
+                },
+            });
+            if (response.ok) {
+                const data = await response.json();
+                // console.log(data)
+                setUser(data);
+            } else {
+                // alert("Failed to fetch user details");
+                navigate("/login/")
+            }
+            } catch (error) {
+            console.error(error);
+            }
+        } else {
+            // redirect user to login page if not authenticated
+            window.location.href = "/login";
+        }
+        }
+        fetchUserDetails();
+    }, []);
 
     // useEffects and handleChanges
     async function fetchMed() {
