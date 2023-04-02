@@ -6,7 +6,6 @@ import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import EditMedDetailsForm from "./components/EditMed/EditMed";
-import MedicineDetail from "./pages/MedicineDetail/MedicineDetail";
 import NihDetails from "./components/NihDetails/nih_details";
 import MedicationIntakeList from "./components/MedTracking/MedicationIntakeList";
 import MedicineDetail from "./pages/MedicineDetail/MedicineDetail";
