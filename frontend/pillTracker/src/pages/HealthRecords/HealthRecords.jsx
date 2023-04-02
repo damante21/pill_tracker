@@ -10,6 +10,7 @@ import bloodPressureImage from "../../assets/bloodPressure.jpg";
 
 const { Title } = Typography;
 const HealthRecords = () => {
+  const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -21,7 +22,7 @@ const HealthRecords = () => {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const response = await fetch(`http://127.0.0.1:8000/api/user_details`, {
+          const response = await fetch(`http://${base_url}/api/user_details`, {
             headers: {
               Authorization: `Token ${token}`,
               "Content-Type": "application/json",
@@ -45,6 +46,31 @@ const HealthRecords = () => {
     fetchUserDetails();
   }, []);
   // console.log(user)
+
+  const [healthRecords, setHealthRecords] = useState();
+  useEffect ( () => {
+    async function fetchHealtRecords() {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await fetch(`http://${base_url}/api/health_records`, {
+          headers: {
+            'Authorization': `Token ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          
+          setHealthRecords(data);
+        } else {
+          alert('Failed to fetch health records');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchHealtRecords()
+  }, []);
 
   return (
     <ILayout>

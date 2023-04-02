@@ -3,9 +3,11 @@ import axios from 'axios';
 import { InputGroup, ListGroup } from 'react-bootstrap'
 
 function MedicationIntakeList(props) {
+  const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
   
   // get full current date to track if med was missed and check it every 5 min
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [formattedDate, setFormattedDate] = useState();
   
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -20,20 +22,23 @@ function MedicationIntakeList(props) {
   const [token, setToken] = useState('Token ' + localStorage.getItem('token'))
 
   // set today's date in calendar, formatted for API use
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const day = String(today.getDate()).padStart(2, '0');
-  const formattedDate = `${year}-${month}-${day}`;
-  // console.log(formattedDate)
+  useEffect(() => {
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setFormattedDate(formattedDate);
+  }, [currentDate]);
   
   useEffect(() => {
-    fetchIntakes()
+    if (formattedDate) {
+      fetchIntakes();
+    }
   }, [formattedDate]);
 
   const fetchIntakes = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/med_tracker?date=${formattedDate}`, {
+      const response = await axios.get(`http://${base_url}/api/med_tracker?date=${formattedDate}`, {
         headers: {
           Authorization: token,
           'Content-Type': 'application/json',
@@ -43,7 +48,7 @@ function MedicationIntakeList(props) {
       const updatedIntakes = [];
   
       for (const intake of response.data) {
-        const medicationResponse = await axios.get(`http://127.0.0.1:8000/api/med/${intake.medication}`, {
+        const medicationResponse = await axios.get(`http://${base_url}/api/med/${intake.medication}`, {
           headers: {
             Authorization: token,
             'Content-Type': 'application/json',
@@ -67,7 +72,7 @@ function MedicationIntakeList(props) {
     const isChecked = event.target.checked;
     const updatedIntake = { taken: isChecked };
     try {
-      await axios.put(`http://127.0.0.1:8000/api/med_tracker/${intakeId}/`, updatedIntake)
+      await axios.put(`http://${base_url}/api/med_tracker/${intakeId}/`, updatedIntake)
       setIntakes(
         intakes.map((intake) =>
           intake.id === intakeId ? { ...intake, taken: isChecked } : intake
@@ -83,7 +88,7 @@ function MedicationIntakeList(props) {
   //Updates the pill count of the medication from the intake. 
   const updatePillCount = async (medication, isChecked) =>{
     try{
-      await axios.get(`http://127.0.0.1:8000/api/med/${medication}`)
+      await axios.get(`http://${base_url}/api/med/${medication}`)
       .then((response) => {
         const data = {
           'id': response.data['id'],
@@ -96,7 +101,7 @@ function MedicationIntakeList(props) {
           data['number_of_pills'] = data['number_of_pills'] - 1;
         }
         // console.log(data)
-        axios.put(`http://127.0.0.1:8000/api/med/${medication}`, data)
+        axios.put(`http://${base_url}/api/med/${medication}`, data)
         .then((response) => {
         })
       })
@@ -122,7 +127,6 @@ function MedicationIntakeList(props) {
     }
   }
 
-
   //map intakes grouped by medicine and put check boxes next to it
   return (
     <div>
@@ -130,7 +134,7 @@ function MedicationIntakeList(props) {
       <input
         type="date"
         value={formattedDate}
-        onChange={(event) => setDate(event.target.value)}
+        onChange={(event) => setFormattedDate(event.target.value)}
       />
       <ListGroup>
       {intakes.map((intake) => (

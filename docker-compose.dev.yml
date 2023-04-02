@@ -1,0 +1,21 @@
+#########################################
+# The "development" compose file builds 
+# the images locally
+#########################################
+
+version: "3.9"
+services:
+  api:
+    build: ./backend/pill_tracker
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=$SECRET_KEY
+      - DEBUG=$DEBUG
+  nginx:
+    build: 
+      context: .
+      dockerfile: ./webserver/Dockerfile
+    restart: always
+    ports:
+      - "80:80"

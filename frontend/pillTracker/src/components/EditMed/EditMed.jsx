@@ -1,96 +1,81 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import {
-  theme,
-  Form,
-  Button,
-  Input,
-  InputNumber,
-  DatePicker,
-  TimePicker,
-} from "antd";
-import ILayout from "../../components/ILayout/ILayout";
-import moment from "moment";
-import axios from 'axios'
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { Form, Button } from 'react-bootstrap'
 
-function EditMedDetailsForm() {
+const EditMedicationForm = (props) => {
 
-  const { TextArea } = Input;
-
-  const [form] = Form.useForm();
+  const navigate = useNavigate();
+  const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
   const userToken = 'Token ' + localStorage.getItem('token')
-
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
-
-  // states and params
-  let { med_id } = useParams()
-  const [medInfo, setMedInfo] = useState()
-
-  // useEffects and handleChanges
+  const [medicationData, setMedicationData] = useState()
+  const [formData, setFormData] = useState({
+    medication_name: '',
+    medication_notes: '',
+    dosage: '',
+    intake_quantity: '',
+    start_date: '',
+    refill_date: '',
+    times_per_day: 1,
+    time_of_first_med: '',
+    number_of_pills: 0,
+  });
 
   useEffect( () => {
     async function fetchMed(){
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/med/${med_id}`, {
+        const response = await axios.get(`http://${base_url}/api/med/${props.med_id}`, {
           headers: {
             Authorization: userToken,
             'Content-Type': 'application/json',
           },
         });
         // console.log(response)
-        setMedInfo(response.data);
+        setMedicationData(response.data);
       } catch (error) {
         console.log(error);
       }
     }
     fetchMed();
-  }, []);
-  // console.log(medInfo)
- 
-  useEffect(() => {
-    if (medInfo) {
-      form.setFieldsValue({
-        medication_name: medInfo.medication_name,
-        medication_notes: medInfo.medication_notes,
-        dosage: medInfo.dosage,
-        start_date: moment(`${medInfo.start_date} 00:00:00`),
-        refill_date: moment(`${medInfo.refill_date} 00:00:00`),
-        times_per_day: medInfo.times_per_day,
-        time_of_first_med: moment(`1970-01-01T${medInfo.time_of_first_med}`),
-        number_of_pills: medInfo.number_of_pills,
-      });
-    }
-  }, [medInfo]);
+  }, [props, userToken]);
 
-  const onFinish = async (values) => {
-    const formattedDate = moment(values.start_date.$d).format("YYYY-MM-DD")
-    const formattedRefillDate = moment(values.refill_date.$d).format("YYYY-MM-DD")
-    const formattedTime = moment(values.time_of_first_med.$d).format("HH:mm:ss")
+  useEffect(() => {
+    if (medicationData) {
+      setFormData({ ...medicationData, medication_notes: medicationData.medication_notes || '' });
+    }
+  }, [medicationData]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  async function onSubmit(event) {
+    event.preventDefault();
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/med/${med_id}`, {
+      const response = await fetch(`http://${base_url}/api/med/${props.med_id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': userToken
       },
       body: JSON.stringify({
-        medication_name: values.medication_name,
-        medication_notes: values.medication_notes,
-        dosage: values.dosage,
-        start_date: formattedDate,
-        refill_date: formattedRefillDate,
-        times_per_day: values.times_per_day,
-        time_of_first_med: formattedTime,
-        number_of_pills: values.number_of_pills
+        medication_name: formData.medication_name,
+        medication_notes: formData.medication_notes,
+        dosage: formData.dosage,
+        intake_quantity: formData.intake_quantity,
+        start_date: formData.start_date,
+        refill_date: formData.refill_date,
+        times_per_day: formData.times_per_day,
+        time_of_first_med: formData.time_of_first_med,
+        number_of_pills: formData.number_of_pills
       }),
     });
     const result = await response.json();
     // console.log(result)
     if (response.ok) {
+      props.setIsMedicineUpdated(true)
       alert('Medicine updated successfully!');
-      window.location.reload()
     } else {
         alert('An error occurred while updating medicine. Please check your form inputs.');
       }
@@ -100,89 +85,111 @@ function EditMedDetailsForm() {
     }
   }
 
-
   return (
-    <div>
-      {medInfo &&
-      <ILayout>
-      <div
-        className="site-layout-content"
-        style={{
-          background: colorBgContainer,
-        }}
-      >
-        <Form
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          form={form}
-          name="control-hooks"
-          onFinish={onFinish}
-          style={{ maxWidth: "70vw" }}
-        >
-          <Form.Item
-            name="medication_name"
-            label="Medication name"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="medication_notes"
-            label="Medication notes"
-            rules={[{ required: false }]}
-          >
-            <TextArea rows={4} />
-          </Form.Item>
-          <Form.Item name="dosage" label="Dosage" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="start_date"
-            label="Start date"
-            rules={[{ required: true }]}
-          >
-            <DatePicker />
-          </Form.Item>
-          <Form.Item
-            name="refill_date"
-            label="Refill date or End Date"
-            rules={[{ required: true }]}
-          >
-            <DatePicker />
-          </Form.Item>
-          <Form.Item
-            name="times_per_day"
-            label="Times per day"
-            rules={[{ required: true }]}
-          >
-           <InputNumber min={1} />
-          </Form.Item>
-          <Form.Item
-            name="time_of_first_med"
-            label="Time of first med"
-            rules={[{ required: true }]}
-          >
-            <TimePicker />
-          </Form.Item>
-          <Form.Item
-            name="number_of_pills"
-            label="Number of pills in bottle"
-            rules={[{ required: true }]}
-          >
-            <InputNumber min={1} />
-          </Form.Item>
+    <Form onSubmit={onSubmit}>
+    <Form.Group className="mb-3" controlId="medication_name">
+      <Form.Label>Medication Name</Form.Label>
+      <Form.Control
+        type="text"
+        name="medication_name"
+        value={formData.medication_name}
+        onChange={handleChange}
+        required
+      />
+    </Form.Group>
 
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
-    </ILayout>
-    }
-    </div>
+    <Form.Group className="mb-3" controlId="medication_notes">
+      <Form.Label>Medication Notes</Form.Label>
+      <Form.Control
+        type="text"
+        name="medication_notes"
+        value={formData.medication_notes}
+        onChange={handleChange}
+      />
+    </Form.Group>
+
+    <Form.Group className="mb-3" controlId="dosage">
+      <Form.Label>Dosage</Form.Label>
+      <Form.Control
+        type="text"
+        name="dosage"
+        value={formData.dosage}
+        onChange={handleChange}
+        required
+      />
+    </Form.Group>
+
+    <Form.Group className="mb-3" controlId="intake_quantity">
+      <Form.Label>Amount of Medication</Form.Label>
+      <Form.Control
+        type="text"
+        name="intake_quantity"
+        value={formData.intake_quantity}
+        onChange={handleChange}
+        required
+      />
+    </Form.Group>
+
+    <Form.Group className="mb-3" controlId="start_date">
+      <Form.Label>Start Date</Form.Label>
+      <Form.Control
+        type="date"
+        name="start_date"
+        value={formData.start_date}
+        onChange={handleChange}
+        required
+      />
+    </Form.Group>
+
+    <Form.Group className="mb-3" controlId="refill_date">
+      <Form.Label>Refill Date</Form.Label>
+      <Form.Control
+        type="date"
+        name="refill_date"
+        value={formData.refill_date}
+        onChange={handleChange}
+        required
+      />
+    </Form.Group>
+
+    <Form.Group className="mb-3" controlId="times_per_day">
+      <Form.Label>Times Per Day</Form.Label>
+      <Form.Control
+        type="number"
+        name="times_per_day"
+        value={formData.times_per_day}
+        onChange={handleChange}
+        required
+      />
+    </Form.Group>
+
+    <Form.Group className="mb-3" controlId="time_of_first_med">
+      <Form.Label>Time of First Medication</Form.Label>
+      <Form.Control
+        type="time"
+        name="time_of_first_med"
+        value={formData.time_of_first_med}
+        onChange={handleChange}
+        required
+      />
+    </Form.Group>
+
+    <Form.Group className="mb-3" controlId="number_of_pills">
+      <Form.Label>Number of Pills</Form.Label>
+      <Form.Control
+        type="number"
+        name="number_of_pills"
+        value={formData.number_of_pills}
+        onChange={handleChange}
+        required
+      />
+    </Form.Group>
+
+    <Button variant="danger" type="submit">
+      Submit
+    </Button>
+  </Form>
   );
-}
+};
 
-export default EditMedDetailsForm;
+export default EditMedicationForm;

@@ -1,8 +1,8 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from .serializers import UserMedicationSerializer, MedicationIntakeSerializer, UserSerializer
-from .models import UserMedication, MedicationIntake
+from .serializers import UserMedicationSerializer, MedicationIntakeSerializer, UserSerializer, HealthRecordSerializer
+from .models import UserMedication, MedicationIntake, HealthInformation
 from django.contrib.auth.models import User
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import AllowAny
@@ -100,3 +100,19 @@ class UserDetailAPI(APIView):
     user = User.objects.get(id=request.user.id)
     serializer = UserSerializer(user)
     return Response(serializer.data)
+
+
+@authentication_classes([TokenAuthentication])
+class UserHealthRecordsAPIView(APIView):
+    def get(self, request, pk=None):
+        try:
+            user_id = request.user.id
+            if pk:
+                health_record = HealthInformation.objects.get(pk=pk)
+                serializer = HealthRecordSerializer(health_record)
+            else:
+                health_records = HealthInformation.objects.filter(user=user_id)
+                serializer = HealthRecordSerializer(health_records, many=True)
+            return Response(serializer.data)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)

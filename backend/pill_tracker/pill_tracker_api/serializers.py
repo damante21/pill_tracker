@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import UserMedication, MedicationIntake
-from datetime import timedelta, datetime
+from .models import UserMedication, MedicationIntake, HealthInformation
+from datetime import timedelta, datetime, date
 
 class UserMedicationSerializer(serializers.ModelSerializer):
    
@@ -42,11 +42,12 @@ class UserMedicationSerializer(serializers.ModelSerializer):
         instance.refill_date = validated_data.get('refill_date', instance.refill_date)
         instance.times_per_day = validated_data.get('times_per_day', instance.times_per_day)
         instance.number_of_pills = validated_data.get('number_of_pills', instance.number_of_pills)
+        instance.intake_quantity = validated_data.get('intake_quantity', instance.intake_quantity)
+        instance.rxcui = validated_data.get('rxcui', instance.rxcui)
         instance.save()
 
         # Next, update the MedicationIntake instances if necessary - changing dates and frequency
         if 'times_per_day' in validated_data or 'time_of_first_med' in validated_data:
-            # change to delete and create only from today forward
             MedicationIntake.objects.filter(medication=instance).delete()
             self.create_intakes_for_medication(instance)
         return instance
@@ -67,3 +68,10 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(validated_data['username'],validated_data['email'],validated_data['password'])
         return user
+
+
+class HealthRecordSerializer(serializers.ModelSerializer):
+   
+    class Meta:
+        model = HealthInformation
+        fields = '__all__'

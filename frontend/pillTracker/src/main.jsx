@@ -11,6 +11,7 @@ const data = {
 };
 
 ReactDOM.createRoot(document.getElementById("root")).render(
+  // <React.StrictMode>
     <ConfigProvider
         theme={{
             token: {
@@ -21,4 +22,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         }}>
         <App />
     </ConfigProvider>
+  // </React.StrictMode>
 );
