@@ -13,6 +13,8 @@ const { Title } = Typography;
 
 function MedicineDetail() {
 
+    const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
+
     //offcanvas states
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -38,11 +40,11 @@ function MedicineDetail() {
     const [user, setUser] = useState();
     useEffect(() => {
         async function fetchUserDetails() {
-        if (token) {
+        if (userToken) {
             try {
-            const response = await fetch(`http://127.0.0.1:8000/api/user_details`, {
+            const response = await fetch(`http://${base_url}/api/user_details`, {
                 headers: {
-                Authorization: token,
+                Authorization: userToken,
                 "Content-Type": "application/json",
                 },
             });
@@ -68,7 +70,7 @@ function MedicineDetail() {
     // useEffects and handleChanges
     async function fetchMed() {
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/med/${med_id}`, {
+            const response = await axios.get(`http://${base_url}/api/med/${med_id}`, {
                 headers: {
                     Authorization: userToken,
                     "Content-Type": "application/json",
@@ -92,6 +94,31 @@ function MedicineDetail() {
             setIsMedicineUpdated(false);
         }
     }, [isMedicineUpdated, med_id]);
+
+    // delete button
+    const handleDeleteClick = async () => {
+        const confirmDelete = window.confirm('Are you sure you want to delete this medicine?');
+        if (confirmDelete) {
+          try {
+            const response = await fetch(`http://${base_url}/api/med/${med_id}`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': userToken
+              }
+            });
+            if (response.ok) {
+              alert('Medicine deleted successfully!');
+              navigate('/');
+            } else {
+              alert('An error occurred while deleting medicine. Please try again.');
+            }
+          } catch(err) {
+            alert('An error occurred while deleting medicine.');
+            console.error(err);
+          }
+        }
+      }
 
     return (
         <div>
@@ -117,6 +144,9 @@ function MedicineDetail() {
                             <div className="detail-row">
                             <Button onClick={handleShow}>
                                 Edit Medication
+                            </Button> 
+                            <Button onClick={handleDeleteClick}>
+                                Delete
                             </Button>
                             </div>
                             <div className="detail-row">

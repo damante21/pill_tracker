@@ -31,7 +31,7 @@ const NewMedicine = () => {
     async function fetchUserDetails() {
       if (userToken) {
         try {
-          const response = await fetch(`http://127.0.0.1:8000/api/user_details`, {
+          const response = await fetch(`http://${base_url}/api/user_details`, {
             headers: {
               Authorization: userToken,
               "Content-Type": "application/json",

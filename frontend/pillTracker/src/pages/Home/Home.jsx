@@ -15,6 +15,7 @@ import medIcon from "../../assets/medIcon.jpg"
 const Home = () => {
 
   const [drugData, setDrugData] = useState(null);
+  const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
 
   const [show, setShow] = useState(false);
 
@@ -32,7 +33,7 @@ const Home = () => {
     async function fetchUserDetails() {
       if (token) {
         try {
-          const response = await fetch(`http://127.0.0.1:8000/api/user_details`, {
+          const response = await fetch(`http://${base_url}/api/user_details`, {
             headers: {
               Authorization: token,
               "Content-Type": "application/json",
@@ -89,7 +90,7 @@ const Home = () => {
   useEffect(() => {
     async function fetchMeds() {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/med`, {
+        const response = await axios.get(`http://${base_url}/api/med`, {
           headers: {
             Authorization: token,
             "Content-Type": "application/json",
