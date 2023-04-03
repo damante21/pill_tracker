@@ -13,8 +13,8 @@ const { Title } = Typography;
 
 function MedicineDetail() {
 
-    const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
-
+        const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
+      
     //offcanvas states
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);

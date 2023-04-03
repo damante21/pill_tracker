@@ -7,6 +7,7 @@ const EditMedicationForm = (props) => {
 
   const navigate = useNavigate();
   const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
+
   const userToken = 'Token ' + localStorage.getItem('token')
   const [medicationData, setMedicationData] = useState()
   const [formData, setFormData] = useState({
