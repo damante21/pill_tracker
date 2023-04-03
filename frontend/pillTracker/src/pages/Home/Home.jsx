@@ -117,8 +117,8 @@ const Home = () => {
                 <div style={{display:"flex",alignItems:'center'}}>
                   <PillCount pillCount={item.number_of_pills} />
                   <div style={{marginLeft:20}}>
-                      <a style={{marginRight:15}} href={`/home/editMedicine/${item.id}`}>Edit</a>
-                      <a href="">Delete</a>
+                      <Button type="primary" style={{marginRight:15}} href={`/home/editMedicine/${item.id}`}>Edit</Button>
+                      <Button danger>Delete</Button>
                   </div>
                 </div>
                

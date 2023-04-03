@@ -1,99 +1,83 @@
-import React, {useState} from 'react'
-import  { useNavigate  } from 'react-router-dom'
-import { Layout, Form, Button, Input, } from "antd";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Layout, Form, Button, Input } from "antd";
 
+export default function Login() {
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const navigate = useNavigate();
+  const { Header, Content } = Layout;
 
-export default function Login(){
-
-    const [password, setPassword] = useState("");
-    const [username, setUsername] = useState("");
-    const navigate = useNavigate();
-    const { Header, Content } = Layout;
-
-    async function onFinish(e) {
-        try {
-          const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
-          const response = await fetch(`http://${base_url}/api/api-token-auth`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              username: username,
-              password: password
-            })
-          });
-          if (response.ok) {
-            const data = await response.json();
-            localStorage.setItem('token', data.token);
-            window.location.href = '/'
-          } else {
-            localStorage.removeItem('token');
-            alert('Login failed');
-          }
-        } catch (error) {
-          alert('Something went wrong.')
-          console.error(error);
-        } 
+  async function onFinish(e) {
+    try {
+      const base_url = import.meta.env.VITE_REACT_APP_BASE_URL;
+      console.log(base_url);
+      const response = await fetch(`http://${base_url}/api/api-token-auth`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem("token", data.token);
+        window.location.href = "/";
+      } else {
+        localStorage.removeItem("token");
+        alert("Login failed");
       }
-
-    const onFinishFailed = (errorInfo) => {
-      console.log('Failed:', errorInfo);
-    };
-
-    function registerButtonClick(e){
-      e.preventDefault()
-      navigate('/register/')
+    } catch (error) {
+      alert("Something went wrong.");
+      console.error(error);
     }
+  }
 
-    function handleUsernameChange(e) {
-      setUsername(e.target.value);
-    }
-  
-    function handlePasswordChange(e) {
-      setPassword(e.target.value);
-    }
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
 
-    return(
-      <Layout>
-        <Content>
-        <h2 style={{right: '100px'}}>Log in</h2>
-        <Form 
-        name="basic"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-        >
-          <Form.Item
-            label='Username'
-            name='username'
-            rules={[{ required: true, message: 'Please input your username!' }]}
-          >
-            <Input onChange={handleUsernameChange}/>
+  function registerButtonClick(e) {
+    e.preventDefault();
+    navigate("/register/");
+  }
+
+  function handleUsernameChange(e) {
+    setUsername(e.target.value);
+  }
+
+  function handlePasswordChange(e) {
+    setPassword(e.target.value);
+  }
+
+  return (
+    <Layout style={{ minHeight: "100vh" }}>
+      <Content style={{ padding: 50 }}>
+        <h2 style={{ marginBottom: 20 }}>Log in</h2>
+        <Form name="basic" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }} style={{ maxWidth: 600 }} initialValues={{ remember: true }} onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete="off">
+          <Form.Item label="Username" name="username" rules={[{ required: true, message: "Please input your username!" }]}>
+            <Input onChange={handleUsernameChange} />
           </Form.Item>
-          <Form.Item
-            label='Password'
-            name='password'
-            rules={[{ required: true, message: 'Please input your password!' }]}
-          >
-            <Input.Password onChange={handlePasswordChange}/>
+          <Form.Item label="Password" name="password" rules={[{ required: true, message: "Please input your password!" }]}>
+            <Input.Password onChange={handlePasswordChange} />
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">
               Submit
             </Button>
           </Form.Item>
-        </Form><br/>
-          <p>Need an account?</p>
-          <Button type="primary" onClick={registerButtonClick}>Register</Button>
+        </Form>
+        <br />
+        <div style={{display:'flex',alignItems:'center'}}>
+          <span>Need an account?</span>
+          <Button type="link" onClick={registerButtonClick}>
+            Register
+          </Button>
+        </div>
       </Content>
-      </Layout>
-
-
-
-    )
+    </Layout>
+  );
 }
