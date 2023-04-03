@@ -13,6 +13,7 @@ export default function Login(){
     async function onFinish(e) {
         try {
           const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
+        
           const response = await fetch(`http://${base_url}/api/api-token-auth`, {
             method: 'POST',
             headers: {

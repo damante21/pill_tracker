@@ -164,7 +164,7 @@ const Home = () => {
                       }
                       description={item.medication_notes}
                     />
-                    <PillCount pillCount={item.number_of_pills} />
+                    <PillCount pillCount={item.total_quantity} />
                   </List.Item>
                 )}
               />

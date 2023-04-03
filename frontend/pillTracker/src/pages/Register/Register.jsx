@@ -27,6 +27,7 @@ export default function Register(){
 
     const sendData = (data) => {
         const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
+      
         // console.log(base_url)
         axios.post(`http://${base_url}/api/register/`, data)
         .then(res => {
