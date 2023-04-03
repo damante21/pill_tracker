@@ -144,7 +144,7 @@ function MedicationIntakeList(props) {
           checked={intake.taken}
           onChange={(event) => handleCheckboxChange(event, intake.id, intake.medication)}
         />
-        <InputGroup.Text className={getCheckboxColor(intake)}>{intake.time} - {intake.medicationName}</InputGroup.Text>
+        <InputGroup.Text className={getCheckboxColor(intake)} style={{ textAlign: 'left' }}>{intake.time}<br/> {intake.medicationName}</InputGroup.Text>
         </InputGroup>
     </ListGroup.Item>
   ))}

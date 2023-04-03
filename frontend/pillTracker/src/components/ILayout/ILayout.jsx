@@ -16,7 +16,7 @@ const ILayout = (props) => {
   const { children } = props;
   const menuList = [
     { key: "home", label: "Home" },
-    { key: "healthRecords", label: "Health Records" },
+    { key: "healthRecords", label: "Health Reference" },
   ];
 
   const handleClickMenuItem = ({ item, key, keyPath, domEvent }) => {

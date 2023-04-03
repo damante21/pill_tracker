@@ -18,7 +18,7 @@ const EditMedicationForm = (props) => {
     refill_date: '',
     times_per_day: 1,
     time_of_first_med: '',
-    number_of_pills: 0,
+    total_quantity: 0,
   });
 
   useEffect( () => {
@@ -68,7 +68,7 @@ const EditMedicationForm = (props) => {
         refill_date: formData.refill_date,
         times_per_day: formData.times_per_day,
         time_of_first_med: formData.time_of_first_med,
-        number_of_pills: formData.number_of_pills
+        total_quantity: formData.total_quantity
       }),
     });
     const result = await response.json();
@@ -98,18 +98,8 @@ const EditMedicationForm = (props) => {
       />
     </Form.Group>
 
-    <Form.Group className="mb-3" controlId="medication_notes">
-      <Form.Label>Medication Notes</Form.Label>
-      <Form.Control
-        type="text"
-        name="medication_notes"
-        value={formData.medication_notes}
-        onChange={handleChange}
-      />
-    </Form.Group>
-
     <Form.Group className="mb-3" controlId="dosage">
-      <Form.Label>Dosage</Form.Label>
+      <Form.Label>Dosage Strength</Form.Label>
       <Form.Control
         type="text"
         name="dosage"
@@ -120,13 +110,23 @@ const EditMedicationForm = (props) => {
     </Form.Group>
 
     <Form.Group className="mb-3" controlId="intake_quantity">
-      <Form.Label>Amount of Medication</Form.Label>
+      <Form.Label>Dosage Amount (per dose in pills, mL, etc.)</Form.Label>
       <Form.Control
-        type="text"
+        type="number"
         name="intake_quantity"
         value={formData.intake_quantity}
         onChange={handleChange}
         required
+      />
+    </Form.Group>
+
+    <Form.Group className="mb-3" controlId="medication_notes">
+      <Form.Label>Medication Notes</Form.Label>
+      <Form.Control
+        type="text"
+        name="medication_notes"
+        value={formData.medication_notes}
+        onChange={handleChange}
       />
     </Form.Group>
 
@@ -174,12 +174,12 @@ const EditMedicationForm = (props) => {
       />
     </Form.Group>
 
-    <Form.Group className="mb-3" controlId="number_of_pills">
-      <Form.Label>Number of Pills</Form.Label>
+    <Form.Group className="mb-3" controlId="total_quantity">
+      <Form.Label>Total Quantity in Container (in pills, mL, etc.)</Form.Label>
       <Form.Control
         type="number"
-        name="number_of_pills"
-        value={formData.number_of_pills}
+        name="total_quantity"
+        value={formData.total_quantity}
         onChange={handleChange}
         required
       />

@@ -10,10 +10,12 @@ import PillCount from "../../components/PillCount/PillCount";
 import NihDetails from "../../components/NihDetails/nih_details";
 import callBackend from "../../helpers/api_call";
 
+import medIcon from "../../assets/medIcon.jpg"
 
 const Home = () => {
 
   const [drugData, setDrugData] = useState(null);
+  const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
 
   const [show, setShow] = useState(false);
 
@@ -24,6 +26,37 @@ const Home = () => {
   const authToken = localStorage.getItem("token");
 
   const [token, setToken] = useState("Token " + authToken);
+
+  // ensure only authenticated users that exist in our db can see page
+  const [user, setUser] = useState();
+  useEffect(() => {
+    async function fetchUserDetails() {
+      if (token) {
+        try {
+          const response = await fetch(`http://${base_url}/api/user_details`, {
+            headers: {
+              Authorization: token,
+              "Content-Type": "application/json",
+            },
+          });
+          if (response.ok) {
+            const data = await response.json();
+            // console.log(data)
+            setUser(data);
+          } else {
+            // alert("Failed to fetch user details");
+            navigate("/login/")
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        // redirect user to login page if not authenticated
+        window.location.href = "/login";
+      }
+    }
+    fetchUserDetails();
+  }, []);
 
   // array of all medication objects to get the names for the api call
   const [meds, setMeds] = useState([]);
@@ -57,7 +90,7 @@ const Home = () => {
   useEffect(() => {
     async function fetchMeds() {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/med`, {
+        const response = await axios.get(`http://${base_url}/api/med`, {
           headers: {
             Authorization: token,
             "Content-Type": "application/json",
@@ -72,12 +105,6 @@ const Home = () => {
     }
     fetchMeds();
   }, [token, medicationIntakeUpdated]);
-
-  useEffect(() => {
-    if (authToken == null) {
-      navigate("/login/");
-    }
-  }, []);
 
   return (
     <ILayout>

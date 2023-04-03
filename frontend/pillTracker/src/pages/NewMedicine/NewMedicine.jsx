@@ -11,6 +11,7 @@ import {
 import ILayout from "../../components/ILayout/ILayout";
 import moment from "moment";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
 
@@ -22,6 +23,38 @@ const NewMedicine = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  // ensure only authenticated users that exist in our db can see page
+  const navigate = useNavigate();
+  const [user, setUser] = useState();
+  useEffect(() => {
+    async function fetchUserDetails() {
+      if (userToken) {
+        try {
+          const response = await fetch(`http://${base_url}/api/user_details`, {
+            headers: {
+              Authorization: userToken,
+              "Content-Type": "application/json",
+            },
+          });
+          if (response.ok) {
+            const data = await response.json();
+            // console.log(data)
+            setUser(data);
+          } else {
+            // alert("Failed to fetch user details");
+            navigate("/login/")
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        // redirect user to login page if not authenticated
+        window.location.href = "/login";
+      }
+    }
+    fetchUserDetails();
+  }, []);
   
   const onFinish = async (values) => {
     const formattedDate = moment(values.start_date.$d).format("YYYY-MM-DD")
@@ -43,7 +76,7 @@ const NewMedicine = () => {
         refill_date: formattedRefillDate,
         times_per_day: values.times_per_day,
         time_of_first_med: formattedTime,
-        number_of_pills: values.number_of_pills,
+        total_quantity: values.total_quantity,
         rxcui: values.rxcui
       }),
     });
@@ -57,7 +90,7 @@ const NewMedicine = () => {
       refill_date: formattedRefillDate,
       times_per_day: values.times_per_day,
       time_of_first_med: formattedTime,
-      number_of_pills: values.number_of_pills,
+      total_quantity: values.total_quantity,
       rxcui: values.rxcui
     }))
     const result = await response.json();
@@ -74,6 +107,7 @@ const NewMedicine = () => {
     }
   }
  
+  //autocomplete feature pulled from NIH example code
   const loadAutocomplete = () => {
     const autocompleteCSS = document.createElement('link');
     autocompleteCSS.href = 'https://clinicaltables.nlm.nih.gov/autocomplete-lhc-versions/17.0.2/autocomplete-lhc.min.css';
@@ -145,7 +179,7 @@ const NewMedicine = () => {
           </Form.Item>
           <Form.Item 
             name="dosage" 
-            label="Dosage" 
+            label="Dosage Strength" 
             rules={[{ required: true }]}
             >
             <Input type="text" id="drug_strengths" placeholder="Strength list" onBlur={(event) => {
@@ -165,10 +199,10 @@ const NewMedicine = () => {
           </Form.Item>
           <Form.Item
             name="intake_quantity"
-            label="Amount of medication"
+            label="Dosage Amount (per dose in pills, mL, etc.)"
             rules={[{ required: true }]}
           >
-           <Input placeholder="Amount of medication taken each time (ie. 2 tablets, 10mL, etc)" />
+           <InputNumber min={1} />
           </Form.Item>
           <Form.Item
             name="medication_notes"
@@ -206,8 +240,8 @@ const NewMedicine = () => {
             <TimePicker />
           </Form.Item>
           <Form.Item
-            name="number_of_pills"
-            label="Number of pills in bottle"
+            name="total_quantity"
+            label="Total Quantity in Container (in pills, mL, etc.)"
             rules={[{ required: true }]}
           >
             <InputNumber min={1} />
