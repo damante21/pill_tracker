@@ -80,19 +80,6 @@ const NewMedicine = () => {
         rxcui: values.rxcui
       }),
     });
-    console.log(JSON.stringify({
-      medication_name: values.medication_name,
-      medication_notes: values.medication_notes,
-      dosage: values.dosage,
-      intake_quantity: values.intake_quantity,
-      rx_number: values.rx_number,
-      start_date: formattedDate,
-      refill_date: formattedRefillDate,
-      times_per_day: values.times_per_day,
-      time_of_first_med: formattedTime,
-      total_quantity: values.total_quantity,
-      rxcui: values.rxcui
-    }))
     const result = await response.json();
     // console.log(result)
     if (response.ok) {

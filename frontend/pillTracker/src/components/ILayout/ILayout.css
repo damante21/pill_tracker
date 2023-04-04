@@ -5,4 +5,12 @@
 
 .layout{
     min-height: 100vh;
+    min-width: 480px;
+    /* max-width: 1000px;
+    margin: 0 auto; */
 }
+
+.content{
+    max-width: 1000px;
+    /* margin: 0 auto; */
+  }
