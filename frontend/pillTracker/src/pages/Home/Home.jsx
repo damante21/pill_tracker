@@ -10,6 +10,7 @@ import PillCount from "../../components/PillCount/PillCount";
 import NihDetails from "../../components/NihDetails/NihDetails";
 import callBackend from "../../helpers/api_call";
 import DeleteMedicine from "../../components/DeleteMed/DeleteMed";
+import EditMedicationForm from "../../components/EditMed/EditMed";
 
 const Home = () => {
   const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
@@ -19,6 +20,15 @@ const Home = () => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [showEdit, setShowEdit] = useState(false);
+  const handleCloseEdit = () => setShowEdit(false);
+  const handleShowEdit = (med_id) => {
+    setSelectedMedId(med_id);
+    setShowEdit(true);
+  };
+  const [selectedMedId, setSelectedMedId] = useState(null);
+  const [isMedicineUpdated, setIsMedicineUpdated] = useState(false);
 
   const navigate = useNavigate();
   const authToken = localStorage.getItem("token");
@@ -130,12 +140,13 @@ const Home = () => {
 
         setMeds(response.data);
         setMedicationIntakeUpdated(false);
+        setIsMedicineUpdated(false)
       } catch (error) {
         console.log(error);
       }
     }
     fetchMeds();
-  }, [token, medicationIntakeUpdated]);
+  }, [token, medicationIntakeUpdated, isMedicineUpdated]);
 
   useEffect(() => {
     if (authToken == null) {
@@ -158,7 +169,14 @@ const Home = () => {
               />
             </Offcanvas.Body>
           </Offcanvas>
-
+          <Offcanvas show={showEdit} onHide={handleCloseEdit}>
+            <Offcanvas.Header closeButton>
+              <Offcanvas.Title>Edit Medication</Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+              <EditMedicationForm med_id={selectedMedId} setIsMedicineUpdated={setIsMedicineUpdated}/>
+            </Offcanvas.Body>
+          </Offcanvas>
           <div
             className="site-layout-content"
             style={{
@@ -204,6 +222,9 @@ const Home = () => {
                       description={item.medication_notes}
                     />
                     <PillCount pillCount={item.total_quantity} />
+                    <Button type="primary" style={{marginRight:10}} onClick={() => handleShowEdit(item.id)}>
+                      Edit Medication
+                    </Button>
                     <DeleteMedicine med_id={item.id} />
                   </List.Item>
                 )}
