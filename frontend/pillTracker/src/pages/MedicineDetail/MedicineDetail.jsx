@@ -142,10 +142,10 @@ function MedicineDetail() {
                     <Row>
                         <Col span={12}>
                             <div className="detail-row">
-                            <Button onClick={handleShow}>
+                            <Button type="primary" style={{marginRight:10}} onClick={handleShow}>
                                 Edit Medication
                             </Button> 
-                            <Button onClick={handleDeleteClick}>
+                            <Button type="dashed" danger onClick={handleDeleteClick}>
                                 Delete
                             </Button>
                             </div>
