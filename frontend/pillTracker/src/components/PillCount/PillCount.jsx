@@ -18,8 +18,8 @@ export default function PillCount(props){
 
     return(
         <div className={`${isLow ? "low" : "not-low"}`}>
-        <p>Number of pills left</p>
-        <p>{pillCount}</p>
+        Quantity remaining (in pills, mL, etc): <br/>
+        {pillCount}
         </div>
     )
 
