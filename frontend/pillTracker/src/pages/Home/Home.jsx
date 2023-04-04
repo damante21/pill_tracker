@@ -33,9 +33,11 @@ const Home = () => {
     try {
       callBackend().then((response) => {
         response.json().then((data) => {
+          console.log(data['drug_side_effects'])
           setDrugData(data);
         });
       });
+      
     } catch {
       console.log("there are no drug interactions");
     }
