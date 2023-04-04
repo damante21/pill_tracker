@@ -4,7 +4,6 @@ import { InputGroup, ListGroup } from 'react-bootstrap'
 
 function MedicationIntakeList(props) {
   const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
-  
   // get full current date to track if med was missed and check it every 5 min
   const [currentDate, setCurrentDate] = useState(new Date());
   const [formattedDate, setFormattedDate] = useState();
@@ -92,15 +91,13 @@ function MedicationIntakeList(props) {
       .then((response) => {
         const data = {
           'id': response.data['id'],
-          // 'user': response.data['user'],
-          'number_of_pills': response.data['number_of_pills']
+          'total_quantity': response.data['total_quantity']
         }
         if(isChecked){
-          data['number_of_pills'] = data['number_of_pills'] + 1;
+          data['total_quantity'] = data['total_quantity'] + response.data['intake_quantity'];
         }else{
-          data['number_of_pills'] = data['number_of_pills'] - 1;
+          data['total_quantity'] = data['total_quantity'] - response.data['intake_quantity'];
         }
-        // console.log(data)
         axios.put(`http://${base_url}/api/med/${medication}`, data)
         .then((response) => {
         })
@@ -144,7 +141,7 @@ function MedicationIntakeList(props) {
           checked={intake.taken}
           onChange={(event) => handleCheckboxChange(event, intake.id, intake.medication)}
         />
-        <InputGroup.Text className={getCheckboxColor(intake)}>{intake.time} - {intake.medicationName}</InputGroup.Text>
+        <InputGroup.Text className={getCheckboxColor(intake)} style={{ textAlign: 'left' }}>{intake.time}<br/> {intake.medicationName}</InputGroup.Text>
         </InputGroup>
     </ListGroup.Item>
   ))}

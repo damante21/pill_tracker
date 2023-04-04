@@ -1,7 +1,11 @@
 import { theme, Typography, Button, Form, Space, Avatar, Divider, Col, Row, Image } from "antd";
 import ILayout from "../../components/ILayout/ILayout";
 import "./HealthRecords.css";
+<<<<<<< HEAD
 import { UserOutlined } from "@ant-design/icons";
+=======
+import { useNavigate } from "react-router-dom";
+>>>>>>> main
 import { useState, useEffect } from "react";
 import heartRateImage from "../../assets/heartRate.jpg";
 import bodyTemperatureImage from "../../assets/bodyTemperature.jpg";
@@ -10,19 +14,25 @@ import bloodPressureImage from "../../assets/bloodPressure.jpg";
 
 const { Title } = Typography;
 const HealthRecords = () => {
-  const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
+<<<<<<< HEAD
   // get user details to populate with username etc
+=======
+  const navigate = useNavigate();
+
+  // get user details to populate with username etc - later feature
+  // verify user exists within our db
+>>>>>>> main
   const [user, setUser] = useState();
   useEffect(() => {
     async function fetchUserDetails() {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const response = await fetch(`http://${base_url}/api/user_details`, {
+          const response = await fetch(`http://127.0.0.1:8000/api/user_details`, {
             headers: {
               Authorization: `Token ${token}`,
               "Content-Type": "application/json",
@@ -33,7 +43,12 @@ const HealthRecords = () => {
             // console.log(data)
             setUser(data);
           } else {
+<<<<<<< HEAD
             alert("Failed to fetch user details");
+=======
+            // alert("Failed to fetch user details");
+            navigate("/login/")
+>>>>>>> main
           }
         } catch (error) {
           console.error(error);
@@ -46,31 +61,6 @@ const HealthRecords = () => {
     fetchUserDetails();
   }, []);
   // console.log(user)
-
-  const [healthRecords, setHealthRecords] = useState();
-  useEffect ( () => {
-    async function fetchHealtRecords() {
-      const token = localStorage.getItem('token');
-      try {
-        const response = await fetch(`http://${base_url}/api/health_records`, {
-          headers: {
-            'Authorization': `Token ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        if (response.ok) {
-          const data = await response.json();
-          
-          setHealthRecords(data);
-        } else {
-          alert('Failed to fetch health records');
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    fetchHealtRecords()
-  }, []);
 
   return (
     <ILayout>
@@ -85,11 +75,11 @@ const HealthRecords = () => {
                 <div className="record-item">
                   <Image width={50} src={heartRateImage} />
                   <h3>Heart Rate</h3>
-                  <span>60-10bpm</span>
+                  <span>60-100bpm</span>
                 </div>
                 <div className="record-item">
                   <Image width={50} src={bloodSugarImage} />
-                  <h3>Blood Sugar:</h3>
+                  <h3>Blood Sugar</h3>
                   <span>80-130mg/dL</span>
                 </div>
                 <div className="record-item">

@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import UserMedication, MedicationIntake, HealthInformation
 from datetime import timedelta, datetime, date
+from django.utils import timezone
 
 class UserMedicationSerializer(serializers.ModelSerializer):
    
@@ -41,15 +42,39 @@ class UserMedicationSerializer(serializers.ModelSerializer):
         instance.start_date = validated_data.get('start_date', instance.start_date)
         instance.refill_date = validated_data.get('refill_date', instance.refill_date)
         instance.times_per_day = validated_data.get('times_per_day', instance.times_per_day)
-        instance.number_of_pills = validated_data.get('number_of_pills', instance.number_of_pills)
+        instance.total_quantity = validated_data.get('total_quantity', instance.total_quantity)
         instance.intake_quantity = validated_data.get('intake_quantity', instance.intake_quantity)
+        instance.time_of_first_med = validated_data.get('time_of_first_med', instance.time_of_first_med)
         instance.rxcui = validated_data.get('rxcui', instance.rxcui)
         instance.save()
 
-        # Next, update the MedicationIntake instances if necessary - changing dates and frequency
+       # Next, update the MedicationIntake instances if necessary - changing dates and frequency
         if 'times_per_day' in validated_data or 'time_of_first_med' in validated_data:
-            MedicationIntake.objects.filter(medication=instance).delete()
-            self.create_intakes_for_medication(instance)
+            # Get all medication intakes for the current instance
+            medication_intakes = MedicationIntake.objects.filter(medication=instance)
+            today = timezone.now().date()
+
+            # Delete intakes from today onwards
+            medication_intakes.filter(date__gte=today).delete()
+
+            # Create new intakes from today to end date
+            if instance.times_per_day > 0:
+                start_date = today
+                refill_date = instance.refill_date or start_date
+                days = (refill_date - start_date).days + 1
+                intakes_per_day = instance.times_per_day
+                delta = timedelta(days=1 / intakes_per_day)
+
+                time_parts = (instance.time_of_first_med.hour, instance.time_of_first_med.minute)
+                start_datetime = datetime.combine(start_date, datetime.min.time())
+                start_datetime += timedelta(hours=int(time_parts[0]), minutes=int(time_parts[1]))
+
+                for i in range(days):
+                    date = start_datetime.date()
+                    for j in range(intakes_per_day):
+                        time = start_datetime.time()
+                        MedicationIntake.objects.create(medication=instance, date=date, time=time)
+                        start_datetime += delta
         return instance
     
 
