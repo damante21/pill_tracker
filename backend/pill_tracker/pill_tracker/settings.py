@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'nih_api',
+    # 'nih_api',
     'rest_framework.authtoken',
     "corsheaders",
     'pill_tracker_api'
