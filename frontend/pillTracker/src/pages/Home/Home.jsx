@@ -189,12 +189,25 @@ const Home = () => {
                   <NihDetails onClick={clickHandler} data={drugData} />
                 )}
               </span>
-              <Table
+              <List
                 className="med-list"
-                columns={columns}
-                dataSource={data}
-                pagination={false}
-              />;
+                itemLayout="horizontal"
+                dataSource={meds}
+                renderItem={(item, index) => (
+                  <List.Item>
+                    <List.Item.Meta
+                      title={
+                        <a href={`/home/medicineDetail/${item.id}`}>
+                          {item.medication_name}
+                        </a>
+                      }
+                      description={item.medication_notes}
+                    />
+                    <PillCount pillCount={item.total_quantity} />
+                    <DeleteMedicine med_id={item.id} />
+                  </List.Item>
+                )}
+              />
             </Space>
           </div>
         </>
