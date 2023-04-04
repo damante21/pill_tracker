@@ -17,5 +17,5 @@ urlpatterns = [
     path('api-token-auth', views.obtain_auth_token),
     path('user_details', UserDetailAPI.as_view()),
     path('health_records', UserHealthRecordsAPIView.as_view(), name='health_record'),
-    path('nih_api/', include('nih_api.urls')),
+    path('nih_api/', DrugInfoAPIView.as_view(), name='nih_api'),
 ]

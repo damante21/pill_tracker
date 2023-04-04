@@ -7,15 +7,11 @@ import ILayout from "../../components/ILayout/ILayout";
 import MedicationIntakeList from "../../components/MedTracking/MedicationIntakeList";
 import { Offcanvas } from "react-bootstrap";
 import PillCount from "../../components/PillCount/PillCount";
-import NihDetails from "../../components/NihDetails/nih_details";
+import NihDetails from "../../components/NihDetails/NihDetails";
 import callBackend from "../../helpers/api_call";
 
-import medIcon from "../../assets/medIcon.jpg"
-
 const Home = () => {
-
-  const [drugData, setDrugData] = useState(null);
-  const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
+  const [drugData, setDrugData] = useState("");
 
   const [show, setShow] = useState(false);
 
@@ -27,51 +23,23 @@ const Home = () => {
 
   const [token, setToken] = useState("Token " + authToken);
 
-  // ensure only authenticated users that exist in our db can see page
-  const [user, setUser] = useState();
-  useEffect(() => {
-    async function fetchUserDetails() {
-      if (token) {
-        try {
-          const response = await fetch(`http://${base_url}/api/user_details`, {
-            headers: {
-              Authorization: token,
-              "Content-Type": "application/json",
-            },
-          });
-          if (response.ok) {
-            const data = await response.json();
-            // console.log(data)
-            setUser(data);
-          } else {
-            // alert("Failed to fetch user details");
-            navigate("/login/")
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        // redirect user to login page if not authenticated
-        window.location.href = "/login";
-      }
-    }
-    fetchUserDetails();
-  }, []);
-
   // array of all medication objects to get the names for the api call
   const [meds, setMeds] = useState([]);
 
   // state to refresh med info (pill count) after tracking component is updated
   const [medicationIntakeUpdated, setMedicationIntakeUpdated] = useState(false);
 
-  if (drugData == null) {
-    callBackend().then((response) => {
-      response.json().then((data) => {
-        setDrugData(data);
+  if (drugData == "") {
+    try {
+      callBackend().then((response) => {
+        response.json().then((data) => {
+          setDrugData(data);
+        });
       });
-    });
+    } catch {
+      console.log("there are no drug interactions");
+    }
   }
-
 
   const clickHandler = () => {
     navigate("drugInteractions", { state: drugData });
@@ -90,7 +58,7 @@ const Home = () => {
   useEffect(() => {
     async function fetchMeds() {
       try {
-        const response = await axios.get(`http://${base_url}/api/med`, {
+        const response = await axios.get(`http://127.0.0.1:8000/api/med`, {
           headers: {
             Authorization: token,
             "Content-Type": "application/json",
@@ -105,6 +73,12 @@ const Home = () => {
     }
     fetchMeds();
   }, [token, medicationIntakeUpdated]);
+
+  useEffect(() => {
+    if (authToken == null) {
+      navigate("/login/");
+    }
+  }, []);
 
   return (
     <ILayout>
@@ -147,8 +121,10 @@ const Home = () => {
                   }}
                 >
                   Add medicine
-                </Button> {' '}
-                <NihDetails onClick={clickHandler} data={drugData} />
+                </Button>{" "}
+                {drugData && (
+                  <NihDetails onClick={clickHandler} data={drugData} />
+                )}
               </span>
               <List
                 className="med-list"
@@ -164,7 +140,7 @@ const Home = () => {
                       }
                       description={item.medication_notes}
                     />
-                    <PillCount pillCount={item.total_quantity} />
+                    <PillCount pillCount={item.number_of_pills} />
                   </List.Item>
                 )}
               />

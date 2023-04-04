@@ -4,7 +4,7 @@ import callBackend from "../../helpers/api_call";
 import "../../App.css";
 import DrugInteractionList from "./DrugInteractionList";
 import { Button } from "antd";
-import ILayout from "../../components/ILayout/ILayout";
+import ILayout from "../ILayout/ILayout";
 import moment from "moment";
 
 const NihDetails = (props) => {
