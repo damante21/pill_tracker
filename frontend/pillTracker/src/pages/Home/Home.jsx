@@ -7,7 +7,8 @@ import ILayout from "../../components/ILayout/ILayout";
 import MedicationIntakeList from "../../components/MedTracking/MedicationIntakeList";
 import { Offcanvas } from "react-bootstrap";
 import PillCount from "../../components/PillCount/PillCount";
-import NihDetails from "../../components/NihDetails/NihDetails";
+import NihDetailsButton from "../../components/NihDetails/NihDetailsButton";
+import SideEffectsButton from "../../components/FDASideEffects/SideEffectsButton";
 import callBackend from "../../helpers/api_call";
 
 const Home = () => {
@@ -43,8 +44,11 @@ const Home = () => {
     }
   }
 
-  const clickHandler = () => {
+  const interactionsClickHandler = () => {
     navigate("drugInteractions", { state: drugData });
+  };
+  const sideEffectsClickHandler = () => {
+    navigate("sideEffects", { state: drugData });
   };
 
   const {
@@ -125,7 +129,16 @@ const Home = () => {
                   Add medicine
                 </Button>{" "}
                 {drugData && (
-                  <NihDetails onClick={clickHandler} data={drugData} />
+                  <NihDetailsButton
+                    onClick={interactionsClickHandler}
+                    data={drugData}
+                  />
+                )}{" "}
+                {drugData && (
+                  <SideEffectsButton
+                    onClick={sideEffectsClickHandler}
+                    data={drugData}
+                  />
                 )}
               </span>
               <List

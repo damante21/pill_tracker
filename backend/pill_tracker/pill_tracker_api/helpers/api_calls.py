@@ -37,7 +37,7 @@ def fda_api_call(request, user_id):
         
         response = requests.get(f'https://api.fda.gov/drug/label.json?search=openfda.brand_name:{drug_name}&limit=10')
         fda_call = response.json()
-        response_arr.append(fda_call)
+        response_arr.append(DrugSideEffects(drug_name, fda_call))
     
     return response_arr
     # print(fda_call['results'][0]['boxed_warning'])

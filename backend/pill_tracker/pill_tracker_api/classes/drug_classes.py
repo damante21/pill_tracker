@@ -21,3 +21,12 @@ class DrugInteraction():
         
     def __str__(self):
         return f'{self.drug_1}, {self.drug_2}, {self.description}, {self.severity}'
+    
+    
+class DrugSideEffects():
+    def __init__(self, drug_name, side_effects):
+        self.drug_name = drug_name
+        self.side_effects = side_effects
+    
+    def __str__(self):
+        return f'{self.drug_name}, {self.side_effects}'

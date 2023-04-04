@@ -10,8 +10,10 @@ import MedicationIntakeList from "./components/MedTracking/MedicationIntakeList"
 import MedicineDetail from "./pages/MedicineDetail/MedicineDetail";
 import EditMedicationForm from "./components/EditMed/EditMed";
 import DrugInteractionList from "./components/NihDetails/DrugInteractionList";
+import SideEffects from "./components/FDASideEffects/SideEffects";
 
-function App() {
+
+const App = () => {
   return (
     <BrowserRouter>
       <Routes>
@@ -28,6 +30,7 @@ function App() {
           element={<MedicineDetail />}
         />
         <Route path="home/drugInteractions" element={<DrugInteractionList />} />
+        <Route path="home/sideEffects" element={<SideEffects />} />
         <Route
           path="/home/editMedicine/:med_id"
           element={<EditMedicationForm />}
