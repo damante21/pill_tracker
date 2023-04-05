@@ -151,3 +151,10 @@ class DrugInfoAPIView(APIView):
         data = interactions_api_call(request, user_id)
         
         return HttpResponse(data, user_id)
+    
+    
+# def display(request):
+    
+#     test = interactions_api_call(request, 1)
+#     # res = test['drug_side_effects']
+#     return HttpResponse(test)

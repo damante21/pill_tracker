@@ -34,7 +34,7 @@ const Home = () => {
     try {
       callBackend().then((response) => {
         response.json().then((data) => {
-          console.log(data['drug_side_effects'])
+          // console.log(data['drug_side_effects'])
           setDrugData(data);
         });
       });

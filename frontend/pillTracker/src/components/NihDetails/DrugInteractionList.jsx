@@ -32,7 +32,7 @@ const DrugInteractionList = (props) => {
               className="med-list"
               itemLayout="horizontal"
               dataSource={data.drug_interactions}
-              renderItem={(item, index) => (
+              renderItem={(item) => (
                 <List.Item>
                   <ul>
                     <li key={item.drug_1}>

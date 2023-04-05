@@ -34,16 +34,18 @@ const SideEffects = () => {
               className="med-list"
               itemLayout="horizontal"
               dataSource={data.drug_side_effects}
-              renderItem={(item, index) => (
+              renderItem={(item) => (
                 <List.Item>
                   <ul>
-                    <li key={item.drug_name}>
+                    <h6>
                       {item.drug_name.charAt(0).toUpperCase() +
                         item.drug_name.slice(1)}
-                    </li>
-                    {/* <li key={item.side_effects}>
-                      {item.side_effects}
+                    </h6>
+                    {/* <li key={item.drug_name}>
+                      {item.drug_name.charAt(0).toUpperCase() +
+                        item.drug_name.slice(1)}
                     </li> */}
+                    <li>{item.side_effects}</li>
                     {/* <li key={item.description}>
                       Description of drug interaction: {item.description}
                     </li>
