@@ -18,13 +18,14 @@ const HealthRecords = () => {
 
   // get user details to populate with username etc - later feature
   // verify user exists within our db
+  const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
   const [user, setUser] = useState();
   useEffect(() => {
     async function fetchUserDetails() {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const response = await fetch(`http://127.0.0.1:8000/api/user_details`, {
+          const response = await fetch(`http://${base_url}/api/user_details`, {
             headers: {
               Authorization: `Token ${token}`,
               "Content-Type": "application/json",
