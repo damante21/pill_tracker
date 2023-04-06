@@ -115,38 +115,41 @@ def interactions_api_call(request, user_id):
             counter += 1
         else:
             break
-    
-    interaction_response = requests.get(f'{interaction_api_call}')
-    response = interaction_response.json()
-    
-    if interaction_response.status_code == 200:
-        try:
-            for interaction_group in response['fullInteractionTypeGroup']:
-                for interaction_type in interaction_group['fullInteractionType']:
-                    for interaction in interaction_type['interactionPair']:
-                        interaction_pairs.append(interaction)
-
-            for pair in interaction_pairs:
-                drug_1 = pair['interactionConcept'][0]['minConceptItem']['rxcui']
-                drug_1_name = pair['interactionConcept'][0]['minConceptItem']['name']
-                drug_2 = pair['interactionConcept'][1]['minConceptItem']['rxcui']
-                drug_2_name = pair['interactionConcept'][1]['minConceptItem']['name']
-                description = pair['description']
-                severity = pair['severity']
-                if description not in description_arr:
-                    drug_interaction_arr.append(DrugInteraction(drug_1, drug_1_name, drug_2, drug_2_name, description, severity))
-                    description_arr.append(description)
-            
-            result = json.dumps({'drug_interactions' : drug_interaction_arr,
-                                 'drug_side_effects' : fda_call_arr}, default=vars)
-            
-            return HttpResponse(result)
+    if len(names_arr) > 1:
         
-        except:
-            return
+        interaction_response = requests.get(f'{interaction_api_call}')
+        response = interaction_response.json()
+        
+        if interaction_response.status_code == 200:
+            try:
+                for interaction_group in response['fullInteractionTypeGroup']:
+                    for interaction_type in interaction_group['fullInteractionType']:
+                        for interaction in interaction_type['interactionPair']:
+                            interaction_pairs.append(interaction)
 
+                for pair in interaction_pairs:
+                    drug_1 = pair['interactionConcept'][0]['minConceptItem']['rxcui']
+                    drug_1_name = pair['interactionConcept'][0]['minConceptItem']['name']
+                    drug_2 = pair['interactionConcept'][1]['minConceptItem']['rxcui']
+                    drug_2_name = pair['interactionConcept'][1]['minConceptItem']['name']
+                    description = pair['description']
+                    severity = pair['severity']
+                    if description not in description_arr:
+                        drug_interaction_arr.append(DrugInteraction(drug_1, drug_1_name, drug_2, drug_2_name, description, severity))
+                        description_arr.append(description)
+                
+                result = json.dumps({'drug_interactions' : drug_interaction_arr,
+                                    'drug_side_effects' : fda_call_arr}, default=vars)
+                
+                return HttpResponse(result)
+            
+            except:
+                return
+
+        else:
+            print(f'interaction_response: {interaction_response.status_code}')
     else:
-        print(f'interaction_response: {interaction_response.status_code}')
+        return json.dumps({'drug_side_effects' : fda_call_arr}, default=vars)
         
 # instead of multiple for loops, this may work. need to refactor when there is time.
 # a = json.loads(interaction_response.content)

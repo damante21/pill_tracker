@@ -108,7 +108,7 @@ const Home = () => {
     try {
       callBackend().then((response) => {
         response.json().then((data) => {
-          // console.log(data)
+          console.log(data)
           setDrugData(data['drug_interactions']);
           setSideEffectData(data["drug_side_effects"]);
         });
