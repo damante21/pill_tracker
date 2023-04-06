@@ -122,11 +122,6 @@ const Home = () => {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const menuList = [
-    { key: "home", label: "Home" },
-    { key: "healthRecords", label: "Health Records" },
-  ];
-
   //get all meds, set medicationIntakeUpdated state to false to "listen" for changes in checkboxes
   useEffect(() => {
     async function fetchMeds() {

@@ -5,21 +5,22 @@ import { ConfigProvider } from "antd";
 import "./index.css";
 
 const data = {
-  borderRadius: 6,
-  colorPrimary: "#D0021B",
+    borderRadius: 6,
+    colorPrimary: "#D0021B",
+    colorIcon: "#D0021B",
 };
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
     <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: data.colorPrimary,
-          borderRadius: data.borderRadius,
-        },
-      }}
-    >
-      <App />
+        theme={{
+            token: {
+                colorPrimary: data.colorPrimary,
+                borderRadius: data.borderRadius,
+                colorIcon: data.colorIcon,
+            },
+        }}>
+        <App />
     </ConfigProvider>
   // </React.StrictMode>
 );
