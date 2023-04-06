@@ -1,4 +1,4 @@
-import { theme, Button, Avatar, Space, List } from "antd";
+import { theme, Button, Table, Space, List } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -10,8 +10,11 @@ import PillCount from "../../components/PillCount/PillCount";
 import NihDetailsButton from "../../components/NihDetails/NihDetailsButton";
 import SideEffectsButton from "../../components/FDASideEffects/SideEffectsButton";
 import callBackend from "../../helpers/api_call";
+import DeleteMedicine from "../../components/DeleteMed/DeleteMed";
+import EditMedicationForm from "../../components/EditMed/EditMed";
 
 const Home = () => {
+  const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
   const [drugData, setDrugData] = useState("");
 
   const [show, setShow] = useState(false);
@@ -19,13 +22,83 @@ const Home = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [showEdit, setShowEdit] = useState(false);
+  const handleCloseEdit = () => setShowEdit(false);
+  const handleShowEdit = (med_id) => {
+    setSelectedMedId(med_id);
+    setShowEdit(true);
+  };
+  const [selectedMedId, setSelectedMedId] = useState(null);
+  const [isMedicineUpdated, setIsMedicineUpdated] = useState(false);
+
   const navigate = useNavigate();
   const authToken = localStorage.getItem("token");
 
   const [token, setToken] = useState("Token " + authToken);
 
+  const columns = [
+    {
+      title: 'Medication Name',
+      dataIndex: 'medication_name',
+      render: (text, record) => <a href={`/home/medicineDetail/${record.id}`}>{text}</a>,
+    },
+    {
+      title: 'Notes',
+      dataIndex: 'medication_notes',
+    },
+    {
+      title: 'Quantity Remaining',
+      dataIndex: 'total_quantity',
+      render: (text) => <PillCount pillCount={text} />,
+    },
+    {
+      title: 'Action',
+      dataIndex: 'id',
+      render: (text) => <DeleteMedicine med_id={text} />,
+    },
+  ];
+  
+  // ensure only authenticated users that exist in our db can see page
+  const [user, setUser] = useState();
+  useEffect(() => {
+    async function fetchUserDetails() {
+      if (token) {
+        try {
+          const response = await fetch(`http://${base_url}/api/user_details`, {
+            headers: {
+              Authorization: token,
+              "Content-Type": "application/json",
+            },
+          });
+          if (response.ok) {
+            const data = await response.json();
+            // console.log(data)
+            setUser(data);
+          } else {
+            // alert("Failed to fetch user details");
+            navigate("/login/")
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        // redirect user to login page if not authenticated
+        window.location.href = "/login";
+      }
+    }
+    fetchUserDetails();
+  }, []);
+
   // array of all medication objects to get the names for the api call
   const [meds, setMeds] = useState([]);
+
+  const data = meds.map((item, index) => ({
+    key: index,
+    id: item.id,
+    medication_name: item.medication_name,
+    medication_notes: item.medication_notes,
+    total_quantity: item.total_quantity,
+  }));
 
   // state to refresh med info (pill count) after tracking component is updated
   const [medicationIntakeUpdated, setMedicationIntakeUpdated] = useState(false);
@@ -55,16 +128,11 @@ const Home = () => {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const menuList = [
-    { key: "home", label: "Home" },
-    { key: "healthRecords", label: "Health Records" },
-  ];
-
   //get all meds, set medicationIntakeUpdated state to false to "listen" for changes in checkboxes
   useEffect(() => {
     async function fetchMeds() {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/med`, {
+        const response = await axios.get(`http://${base_url}/api/med`, {
           headers: {
             Authorization: token,
             "Content-Type": "application/json",
@@ -73,12 +141,13 @@ const Home = () => {
 
         setMeds(response.data);
         setMedicationIntakeUpdated(false);
+        setIsMedicineUpdated(false)
       } catch (error) {
         console.log(error);
       }
     }
     fetchMeds();
-  }, [token, medicationIntakeUpdated]);
+  }, [token, medicationIntakeUpdated, isMedicineUpdated]);
 
   useEffect(() => {
     if (authToken == null) {
@@ -101,7 +170,14 @@ const Home = () => {
               />
             </Offcanvas.Body>
           </Offcanvas>
-
+          <Offcanvas show={showEdit} onHide={handleCloseEdit}>
+            <Offcanvas.Header closeButton>
+              <Offcanvas.Title>Edit Medication</Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+              <EditMedicationForm med_id={selectedMedId} setIsMedicineUpdated={setIsMedicineUpdated}/>
+            </Offcanvas.Body>
+          </Offcanvas>
           <div
             className="site-layout-content"
             style={{
@@ -155,7 +231,11 @@ const Home = () => {
                       }
                       description={item.medication_notes}
                     />
-                    <PillCount pillCount={item.number_of_pills} />
+                    <PillCount pillCount={item.total_quantity} />
+                    <Button type="primary" style={{marginRight:10}} onClick={() => handleShowEdit(item.id)}>
+                      Edit Medication
+                    </Button>
+                    <DeleteMedicine med_id={item.id} />
                   </List.Item>
                 )}
               />

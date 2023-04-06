@@ -8,18 +8,18 @@ import axios from "axios";
 import "./MedicineDetail.css";
 import medicineImage from '../../assets/medicine.jpg';
 import EditMedicationForm from "../../components/EditMed/EditMed";
+import DeleteMedicine from "../../components/DeleteMed/DeleteMed";
 
 const { Title } = Typography;
 
 function MedicineDetail() {
 
-        const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
+    const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
       
     //offcanvas states
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
 
     const { TextArea } = Input;
 
@@ -95,31 +95,6 @@ function MedicineDetail() {
         }
     }, [isMedicineUpdated, med_id]);
 
-    // delete button
-    const handleDeleteClick = async () => {
-        const confirmDelete = window.confirm('Are you sure you want to delete this medicine?');
-        if (confirmDelete) {
-          try {
-            const response = await fetch(`http://${base_url}/api/med/${med_id}`, {
-              method: 'DELETE',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': userToken
-              }
-            });
-            if (response.ok) {
-              alert('Medicine deleted successfully!');
-              navigate('/');
-            } else {
-              alert('An error occurred while deleting medicine. Please try again.');
-            }
-          } catch(err) {
-            alert('An error occurred while deleting medicine.');
-            console.error(err);
-          }
-        }
-      }
-
     return (
         <div>
             <ILayout>
@@ -142,12 +117,10 @@ function MedicineDetail() {
                     <Row>
                         <Col span={12}>
                             <div className="detail-row">
-                            <Button onClick={handleShow}>
+                            <Button type="primary" style={{marginRight:10}} onClick={handleShow}>
                                 Edit Medication
                             </Button> 
-                            <Button onClick={handleDeleteClick}>
-                                Delete
-                            </Button>
+                            <DeleteMedicine med_id={med_id} />
                             </div>
                             <div className="detail-row">
                                 <span className="detail-title">Medication Name:</span>

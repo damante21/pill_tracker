@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home/Home";
-import HealthRecords from "./pages/HealthRecords/HealthRecords";
+import HealthReference from "./pages/HealthReference/HealthReference";
 import NewMedicine from "./pages/NewMedicine/NewMedicine";
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
@@ -20,7 +20,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/healthRecords" element={<HealthRecords />} />
+        <Route path="/healthReference" element={<HealthReference />} />
         <Route path="/home/newMedicine" element={<NewMedicine />} />
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/tracking" element={<MedicationIntakeList />} />
