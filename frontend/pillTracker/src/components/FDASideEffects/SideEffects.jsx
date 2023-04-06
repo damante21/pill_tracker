@@ -15,6 +15,7 @@ const SideEffects = () => {
     token: { colorBgContainer },
   } = theme.useToken();
 
+
   return (
     <>
       {location.pathname == "/home/sideEffects" && (
@@ -33,7 +34,7 @@ const SideEffects = () => {
             <List
               className="med-list"
               itemLayout="horizontal"
-              dataSource={data.drug_side_effects}
+              dataSource={data}
               renderItem={(item) => (
                 <List.Item>
                   <ul>

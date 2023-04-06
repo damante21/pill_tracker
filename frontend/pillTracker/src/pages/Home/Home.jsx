@@ -16,6 +16,7 @@ import EditMedicationForm from "../../components/EditMed/EditMed";
 const Home = () => {
   const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
   const [drugData, setDrugData] = useState("");
+  const [sideEffectData, setSideEffectData] = useState("")
 
   const [show, setShow] = useState(false);
 
@@ -107,8 +108,9 @@ const Home = () => {
     try {
       callBackend().then((response) => {
         response.json().then((data) => {
-          // console.log(data['drug_side_effects'])
-          setDrugData(data);
+          // console.log(data)
+          setDrugData(data['drug_interactions']);
+          setSideEffectData(data["drug_side_effects"]);
         });
       });
       
@@ -121,7 +123,7 @@ const Home = () => {
     navigate("drugInteractions", { state: drugData });
   };
   const sideEffectsClickHandler = () => {
-    navigate("sideEffects", { state: drugData });
+    navigate("sideEffects", { state: sideEffectData });
   };
 
   const {
@@ -175,7 +177,10 @@ const Home = () => {
               <Offcanvas.Title>Edit Medication</Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
-              <EditMedicationForm med_id={selectedMedId} setIsMedicineUpdated={setIsMedicineUpdated}/>
+              <EditMedicationForm
+                med_id={selectedMedId}
+                setIsMedicineUpdated={setIsMedicineUpdated}
+              />
             </Offcanvas.Body>
           </Offcanvas>
           <div
@@ -210,7 +215,7 @@ const Home = () => {
                     data={drugData}
                   />
                 )}{" "}
-                {drugData && (
+                {sideEffectData && (
                   <SideEffectsButton
                     onClick={sideEffectsClickHandler}
                     data={drugData}
@@ -232,7 +237,11 @@ const Home = () => {
                       description={item.medication_notes}
                     />
                     <PillCount pillCount={item.total_quantity} />
-                    <Button type="primary" style={{marginRight:10}} onClick={() => handleShowEdit(item.id)}>
+                    <Button
+                      type="primary"
+                      style={{ marginRight: 10 }}
+                      onClick={() => handleShowEdit(item.id)}
+                    >
                       Edit Medication
                     </Button>
                     <DeleteMedicine med_id={item.id} />

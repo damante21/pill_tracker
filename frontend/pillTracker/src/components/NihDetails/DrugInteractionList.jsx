@@ -31,7 +31,7 @@ const DrugInteractionList = (props) => {
             <List
               className="med-list"
               itemLayout="horizontal"
-              dataSource={data.drug_interactions}
+              dataSource={data}
               renderItem={(item) => (
                 <List.Item>
                   <ul>
