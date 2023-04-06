@@ -1,6 +1,6 @@
 import { theme, Typography, Button, Form, Space, Avatar, Divider, Col, Row, Image } from "antd";
 import ILayout from "../../components/ILayout/ILayout";
-import "./HealthRecords.css";
+import "./HealthReference.css";
 import { UserOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";
 import heartRateImage from "../../assets/heartRate.jpg";
@@ -9,7 +9,7 @@ import bloodSugarImage from "../../assets/bloodSugar.jpg";
 import bloodPressureImage from "../../assets/bloodPressure.jpg";
 
 const { Title } = Typography;
-const HealthRecords = () => {
+const HealthReference = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -84,4 +84,4 @@ const HealthRecords = () => {
     </ILayout>
   );
 };
-export default HealthRecords;
+export default HealthReference;
