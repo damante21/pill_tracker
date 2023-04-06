@@ -6,9 +6,19 @@ import logomage from "../../assets/logo.jpg";
 import "./ILogo.css";
 
 const ILogo = () => {
+  const navigate = useNavigate();
+
   return (
     <div>
-      <Image width={50} src={logomage} preview={false} />
+      <Image
+        onClick={() => {
+          navigate("/");
+        }}
+        style={{ cursor: "pointer" }}
+        width={50}
+        src={logomage}
+        preview={false}
+      />
     </div>
   );
 };
