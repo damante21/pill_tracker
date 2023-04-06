@@ -37,7 +37,7 @@ const ILayout = (props) => {
           display: "flex",
           justifyContent: "space-between",
           width: "100%", // set the width to 100%
-          padding: "0 50px", // add some padding to the left and right
+          padding: "0 30px", // add some padding to the left and right
         }}>
         <ILogo />
         <Menu
@@ -56,10 +56,11 @@ const ILayout = (props) => {
           <Button onClick={handleLogoutClick}>Logout</Button>
         </div>
       </Header>
-      <Content
+      <Content className="content"
         style={{
-          padding: "0 50px",
-        }}>
+          padding: "0 30px"
+        }}
+      >
         {children}
       </Content>
     </Layout>

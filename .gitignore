@@ -3,3 +3,4 @@ venv
 __pycache__
 .vscode
 *.sqlite3
+group_project.pem
