@@ -1,10 +1,8 @@
 import React from "react";
-import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "../../App.css";
-import { Breadcrumb, Button, List, Avatar } from "antd";
+import { Breadcrumb, List } from "antd";
 import ILayout from "../../components/ILayout/ILayout";
-import moment from "moment";
 import { theme } from "antd";
 
 const DrugInteractionList = (props) => {
@@ -14,7 +12,6 @@ const DrugInteractionList = (props) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
 
   return (
     <>
@@ -59,26 +56,6 @@ const DrugInteractionList = (props) => {
               )}
             />
           </div>
-
-          {/* {data && (
-               <ul>
-                 {data.drug_interactions.map((item) => (
-                   <>
-                     <h3>Drugs and Interactions</h3>
-                     <li key={item.drug_1}>
-                       Drug 1: {item.drug_1_name} : RXCUI: {item.drug_1}
-                     </li>
-                     <li key={item.drug_2}>
-                       Drug 2: {item.drug_2_name} : RXCUI: {item.drug_2}
-                     </li>
-                     <li key={item.description}>
-                       Description of drug interaction: {item.description}
-                     </li>
-                     <li key={item.severity}>Severity: {item.severity}</li>
-                   </>
-                 ))}
-               </ul>
-             )} */}
         </ILayout>
       )}
     </>

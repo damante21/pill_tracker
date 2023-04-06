@@ -8,11 +8,16 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import authentication_classes
 from datetime import date
+from django.shortcuts import HttpResponse
+from .helpers.api_calls import api_calls
+
 
 @authentication_classes([TokenAuthentication])
 class UserMedicationAPIView(APIView):
+    
     # will get specific med or list of meds with end dates today or in the future (so we don't see past medications)
     def get(self, request, pk=None):
+
         try:
             user_id = request.user.id
             if pk:
@@ -24,9 +29,9 @@ class UserMedicationAPIView(APIView):
             return Response(serializer.data)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        
+
     def post(self, request):
-        print(request.user)
+
         serializer = UserMedicationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
@@ -34,6 +39,7 @@ class UserMedicationAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
+        
         try:
             medication = UserMedication.objects.get(pk=pk)
         except:
@@ -45,6 +51,7 @@ class UserMedicationAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request, pk):
+        
         try:
             medication = UserMedication.objects.get(pk=pk)
             medication.delete()
@@ -52,10 +59,18 @@ class UserMedicationAPIView(APIView):
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         
+    # def display_drug_info(request):
+    #     print(request.user)
+    #     data = api_calls(request)
+        
+    #     return HttpResponse(data)
+
 
 @authentication_classes([TokenAuthentication])
 class MedicationIntakeAPIView(APIView):
+    
     def get(self, request, pk=None):
+        
         try:
             user_id = request.user.id
             if pk:
@@ -73,6 +88,7 @@ class MedicationIntakeAPIView(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
         
     def put(self, request, pk):
+        
         medication_intake = MedicationIntake.objects.get(pk=pk)
         serializer = MedicationIntakeSerializer(medication_intake, data=request.data, partial=True)
         if serializer.is_valid():
@@ -83,6 +99,7 @@ class MedicationIntakeAPIView(APIView):
 class RegisterAPI(APIView):
 
     def post(self, request):
+        
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
@@ -93,10 +110,12 @@ class RegisterAPI(APIView):
         )
     
 class UserDetailAPI(APIView):
+    
   authentication_classes = (TokenAuthentication,)
   permission_classes = (AllowAny,)
   
   def get(self,request,*args,**kwargs):
+      
     user = User.objects.get(id=request.user.id)
     serializer = UserSerializer(user)
     return Response(serializer.data)
@@ -104,7 +123,9 @@ class UserDetailAPI(APIView):
 
 @authentication_classes([TokenAuthentication])
 class UserHealthRecordsAPIView(APIView):
+    
     def get(self, request, pk=None):
+        
         try:
             user_id = request.user.id
             if pk:
@@ -116,3 +137,17 @@ class UserHealthRecordsAPIView(APIView):
             return Response(serializer.data)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        
+# nih api views
+ 
+@authentication_classes([TokenAuthentication])
+class DrugInfoAPIView(APIView):
+    
+    def get(self, request):
+        
+        user_id = request.user.id
+        # print(user_id)
+        data = api_calls(request, user_id)
+        
+        return HttpResponse(data, user_id)
