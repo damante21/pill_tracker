@@ -7,7 +7,8 @@ import ILayout from "../../components/ILayout/ILayout";
 import MedicationIntakeList from "../../components/MedTracking/MedicationIntakeList";
 import { Offcanvas } from "react-bootstrap";
 import PillCount from "../../components/PillCount/PillCount";
-import NihDetails from "../../components/NihDetails/NihDetails";
+import NihDetailsButton from "../../components/NihDetails/NihDetailsButton";
+import SideEffectsButton from "../../components/FDASideEffects/SideEffectsButton";
 import callBackend from "../../helpers/api_call";
 import DeleteMedicine from "../../components/DeleteMed/DeleteMed";
 import EditMedicationForm from "../../components/EditMed/EditMed";
@@ -106,16 +107,21 @@ const Home = () => {
     try {
       callBackend().then((response) => {
         response.json().then((data) => {
+          // console.log(data['drug_side_effects'])
           setDrugData(data);
         });
       });
+      
     } catch {
       console.log("there are no drug interactions");
     }
   }
 
-  const clickHandler = () => {
+  const interactionsClickHandler = () => {
     navigate("drugInteractions", { state: drugData });
+  };
+  const sideEffectsClickHandler = () => {
+    navigate("sideEffects", { state: drugData });
   };
 
   const {
@@ -199,7 +205,16 @@ const Home = () => {
                   Add medicine
                 </Button>{" "}
                 {drugData && (
-                  <NihDetails onClick={clickHandler} data={drugData} />
+                  <NihDetailsButton
+                    onClick={interactionsClickHandler}
+                    data={drugData}
+                  />
+                )}{" "}
+                {drugData && (
+                  <SideEffectsButton
+                    onClick={sideEffectsClickHandler}
+                    data={drugData}
+                  />
                 )}
               </span>
               <List
