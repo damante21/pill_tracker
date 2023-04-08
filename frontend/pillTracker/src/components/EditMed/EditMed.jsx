@@ -75,8 +75,7 @@ const EditMedicationForm = (props) => {
     const result = await response.json();
     // console.log(result)
     if (response.ok) {
-      props.setIsMedicineUpdated(true)
-      alert('Medicine updated successfully!');
+      props.setIsMedicineUpdated(true);
     } else {
         alert('An error occurred while updating medicine. Please check your form inputs.');
       }

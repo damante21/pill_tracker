@@ -83,7 +83,6 @@ const NewMedicine = () => {
     const result = await response.json();
     // console.log(result)
     if (response.ok) {
-      alert('Medicine added successfully!');
       window.location.href = "/home"
     } else {
         alert('An error occurred while adding medicine. Please check your form inputs.');
