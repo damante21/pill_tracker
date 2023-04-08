@@ -7,7 +7,8 @@ import ILayout from "../../components/ILayout/ILayout";
 import MedicationIntakeList from "../../components/MedTracking/MedicationIntakeList";
 import { Offcanvas } from "react-bootstrap";
 import PillCount from "../../components/PillCount/PillCount";
-import NihDetails from "../../components/NihDetails/NihDetails";
+import NihDetailsButton from "../../components/NihDetails/NihDetailsButton";
+import SideEffectsButton from "../../components/FDASideEffects/SideEffectsButton";
 import callBackend from "../../helpers/api_call";
 import DeleteMedicine from "../../components/DeleteMed/DeleteMed";
 import EditMedicationForm from "../../components/EditMed/EditMed";
@@ -15,6 +16,7 @@ import EditMedicationForm from "../../components/EditMed/EditMed";
 const Home = () => {
   const base_url = import.meta.env.VITE_REACT_APP_BASE_URL
   const [drugData, setDrugData] = useState("");
+  const [sideEffectData, setSideEffectData] = useState("")
 
   const [show, setShow] = useState(false);
 
@@ -106,26 +108,27 @@ const Home = () => {
     try {
       callBackend().then((response) => {
         response.json().then((data) => {
-          setDrugData(data);
+          console.log(data)
+          setDrugData(data['drug_interactions']);
+          setSideEffectData(data["drug_side_effects"]);
         });
       });
+      
     } catch {
       console.log("there are no drug interactions");
     }
   }
 
-  const clickHandler = () => {
+  const interactionsClickHandler = () => {
     navigate("drugInteractions", { state: drugData });
+  };
+  const sideEffectsClickHandler = () => {
+    navigate("sideEffects", { state: sideEffectData });
   };
 
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
-  const menuList = [
-    { key: "home", label: "Home" },
-    { key: "healthRecords", label: "Health Records" },
-  ];
 
   //get all meds, set medicationIntakeUpdated state to false to "listen" for changes in checkboxes
   useEffect(() => {
@@ -174,7 +177,10 @@ const Home = () => {
               <Offcanvas.Title>Edit Medication</Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
-              <EditMedicationForm med_id={selectedMedId} setIsMedicineUpdated={setIsMedicineUpdated}/>
+              <EditMedicationForm
+                med_id={selectedMedId}
+                setIsMedicineUpdated={setIsMedicineUpdated}
+              />
             </Offcanvas.Body>
           </Offcanvas>
           <div
@@ -183,18 +189,23 @@ const Home = () => {
               background: colorBgContainer,
             }}
           >
+            <div style={{ display: 'flex', justifyContent: 'center', height: '100vh' }}>
             <Space
               direction="vertical"
               size="small"
               style={{
                 display: "flex",
+                maxWidth: "100vh"
               }}
             >
               <h2>Ongoing Course</h2>
               <span>
+              <span style={{padding: '2px'}}>
                 <Button type="primary" onClick={handleShow}>
                   Daily Medication Tracking List
-                </Button>{" "}
+                </Button>
+                </span>
+                <span style={{padding: '2px'}}>
                 <Button
                   type="primary"
                   onClick={() => {
@@ -202,10 +213,24 @@ const Home = () => {
                   }}
                 >
                   Add medicine
-                </Button>{" "}
+                </Button>
+                </span>
+                <span style={{padding: '2px', minWidth: '150px'}}>
                 {drugData && (
-                  <NihDetails onClick={clickHandler} data={drugData} />
+                  <NihDetailsButton
+                    onClick={interactionsClickHandler}
+                    data={drugData}
+                  />
                 )}
+              </span>
+              <span style={{padding: '2px', minWidth: '150px'}}>
+                {sideEffectData && (
+                  <SideEffectsButton
+                    onClick={sideEffectsClickHandler}
+                    data={drugData}
+                  />
+                )}
+              </span>
               </span>
               <List
                 className="med-list"
@@ -219,17 +244,37 @@ const Home = () => {
                           {item.medication_name}
                         </a>
                       }
-                      description={item.medication_notes}
-                    />
-                    <PillCount pillCount={item.total_quantity} />
-                    <Button type="primary" style={{marginRight:10}} onClick={() => handleShowEdit(item.id)}>
-                      Edit Medication
-                    </Button>
-                    <DeleteMedicine med_id={item.id} />
+                      description={
+                        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
+                          {item.medication_notes ? (
+                            <div style={{ flex: 0.5, padding: '5px' }}>
+                            {item.medication_notes}
+                          </div>
+                          ) : (
+                            <div style={{ flex: 0.5 }}>
+                            
+                          </div>
+                          )}
+                          <div style={{flex: 0.25, padding: '5px'}}>
+                            <PillCount pillCount={item.total_quantity} />
+                            </div>
+                            <div style={{ flex: 0.25, textAlign: 'left' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                              <Button type="primary" onClick={() => handleShowEdit(item.id)}>
+                                Edit
+                              </Button>
+                              <span style={{ marginRight: '5px' }}></span>
+                              <DeleteMedicine med_id={item.id} />
+                            </div>
+                          </div>
+                        </div>
+                      }
+                      />
                   </List.Item>
                 )}
               />
             </Space>
+            </div>
           </div>
         </>
       )}

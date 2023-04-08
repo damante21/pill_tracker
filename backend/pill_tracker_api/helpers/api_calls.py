@@ -20,9 +20,40 @@ def get_med_names(request, user_id):
         med_names_obj[name['rxcui']] = name['medication_name']
 
     return med_names_obj
+
+
+def fda_api_call(request, user_id):
+    
+    drug_names_arr = []
+    response_arr = []
+    
+    med_names_arr = get_med_names(request, user_id)
+    
+    for name in med_names_arr:
+        
+        drug_names_arr.append(med_names_arr[name].split(' ', 1)[0])
+    
+    for drug_name in drug_names_arr:
+        
+        response = requests.get(f'https://api.fda.gov/drug/label.json?search=openfda.brand_name:{drug_name}&limit=10')
+        fda_call = response.json()
+        try:
+            result = fda_call['results'][0]['boxed_warning']
+            response_arr.append(DrugSideEffects(drug_name, result))
+        except:
+            continue
+    # print(fda_call['results'][0]['boxed_warning'])
+        
+        # response_arr.append(DrugSideEffects(drug_name, fda_call))
+    
+    return response_arr
+    # print(fda_call['results'][0]['boxed_warning'])
+    # return fda_call['results'][0]['boxed_warning']
     
 
-def api_calls(request, user_id):
+def interactions_api_call(request, user_id):
+    
+    fda_call_arr = fda_api_call(request, user_id)
 
     # arrays for drug info api call(s)
     rxcui_arr = []
@@ -84,39 +115,42 @@ def api_calls(request, user_id):
             counter += 1
         else:
             break
-    
-    interaction_response = requests.get(f'{interaction_api_call}')
-    response = interaction_response.json()
-    
-    if interaction_response.status_code == 200:
-        try:
-            for interaction_group in response['fullInteractionTypeGroup']:
-                for interaction_type in interaction_group['fullInteractionType']:
-                    for interaction in interaction_type['interactionPair']:
-                        interaction_pairs.append(interaction)
+    if len(names_arr) > 1:
+        
+        interaction_response = requests.get(f'{interaction_api_call}')
+        response = interaction_response.json()
+        
+        if interaction_response.status_code == 200:
+            try:
+                for interaction_group in response['fullInteractionTypeGroup']:
+                    for interaction_type in interaction_group['fullInteractionType']:
+                        for interaction in interaction_type['interactionPair']:
+                            interaction_pairs.append(interaction)
 
-            for pair in interaction_pairs:
-                drug_1 = pair['interactionConcept'][0]['minConceptItem']['rxcui']
-                drug_1_name = pair['interactionConcept'][0]['minConceptItem']['name']
-                drug_2 = pair['interactionConcept'][1]['minConceptItem']['rxcui']
-                drug_2_name = pair['interactionConcept'][1]['minConceptItem']['name']
-                description = pair['description']
-                severity = pair['severity']
-                if description not in description_arr:
-                    drug_interaction_arr.append(DrugInteraction(drug_1, drug_1_name, drug_2, drug_2_name, description, severity))
-                    description_arr.append(description)
+                for pair in interaction_pairs:
+                    drug_1 = pair['interactionConcept'][0]['minConceptItem']['rxcui']
+                    drug_1_name = pair['interactionConcept'][0]['minConceptItem']['name']
+                    drug_2 = pair['interactionConcept'][1]['minConceptItem']['rxcui']
+                    drug_2_name = pair['interactionConcept'][1]['minConceptItem']['name']
+                    description = pair['description']
+                    severity = pair['severity']
+                    if description not in description_arr:
+                        drug_interaction_arr.append(DrugInteraction(drug_1, drug_1_name, drug_2, drug_2_name, description, severity))
+                        description_arr.append(description)
+                
+                result = json.dumps({'drug_interactions' : drug_interaction_arr,
+                                    'drug_side_effects' : fda_call_arr}, default=vars)
+                
+                return HttpResponse(result)
             
-            # result = json.dumps({'drug_info' : drug_info_arr,
-            #                      'drug_interactions' : drug_interaction_arr}, default=vars)
-            result = json.dumps({
-                                'drug_interactions' : drug_interaction_arr}, default=vars)
+            except:
+                return
 
-            return HttpResponse(result)
-        except:
-            return
-
+        else:
+            print(f'interaction_response: {interaction_response.status_code}')
     else:
-        print(f'interaction_response: {interaction_response.status_code}')
+        return json.dumps({'drug_side_effects' : fda_call_arr}, default=vars)
         
 # instead of multiple for loops, this may work. need to refactor when there is time.
 # a = json.loads(interaction_response.content)
+

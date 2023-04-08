@@ -9,7 +9,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.decorators import authentication_classes
 from datetime import date
 from django.shortcuts import HttpResponse
-from .helpers.api_calls import api_calls
+from .helpers.api_calls import interactions_api_call
 
 
 @authentication_classes([TokenAuthentication])
@@ -148,6 +148,13 @@ class DrugInfoAPIView(APIView):
         
         user_id = request.user.id
         # print(user_id)
-        data = api_calls(request, user_id)
+        data = interactions_api_call(request, user_id)
         
         return HttpResponse(data, user_id)
+    
+    
+# def display(request):
+    
+#     test = interactions_api_call(request, 1)
+#     # res = test['drug_side_effects']
+#     return HttpResponse(test)

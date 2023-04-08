@@ -120,7 +120,7 @@ function MedicineDetail() {
                             <Button type="primary" style={{marginRight:10}} onClick={handleShow}>
                                 Edit Medication
                             </Button> 
-                            <DeleteMedicine med_id={medInfo.id} />
+                            <DeleteMedicine med_id={med_id} />
                             </div>
                             <div className="detail-row">
                                 <span className="detail-title">Medication Name:</span>

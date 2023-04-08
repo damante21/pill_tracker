@@ -18,4 +18,6 @@ urlpatterns = [
     path('user_details', UserDetailAPI.as_view()),
     path('health_records', UserHealthRecordsAPIView.as_view(), name='health_record'),
     path('nih_api/', DrugInfoAPIView.as_view(), name='nih_api'),
+    # path('test/', display),
+    
 ]

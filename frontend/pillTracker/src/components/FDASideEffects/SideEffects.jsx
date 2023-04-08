@@ -5,7 +5,9 @@ import { Breadcrumb, List } from "antd";
 import ILayout from "../../components/ILayout/ILayout";
 import { theme } from "antd";
 
-const DrugInteractionList = (props) => {
+
+const SideEffects = () => {
+
   const location = useLocation();
   const data = location.state;
 
@@ -13,9 +15,10 @@ const DrugInteractionList = (props) => {
     token: { colorBgContainer },
   } = theme.useToken();
 
+
   return (
     <>
-      {location.pathname == "/home/drugInteractions" && (
+      {location.pathname == "/home/sideEffects" && (
         <ILayout>
           <Breadcrumb style={{ margin: "16px 0" }}>
             <Breadcrumb.Item>Home</Breadcrumb.Item>
@@ -27,7 +30,7 @@ const DrugInteractionList = (props) => {
               background: colorBgContainer,
             }}
           >
-            <h5>Drugs and Interactions</h5>
+            <h5>Drug Side Effects</h5>
             <List
               className="med-list"
               itemLayout="horizontal"
@@ -35,22 +38,23 @@ const DrugInteractionList = (props) => {
               renderItem={(item) => (
                 <List.Item>
                   <ul>
-                    <li key={item.drug_1}>
-                      {item.drug_1_name.charAt(0).toUpperCase() +
-                        item.drug_1_name.slice(1)}
-                    </li>
-                    <li key={item.drug_2}>
-                      {item.drug_2_name.charAt(0).toUpperCase() +
-                        item.drug_2_name.slice(1)}
-                    </li>
-                    <li key={item.description}>
+                    <h6>
+                      {item.drug_name.charAt(0).toUpperCase() +
+                        item.drug_name.slice(1)}
+                    </h6>
+                    {/* <li key={item.drug_name}>
+                      {item.drug_name.charAt(0).toUpperCase() +
+                        item.drug_name.slice(1)}
+                    </li> */}
+                    <li>{item.side_effects}</li>
+                    {/* <li key={item.description}>
                       Description of drug interaction: {item.description}
                     </li>
                     <li key={item.severity}>
                       Severity:{" "}
                       {item.severity.charAt(0).toUpperCase() +
                         item.severity.slice(1)}
-                    </li>
+                    </li> */}
                   </ul>
                 </List.Item>
               )}
@@ -62,4 +66,5 @@ const DrugInteractionList = (props) => {
   );
 };
 
-export default DrugInteractionList;
+
+export default SideEffects;
