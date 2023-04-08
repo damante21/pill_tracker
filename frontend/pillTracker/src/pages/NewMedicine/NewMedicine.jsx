@@ -150,7 +150,7 @@ const NewMedicine = () => {
         }}
       >
         <Form
-          labelCol={{ span: 8 }}
+          labelCol={{ span: 12 }}
           wrapperCol={{ span: 16 }}
           form={form}
           name="control-hooks"
