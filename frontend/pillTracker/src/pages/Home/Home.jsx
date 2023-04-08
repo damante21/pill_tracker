@@ -224,7 +224,7 @@ const Home = () => {
                 )}
               </span>
               <span style={{padding: '2px', minWidth: '150px'}}>
-                {sideEffectData && (
+                {sideEffectData.length > 0 && (
                   <SideEffectsButton
                     onClick={sideEffectsClickHandler}
                     data={drugData}

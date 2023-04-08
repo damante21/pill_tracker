@@ -21,7 +21,6 @@ function DeleteMedicine(props) {
               }
             });
             if (response.ok) {
-              alert('Medicine deleted successfully!');
               navigate('/');
             } else {
               alert('An error occurred while deleting medicine. Please try again.');
