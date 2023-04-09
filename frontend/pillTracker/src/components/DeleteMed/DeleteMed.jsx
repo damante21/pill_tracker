@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import { useNavigate } from "react-router-dom";
 
 function DeleteMedicine(props) {
@@ -21,13 +21,13 @@ function DeleteMedicine(props) {
               }
             });
             if (response.ok) {
-              alert('Medicine deleted successfully!');
+              message.success('Medicine deleted successfully!');
               navigate('/');
             } else {
-              alert('An error occurred while deleting medicine. Please try again.');
+              message.error('An error occurred while deleting medicine. Please try again.');
             }
           } catch(err) {
-            alert('An error occurred while deleting medicine.');
+            message.error('An error occurred while deleting medicine.');
             console.error(err);
           }
         }

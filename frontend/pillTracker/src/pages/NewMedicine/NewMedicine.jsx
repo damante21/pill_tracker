@@ -7,6 +7,7 @@ import {
   InputNumber,
   DatePicker,
   TimePicker,
+  message
 } from "antd";
 import ILayout from "../../components/ILayout/ILayout";
 import moment from "moment";
@@ -83,13 +84,13 @@ const NewMedicine = () => {
     const result = await response.json();
     // console.log(result)
     if (response.ok) {
-      alert('Medicine added successfully!');
+      message.success('Medicine added successfully!');
       window.location.href = "/home"
     } else {
-        alert('An error occurred while adding medicine. Please check your form inputs.');
+      message.error('An error occurred while adding medicine. Please check your form inputs.');
       }
     } catch (err) {
-      alert('An error occurred while adding medicine.')
+      message.error('An error occurred while adding medicine.')
       console.error(err)
     }
   }
