@@ -1,4 +1,4 @@
-import { theme, Typography, Button, Form, Space, Avatar, Divider, Col, Row, Image } from "antd";
+import { theme, Typography, Button, Form, Space, Avatar, Divider, Col, Row, Image, message } from "antd";
 import ILayout from "../../components/ILayout/ILayout";
 import "./HealthReference.css";
 import { UserOutlined } from "@ant-design/icons";
@@ -33,7 +33,7 @@ const HealthReference = () => {
             // console.log(data)
             setUser(data);
           } else {
-            alert("Failed to fetch user details");
+            message.error("Failed to fetch user details");
           }
         } catch (error) {
           console.error(error);
