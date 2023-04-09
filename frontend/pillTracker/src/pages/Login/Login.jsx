@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Layout, Form, Button, Input } from "antd";
+import { Layout, Form, Button, Input, message } from "antd";
 import ILogo from "../../components/ILogo/ILogo";
 
 export default function Login() {
@@ -29,10 +29,10 @@ export default function Login() {
         window.location.href = "/";
       } else {
         localStorage.removeItem("token");
-        alert("Login failed");
+        message.error("Login failed");
       }
     } catch (error) {
-      alert("Something went wrong.");
+      message.error("Something went wrong.");
       console.error(error);
     }
   }
