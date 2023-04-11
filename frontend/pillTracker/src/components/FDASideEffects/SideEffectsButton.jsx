@@ -8,7 +8,7 @@ const SideEffectsButton = (props) => {
   return (
     <>
       <Button type="primary" onClick={props.onClick}>
-        Drug Side Effects
+        Major Side Effects
       </Button>
 
       {/* <DrugInteractionList data={props.data} /> */}

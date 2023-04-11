@@ -77,7 +77,7 @@ const EditMedicationForm = (props) => {
     // console.log(result)
     if (response.ok) {
       props.setIsMedicineUpdated(true)
-      message.success('Medicine updated successfully!');
+      props.handleCloseEdit()
     } else {
       message.error('An error occurred while updating medicine. Please check your form inputs.');
       }

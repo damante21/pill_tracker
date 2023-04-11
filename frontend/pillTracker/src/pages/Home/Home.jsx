@@ -108,7 +108,7 @@ const Home = () => {
     try {
       callBackend().then((response) => {
         response.json().then((data) => {
-          console.log(data)
+          // console.log(data)
           setDrugData(data['drug_interactions']);
           setSideEffectData(data["drug_side_effects"]);
         });
@@ -180,6 +180,7 @@ const Home = () => {
               <EditMedicationForm
                 med_id={selectedMedId}
                 setIsMedicineUpdated={setIsMedicineUpdated}
+                handleCloseEdit={handleCloseEdit}
               />
             </Offcanvas.Body>
           </Offcanvas>
@@ -224,7 +225,7 @@ const Home = () => {
                 )}
               </span>
               <span style={{padding: '2px', minWidth: '150px'}}>
-                {sideEffectData && (
+                {sideEffectData.length > 0 && (
                   <SideEffectsButton
                     onClick={sideEffectsClickHandler}
                     data={drugData}
