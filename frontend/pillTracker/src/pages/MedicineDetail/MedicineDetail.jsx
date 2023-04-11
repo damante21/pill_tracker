@@ -18,7 +18,7 @@ function MedicineDetail() {
       
     //offcanvas states
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
+    const handleCloseEdit = () => setShow(false);
     const handleShow = () => setShow(true);
 
     const { TextArea } = Input;
@@ -105,12 +105,13 @@ function MedicineDetail() {
                     }}>
                     <Title level={2}>Medicine Details</Title>
                     <Row>
-                    <Offcanvas show={show} onHide={handleClose}>
+                    <Offcanvas show={show} onHide={handleCloseEdit}>
                         <Offcanvas.Header closeButton>
                         <Offcanvas.Title>Edit Medication</Offcanvas.Title>
                         </Offcanvas.Header>
                         <Offcanvas.Body>
-                        <EditMedicationForm med_id={med_id} setIsMedicineUpdated={setIsMedicineUpdated}/>
+                        <EditMedicationForm med_id={med_id} setIsMedicineUpdated={setIsMedicineUpdated}
+                        handleCloseEdit={handleCloseEdit}/>
                         </Offcanvas.Body>
                     </Offcanvas>
                     </Row>
