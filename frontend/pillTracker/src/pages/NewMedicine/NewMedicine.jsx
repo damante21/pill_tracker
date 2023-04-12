@@ -169,7 +169,7 @@ const NewMedicine = () => {
             label="Dosage Strength" 
             rules={[{ required: true }]}
             >
-            <Input type="text" id="drug_strengths" placeholder="Strength list" onBlur={(event) => {
+            <Input type="text" id="drug_strengths" placeholder="Choose from dropdown list" onBlur={(event) => {
               const { value } = event.target;
               const strengthsData = $("#rxterms")[0].autocomp.getSelectedItemData()[0].data.STRENGTHS_AND_FORMS;
               const rxcuisData = $("#rxterms")[0].autocomp.getSelectedItemData()[0].data.RXCUIS;

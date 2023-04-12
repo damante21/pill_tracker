@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Layout, Form, Button, Input } from "antd";
+import { Layout, Form, Button, Input, message } from "antd";
 import ILogo from "../../components/ILogo/ILogo";
 
 export default function Register() {
@@ -35,7 +35,7 @@ export default function Register() {
       .catch((err) => {
         // Handle error
         console.error(err);
-        alert("An error occurred. Please try again later.");
+        message.error("An error occurred. Username may be taken. Please try again later.");
       });
   };
 
