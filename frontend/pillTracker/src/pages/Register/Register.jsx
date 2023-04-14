@@ -26,11 +26,17 @@ export default function Register() {
 
   const sendData = (data) => {
     const base_url = import.meta.env.VITE_REACT_APP_BASE_URL;
-    // console.log(base_url)
-    axios.post(`http://${base_url}/api/register/`, data).then((res) => {
-      // console.log(res.data);
-      navigate("/login/");
-    });
+    axios
+      .post(`http://${base_url}/api/register/`, data)
+      .then((res) => {
+        // Handle successful response
+        navigate("/login/");
+      })
+      .catch((err) => {
+        // Handle error
+        console.error(err);
+        alert("An error occurred. Please try again later.");
+      });
   };
 
   function loginButtonClick(e) {

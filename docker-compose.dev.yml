@@ -6,7 +6,7 @@
 version: "3.9"
 services:
   api:
-    build: ./backend/pill_tracker
+    build: ./backend
     ports:
       - "8000:8000"
     environment:

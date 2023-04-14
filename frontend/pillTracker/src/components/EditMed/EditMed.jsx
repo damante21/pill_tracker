@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import axios from 'axios';
+import { message } from 'antd'
 import { Form, Button } from 'react-bootstrap'
 
 const EditMedicationForm = (props) => {
@@ -76,12 +77,12 @@ const EditMedicationForm = (props) => {
     // console.log(result)
     if (response.ok) {
       props.setIsMedicineUpdated(true)
-      alert('Medicine updated successfully!');
+      props.handleCloseEdit()
     } else {
-        alert('An error occurred while updating medicine. Please check your form inputs.');
+      message.error('An error occurred while updating medicine. Please check your form inputs.');
       }
     } catch (err) {
-      alert('An error occurred while updating medicine.')
+      message.error('An error occurred while updating medicine.')
       console.error(err)
     }
   }
