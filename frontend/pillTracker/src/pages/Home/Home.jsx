@@ -108,7 +108,7 @@ const Home = () => {
     try {
       callBackend().then((response) => {
         response.json().then((data) => {
-          console.log(data)
+          // console.log(data)
           setDrugData(data['drug_interactions']);
           setSideEffectData(data["drug_side_effects"]);
         });
@@ -156,6 +156,31 @@ const Home = () => {
       navigate("/login/");
     }
   }, []);
+
+  let interactionsDisp = drugData ? (
+    <NihDetailsButton onClick={interactionsClickHandler} data={drugData} />
+  ) : (
+    <Button type="primary" style={{ background: "grey", borderColor: "grey" }}>
+      Drug Interactions
+    </Button>
+  );{
+    (" ");
+  }
+
+
+  let effectsDisp = sideEffectData ? (
+    <SideEffectsButton
+      onClick={sideEffectsClickHandler}
+      data={sideEffectData}
+    />
+  ) : (
+    <Button type="primary" style={{ background: "grey", borderColor: "grey" }}>
+      Major Side Effects
+    </Button>
+  );
+  {
+    (" ");
+  }
 
   return (
     <ILayout>
@@ -209,18 +234,19 @@ const Home = () => {
                 >
                   Add medicine
                 </Button>{" "}
-                {drugData && (
+                {/* {drugData && (
                   <NihDetailsButton
                     onClick={interactionsClickHandler}
                     data={drugData}
                   />
-                )}{" "}
-                {sideEffectData && (
+                )}{" "} */}
+                {interactionsDisp} {effectsDisp}
+                {/* {sideEffectData && (
                   <SideEffectsButton
                     onClick={sideEffectsClickHandler}
                     data={drugData}
                   />
-                )}
+                )} */}
               </span>
               <List
                 className="med-list"
