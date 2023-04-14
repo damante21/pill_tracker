@@ -157,6 +157,31 @@ const Home = () => {
     }
   }, []);
 
+  let interactionsDisp = drugData ? (
+    <NihDetailsButton onClick={interactionsClickHandler} data={drugData} />
+  ) : (
+    <Button type="primary" style={{ background: "grey", borderColor: "grey" }}>
+      Drug Interactions
+    </Button>
+  );{
+    (" ");
+  }
+
+
+  let effectsDisp = sideEffectData ? (
+    <SideEffectsButton
+      onClick={sideEffectsClickHandler}
+      data={sideEffectData}
+    />
+  ) : (
+    <Button type="primary" style={{ background: "grey", borderColor: "grey" }}>
+      Major Side Effects
+    </Button>
+  );
+  {
+    (" ");
+  }
+
   return (
     <ILayout>
       {meds && (
@@ -190,91 +215,98 @@ const Home = () => {
               background: colorBgContainer,
             }}
           >
-            <div style={{ display: 'flex', justifyContent: 'center', height: '100vh' }}>
-            <Space
-              direction="vertical"
-              size="small"
+            <div
               style={{
                 display: "flex",
-                maxWidth: "100vh"
+                justifyContent: "center",
+                height: "100vh",
               }}
             >
-              <h2>Ongoing Course</h2>
-              <span>
-              <span style={{padding: '2px'}}>
-                <Button type="primary" onClick={handleShow}>
-                  Daily Medication Tracking List
-                </Button>
+              <Space
+                direction="vertical"
+                size="small"
+                style={{
+                  display: "flex",
+                  maxWidth: "100vh",
+                }}
+              >
+                <h2>Ongoing Course</h2>
+                <span>
+                  <span style={{ padding: "2px" }}>
+                    <Button type="primary" onClick={handleShow}>
+                      Daily Medication Tracking List
+                    </Button>
+                  </span>
+                  <span style={{ padding: "2px" }}>
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        navigate("/home/newMedicine");
+                      }}
+                    >
+                      Add medicine
+                    </Button>
+                    <span style={{ padding: "2px", minWidth: "150px" }}></span>
+                    {interactionsDisp}
+                    <span style={{ padding: "2px", minWidth: "150px" }}></span>
+                    {effectsDisp}
+                  </span>
+                  <span style={{ padding: "2px", minWidth: "150px" }}></span>
                 </span>
-                <span style={{padding: '2px'}}>
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    navigate("/home/newMedicine");
-                  }}
-                >
-                  Add medicine
-                </Button>
-                </span>
-                <span style={{padding: '2px', minWidth: '150px'}}>
-                {drugData && (
-                  <NihDetailsButton
-                    onClick={interactionsClickHandler}
-                    data={drugData}
-                  />
-                )}
-              </span>
-              <span style={{padding: '2px', minWidth: '150px'}}>
-                {sideEffectData.length > 0 && (
-                  <SideEffectsButton
-                    onClick={sideEffectsClickHandler}
-                    data={drugData}
-                  />
-                )}
-              </span>
-              </span>
-              <List
-                className="med-list"
-                itemLayout="horizontal"
-                dataSource={meds}
-                renderItem={(item, index) => (
-                  <List.Item>
-                    <List.Item.Meta
-                      title={
-                        <a href={`/home/medicineDetail/${item.id}`}>
-                          {item.medication_name}
-                        </a>
-                      }
-                      description={
-                        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
-                          {item.medication_notes ? (
-                            <div style={{ flex: 0.5, padding: '5px' }}>
-                            {item.medication_notes}
-                          </div>
-                          ) : (
-                            <div style={{ flex: 0.5 }}>
-                            
-                          </div>
-                          )}
-                          <div style={{flex: 0.25, padding: '5px'}}>
-                            <PillCount pillCount={item.total_quantity} />
+                <List
+                  className="med-list"
+                  itemLayout="horizontal"
+                  dataSource={meds}
+                  renderItem={(item, index) => (
+                    <List.Item>
+                      <List.Item.Meta
+                        title={
+                          <a href={`/home/medicineDetail/${item.id}`}>
+                            {item.medication_name}
+                          </a>
+                        }
+                        description={
+                          <div
+                            style={{
+                              display: "flex",
+                              flexWrap: "wrap",
+                              alignItems: "center",
+                            }}
+                          >
+                            {item.medication_notes ? (
+                              <div style={{ flex: 0.5, padding: "5px" }}>
+                                {item.medication_notes}
+                              </div>
+                            ) : (
+                              <div style={{ flex: 0.5 }}></div>
+                            )}
+                            <div style={{ flex: 0.25, padding: "5px" }}>
+                              <PillCount pillCount={item.total_quantity} />
                             </div>
-                            <div style={{ flex: 0.25, textAlign: 'left' }}>
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                              <Button type="primary" onClick={() => handleShowEdit(item.id)}>
-                                Edit
-                              </Button>
-                              <span style={{ marginRight: '5px' }}></span>
-                              <DeleteMedicine med_id={item.id} />
+                            <div style={{ flex: 0.25, textAlign: "left" }}>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <Button
+                                  type="primary"
+                                  onClick={() => handleShowEdit(item.id)}
+                                >
+                                  Edit
+                                </Button>
+                                <span style={{ marginRight: "5px" }}></span>
+                                <DeleteMedicine med_id={item.id} />
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      }
+                        }
                       />
-                  </List.Item>
-                )}
-              />
-            </Space>
+                    </List.Item>
+                  )}
+                />
+              </Space>
             </div>
           </div>
         </>
